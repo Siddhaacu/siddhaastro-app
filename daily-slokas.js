@@ -1,62 +1,13 @@
-/* Siddha Astro daily slokas
-   Add more verified entries to each collection as needed.
-*/
+/* Siddha Astro daily slokas */
 const DAILY_SLOKAS = [
-  {
-    collection: 'Soundarya Lahari', number: 1,
-    telugu: 'శివః శక్త్యా యుక్తో యది భవతి శక్తః ప్రభవితుం\nన చేదేవం దేవో న ఖలు కుశలః స్పందితుమపి ।\nఅతస్త్వామారాధ్యాం హరిహరవిరించాదిభిరపి\nప్రణంతుం స్తోతుం వా కథమకృతపుణ్యః ప్రభవతి ॥',
-    english: 'Shivah shaktya yukto yadi bhavati shaktah prabhavitum\nNa chedevam devo na khalu kushalah spanditum api\nAtastvam aradhyam harihara-virinchadibhir api\nPranantum stotum va katham akrita-punyah prabhavati'
-  },
-  {
-    collection: 'Sivananda Lahari', number: 1,
-    telugu: 'కలాభ్యాం చూడాలంకృత శశికలాభ్యాం నిజతపః\nఫలాభ్యాం భక్తేషు ప్రకటిత ఫలాభ్యాం భవతు మే ।\nశివాభ్యామస్తోక త్రిభువన శివాభ్యాం హృది పునః\nభవాభ్యామానంద స్ఫురదనుభవాభ్యాం నతిరియమ్ ॥',
-    english: 'Kalabhyam chudalamkrita-shashikalabhyam nija-tapah\nPhalabhyam bhakteshu prakatita-phalabhyam bhavatu me\nShivabhyam astoka-tribhuvana-shivabhyam hridi punah\nBhavabhyam ananda-sphurad-anubhavabhyam natir iyam'
-  },
-  {
-    collection: 'Lalitha Sahasranamam', number: 1,
-    telugu: 'శ్రీమాతా శ్రీమహారాజ్ఞీ శ్రీమత్సింహాసనేశ్వరీ ।\nచిదగ్ని కుండసంభూతా దేవకార్య సముద్యతా ॥',
-    english: 'Shrimata Shri Maharajni Shrimatsimhasaneshvari\nChidagni-kunda-sambhuta Devakarya-samudyata'
-  },
-  {
-    collection: 'Vishnu Sahasranamam', number: 1,
-    telugu: 'విశ్వం విష్ణుర్వషట్కారో భూతభవ్యభవత్ప్రభుః ।\nభూతకృద్భూతభృద్భావో భూతాత్మా భూతభావనః ॥',
-    english: 'Vishvam Vishnur Vashatkaro Bhuta-bhavya-bhavat-prabhuh\nBhuta-krit Bhuta-bhrit Bhavo Bhutatma Bhuta-bhavanah'
-  }
+{collection:'Soundarya Lahari',number:1,telugu:'శివః శక్త్యా యుక్తో యది భవతి శక్తః ప్రభవితుం\nన చేదేవం దేవో న ఖలు కుశలః స్పందితుమపి ।\nఅతస్త్వామారాధ్యాం హరిహరవిరించాదిభిరపి\nప్రణంతుం స్తోతుం వా కథమకృతపుణ్యః ప్రభవతి ॥',english:'Shivah shaktya yukto yadi bhavati shaktah prabhavitum\nNa chedevam devo na khalu kushalah spanditum api\nAtastvam aradhyam harihara-virinchadibhir api\nPranantum stotum va katham akrita-punyah prabhavati'},
+{collection:'Sivananda Lahari',number:1,telugu:'కలాభ్యాం చూడాలంకృత శశికలాభ్యాం నిజతపః\nఫలాభ్యాం భక్తేషు ప్రకటిత ఫలాభ్యాం భవతు మే ।\nశివాభ్యామస్తోక త్రిభువన శివాభ్యాం హృది పునః\nభవాభ్యామానంద స్ఫురదనుభవాభ్యాం నతిరియమ్ ॥',english:'Kalabhyam chudalamkrita-shashikalabhyam nija-tapah\nPhalabhyam bhakteshu prakatita-phalabhyam bhavatu me\nShivabhyam astoka-tribhuvana-shivabhyam hridi punah\nBhavabhyam ananda-sphurad-anubhavabhyam natir iyam'},
+{collection:'Lalitha Sahasranamam',number:1,telugu:'శ్రీమాతా శ్రీమహారాజ్ఞీ శ్రీమత్సింహాసనేశ్వరీ ।\nచిదగ్ని కుండసంభూతా దేవకార్య సముద్యతా ॥',english:'Shrimata Shri Maharajni Shrimatsimhasaneshvari\nChidagni-kunda-sambhuta Devakarya-samudyata'},
+{collection:'Vishnu Sahasranamam',number:1,telugu:'విశ్వం విష్ణుర్వషట్కారో భూతభవ్యభవత్ప్రభుః ।\nభూతకృద్భూతభృద్భావో భూతాత్మా భూతభావనః ॥',english:'Vishvam Vishnur Vashatkaro Bhuta-bhavya-bhavat-prabhuh\nBhuta-krit Bhuta-bhrit Bhavo Bhutatma Bhuta-bhavanah'}
 ];
-
-function getIndiaDateKey() {
-  return new Intl.DateTimeFormat('en-CA', {
-    timeZone: 'Asia/Kolkata', year: 'numeric', month: '2-digit', day: '2-digit'
-  }).format(new Date());
-}
-
-function getTodaySloka() {
-  const epoch = Date.UTC(2026, 0, 1);
-  const today = new Date(`${getIndiaDateKey()}T00:00:00+05:30`).getTime();
-  const dayIndex = Math.floor((today - epoch) / 86400000);
-  return DAILY_SLOKAS[((dayIndex % DAILY_SLOKAS.length) + DAILY_SLOKAS.length) % DAILY_SLOKAS.length];
-}
-
-function renderDailySloka() {
-  const sloka = getTodaySloka();
-  const collection = document.getElementById('slokaCollection');
-  const number = document.getElementById('slokaNumber');
-  const telugu = document.getElementById('slokaTelugu');
-  const english = document.getElementById('slokaEnglish');
-  if (!collection || !number || !telugu || !english) return;
-  collection.textContent = sloka.collection;
-  number.textContent = `Sloka ${sloka.number}`;
-  telugu.textContent = sloka.telugu;
-  english.textContent = sloka.english;
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  renderDailySloka();
-  const now = new Date();
-  const nextMidnight = new Date(now);
-  nextMidnight.setHours(24, 0, 0, 0);
-  setTimeout(() => {
-    renderDailySloka();
-    setInterval(renderDailySloka, 86400000);
-  }, nextMidnight - now);
-});
+function getIndiaDateKey(){return new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Kolkata',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date())}
+function getTodaySloka(){const epoch=Date.UTC(2026,0,1);const today=new Date(`${getIndiaDateKey()}T00:00:00+05:30`).getTime();const dayIndex=Math.floor((today-epoch)/86400000);return DAILY_SLOKAS[((dayIndex%DAILY_SLOKAS.length)+DAILY_SLOKAS.length)%DAILY_SLOKAS.length]}
+function renderDailySloka(){const s=getTodaySloka();const c=document.getElementById('slokaCollection'),n=document.getElementById('slokaNumber'),t=document.getElementById('slokaTelugu'),e=document.getElementById('slokaEnglish');if(!c||!n||!t||!e)return;c.textContent=s.collection;n.textContent=`Sloka ${s.number}`;t.textContent=s.telugu;e.textContent=s.english}
+function makeSlokaSlider(){const old=document.querySelector('.sloka');if(!old||old.dataset.sliderReady)return;old.dataset.sliderReady='true';old.classList.add('sloka-slider');old.innerHTML=`<div class="sloka-track">${DAILY_SLOKAS.map((s,i)=>`<article class="sloka-slide" data-index="${i}"><div class="sloka-head"><strong>${s.collection}</strong><span>Sloka ${s.number}</span></div><h3>తెలుగు</h3><pre>${s.telugu}</pre><h3>English transliteration</h3><pre class="english">${s.english}</pre></article>`).join('')}</div><div class="slider-dots">${DAILY_SLOKAS.map((s,i)=>`<button type="button" aria-label="Show ${s.collection}" data-slide="${i}">${i+1}</button>`).join('')}</div>`;const track=old.querySelector('.sloka-track');const dots=[...old.querySelectorAll('[data-slide]')];function go(i){track.style.transform=`translateX(-${i*100}%)`;dots.forEach((b,j)=>b.classList.toggle('active',i===j))}dots.forEach(b=>b.addEventListener('click',()=>go(Number(b.dataset.slide))));const today=DAILY_SLOKAS.indexOf(getTodaySloka());go(today<0?0:today)}
+document.addEventListener('DOMContentLoaded',()=>{makeSlokaSlider();renderDailySloka();const now=new Date(),next=new Date(now);next.setHours(24,0,0,0);setTimeout(()=>{makeSlokaSlider();renderDailySloka();setInterval(()=>{makeSlokaSlider();renderDailySloka()},86400000)},next-now)});
+const sliderStyle=document.createElement('style');sliderStyle.textContent='.sloka-slider{overflow:hidden;padding:0!important}.sloka-track{display:flex;transition:transform .35s ease}.sloka-slide{flex:0 0 100%;padding:17px}.slider-dots{display:flex;justify-content:center;gap:7px;padding:0 0 15px}.slider-dots button{border:1px solid #f4c65d66;background:#ffffff0b;color:var(--gold2);border-radius:50%;width:28px;height:28px;font-weight:700}.slider-dots button.active{background:var(--gold);color:#251530}';document.head.appendChild(sliderStyle);
