@@ -11,13 +11,15 @@ const BILINGUAL = {
 function key(value){return String(value??'').toLowerCase().replace(/[^a-z ]/g,'').replace(/\s+/g,' ').trim();}
 function pick(obj,...paths){for(const path of paths){let value=obj;for(const part of path.split('.'))value=value?.[part];if(value!==undefined&&value!==null&&value!=='')return value;}return '';}
 function bilingual(value,group){const raw=String(value||'—');const normalized=key(raw);const found=Object.entries(BILINGUAL[group]||{}).find(([name])=>normalized.includes(name));return found?`${found[1][0]} • ${found[1][1]}`:raw;}
-function formatMasa(data){return String(pick(data,'masa.name','masa.english','lunar_month','masa_name')||'మాసం సమాచారం లేదు • Masa unavailable');}
+function formatMasa(data){return pick(data,'masa.name','masa.teluguName','masa.english','lunarMonth.amanta','lunar_month','lunarMonth.name','masa_name','amantaMasa.name')||'మాసం సమాచారం లేదు • Masa unavailable';}
+function formatSamvatsara(data){return pick(data,'samvatsara.name','samvatsara.teluguName','samvathsara.name','samvatsara','samvathsara','samvat.samvatsara','samvat.name','calendar.samvatsara')||'సంవత్సరం సమాచారం లేదు • Samvatsara unavailable';}
+function formatRashi(data){return bilingual(pick(data,'rashi.name','rashi.teluguName','rashi','moonRashi.en','moonRashi.name','moonRashi.sa','moon_sign','moonSign','chandra_rashi','chandraRashi'),'rashi');}
 function formatPanchangam(raw){const data=raw?.data||raw?.result||raw?.panchangam||raw||{};return {
  vara:bilingual(pick(data,'vara.name','vara.teluguName','vara'),'vara'),
  thithi:bilingual(pick(data,'tithi.name','tithi.teluguName','tithi','thithi.name','thithi'),'tithi'),
  nakshatra:bilingual(pick(data,'nakshatra.name','nakshatra.teluguName','nakshatra'),'nakshatra'),
- rashi:bilingual(pick(data,'rashi.name','rashi.teluguName','rashi','moon_sign','chandra_rashi'),'rashi'),
- samvathsara:pick(data,'samvatsara.name','samvathsara.name','samvatsara','samvathsara')||'సంవత్సరం సమాచారం లేదు • Samvatsara unavailable',
+ rashi:formatRashi(data),
+ samvathsara:formatSamvatsara(data),
  yoga:pick(data,'yoga.name','yoga.teluguName','yoga')||'—',karana:pick(data,'karana.name','karana.teluguName','karana')||'—',masa:formatMasa(data),
  sunrise:pick(data,'sun.sunrise','sunrise','astronomical.sunrise.local')||'—',sunset:pick(data,'sun.sunset','sunset','astronomical.sunset.local')||'—',
  rahuKalam:pick(data,'muhurta.rahu_kalam','rahu_kalam','rahuKalam')||'—',yamagandam:pick(data,'muhurta.yamagandam','yamagandam')||'—',abhijit:pick(data,'muhurta.abhijit_muhurtam','abhijit_muhurtam','abhijit')||'—'
