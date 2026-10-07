@@ -146,14 +146,44 @@ function transitionLabel(start,end){
   };
   return start?fmt(start)+" – "+fmt(end):fmt(end);
 }
+function findElement(obj,kind){
+  let found=null;
+  const walk=node=>{
+    if(found||node==null)return;
+    if(Array.isArray(node)){node.forEach(walk);return;}
+    if(typeof node!=="object")return;
+    for(const [k,v] of Object.entries(node)){
+      const key=k.toLowerCase().replace(/[^a-z]/g,"");
+      if(key===kind&&v&&typeof v==="object"){
+        let name=null,end=null;
+        for(const [kk,vv] of Object.entries(v)){
+          const kk2=kk.toLowerCase().replace(/[^a-z]/g,"");
+          if(kk2==="name"||kk2==="fullname")name=String(vv);
+          if(kk2.includes("end")||kk2.includes("until")||kk2.includes("finish"))end=transitionValue(vv);
+        }
+        if(name||end){found={name,end};return;}
+      }
+      walk(v);if(found)return;
+    }
+  };
+  walk(obj);return found;
+}
+function sameElementName(a,b){
+  if(!a||!b)return false;
+  return String(a).toLowerCase().replace(/[^a-z0-9]/g,"")===String(b).toLowerCase().replace(/[^a-z0-9]/g,"");
+}
 async function fetchTransitionTimings(dateStr,city){
   if(!city?.slug)return {};
   try{
     const today=await fetchJson(TRANSITION_API+"/"+city.slug+"/"+dateStr+".json");
     const previous=await fetchJson(TRANSITION_API+"/"+city.slug+"/"+previousIndiaDate(dateStr)+".json");
+    const ct=findElement(today,"tithi"),pt=findElement(previous,"tithi");
+    const cn=findElement(today,"nakshatra"),pn=findElement(previous,"nakshatra");
+    const tithiStart=sameElementName(ct?.name,pt?.name)?null:pt?.end;
+    const nakStart=sameElementName(cn?.name,pn?.name)?null:pn?.end;
     return {
-      tithiTiming:transitionLabel(findTransition(previous,"tithi"),findTransition(today,"tithi")),
-      nakshatraTiming:transitionLabel(findTransition(previous,"nakshatra"),findTransition(today,"nakshatra")),
+      tithiTiming:transitionLabel(tithiStart,ct?.end),
+      nakshatraTiming:transitionLabel(nakStart,cn?.end),
       timingSource:"Shastra Panchangam"
     };
   }catch(e){console.warn("Transition timing source unavailable",e);return {};}
