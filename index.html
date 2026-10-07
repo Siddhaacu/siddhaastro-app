@@ -253,24 +253,41 @@
 
         <!-- Main Content -->
         <div class="app-content">
+            <!-- Today's Panchangam -->
+            <section class="home-panchangam" aria-labelledby="home-panchang-title">
+                <div class="home-section-heading">
+                    <div>
+                        <div class="home-eyebrow">TODAY • HYDERABAD</div>
+                        <h2 id="home-panchang-title">Today's Panchangam</h2>
+                    </div>
+                    <a href="panchangam-app.html" class="home-section-link">View full</a>
+                </div>
+                <div class="home-date" id="homePanchangDate">Loading today's Panchangam…</div>
+                <div class="panchangam-grid" id="homePanchangGrid">
+                    <div class="panchangam-item"><div class="panchangam-label">Vara</div><div class="panchangam-value" data-panchang="vara">—</div></div>
+                    <div class="panchangam-item"><div class="panchangam-label">Tithi</div><div class="panchangam-value" data-panchang="thithi">—</div></div>
+                    <div class="panchangam-item"><div class="panchangam-label">Nakshatra</div><div class="panchangam-value" data-panchang="nakshatra">—</div></div>
+                    <div class="panchangam-item"><div class="panchangam-label">Rashi</div><div class="panchangam-value" data-panchang="rashi">—</div></div>
+                    <div class="panchangam-item"><div class="panchangam-label">Yoga</div><div class="panchangam-value" data-panchang="yoga">—</div></div>
+                    <div class="panchangam-item"><div class="panchangam-label">Sunrise</div><div class="panchangam-value" data-panchang="sunrise">—</div></div>
+                </div>
+            </section>
+
+            <!-- Daily Vishnu Sahasranama -->
+            <section class="daily-sloka" aria-labelledby="daily-sloka-title">
+                <div class="sloka-title">Daily Vishnu Sahasranama</div>
+                <h2 id="daily-sloka-title" class="sloka-scripture">श्री विष्णु सहस्रनामम्</h2>
+                <div class="sloka-meta" id="slokaNumber">Sloka — of 107</div>
+                <div class="sloka-text" id="slokaTelugu">Loading today's sloka…</div>
+                <div class="sloka-footer">A new sloka is presented each day • India time</div>
+            </section>
+
             <!-- Welcome Section -->
             <div class="welcome-section">
                 <div class="welcome-icon">🌟</div>
                 <div class="welcome-text">
                     Welcome to Siddha Astro<br>
                     <span style="font-size: 0.9em; opacity: 0.9;">Explore Vedic Wisdom Through Modern Technology</span>
-                </div>
-            </div>
-
-            <!-- Daily Sloka -->
-            <div class="daily-sloka">
-                <div class="sloka-title">✨ Sloka of the Day ✨</div>
-                <div class="sloka-text">
-                    "तत्त्वमसि"<br>
-                    <span style="font-size: 0.9em;">(Tat Tvam Asi)</span>
-                </div>
-                <div class="sloka-translation">
-                    "Thou Art That" - The eternal truth connecting the individual soul with the universal consciousness
                 </div>
             </div>
 
@@ -313,39 +330,6 @@
                     <div class="feature-icon">📜</div>
                     <div class="feature-title">Scriptures</div>
                     <div class="feature-desc">Sacred Texts</div>
-                </div>
-            </div>
-
-            <!-- Today's Panchangam -->
-            <div class="today-panchangam">
-                <h2 style="color: var(--accent); font-size: calc(1.3em * var(--scale)); margin-bottom: var(--spacing-md);">
-                    📅 Today's Panchangam
-                </h2>
-                <div class="panchangam-grid">
-                    <div class="panchangam-item">
-                        <div class="panchangam-label">Vara</div>
-                        <div class="panchangam-value">Wednesday</div>
-                    </div>
-                    <div class="panchangam-item">
-                        <div class="panchangam-label">Tithi</div>
-                        <div class="panchangam-value">Shukla Dashami</div>
-                    </div>
-                    <div class="panchangam-item">
-                        <div class="panchangam-label">Nakshatra</div>
-                        <div class="panchangam-value">Punarvasu</div>
-                    </div>
-                    <div class="panchangam-item">
-                        <div class="panchangam-label">Rashi</div>
-                        <div class="panchangam-value">Mithuna</div>
-                    </div>
-                    <div class="panchangam-item">
-                        <div class="panchangam-label">Yoga</div>
-                        <div class="panchangam-value">Ayushman</div>
-                    </div>
-                    <div class="panchangam-item">
-                        <div class="panchangam-label">Sunrise</div>
-                        <div class="panchangam-value">06:15</div>
-                    </div>
                 </div>
             </div>
 
@@ -431,5 +415,20 @@
 
     <script src="app-controls.js"></script>
     <script src="panchangam-free-api-FIXED.js"></script>
+    <script src="daily-slokas.js"></script>
+    <script>
+        async function loadHomePanchangam() {
+            const date = new Date();
+            const dateText = date.toLocaleDateString("en-IN", { weekday: "long", day: "numeric", month: "long", year: "numeric", timeZone: "Asia/Kolkata" });
+            document.getElementById("homePanchangDate").textContent = dateText;
+            try {
+                const data = await window.SiddhaPanchangam.fetchPanchangam(date);
+                document.querySelectorAll("[data-panchang]").forEach(el => { el.textContent = data?.[el.dataset.panchang] || "—"; });
+            } catch (error) {
+                console.warn("Home Panchangam error:", error);
+            }
+        }
+        document.addEventListener("DOMContentLoaded", loadHomePanchangam);
+    </script>
 </body>
 </html>
