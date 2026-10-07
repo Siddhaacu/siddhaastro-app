@@ -78,10 +78,16 @@ function normalizeFallback(d,c){
   };
 }
 
-async function fetchJson(url){
-  const r=await fetch(url,{headers:{Accept:"application/json"}});
-  if(!r.ok)throw new Error(`HTTP ${r.status}`);
-  return r.json();
+async function fetchJson(url,options={}){
+  const controller=new AbortController();
+  const timer=setTimeout(()=>controller.abort(),7000);
+  try{
+    const r=await fetch(url,{...options,signal:controller.signal,headers:{Accept:"application/json",...(options.headers||{})}});
+    if(!r.ok)throw new Error(`HTTP ${r.status}`);
+    return r.json();
+  }finally{
+    clearTimeout(timer);
+  }
 }
 
 function formatWindow(w){
@@ -182,4 +188,4 @@ async function fetchTransitionTimings(dateStr,city){
     console.warn("Transition timing source unavailable",e);
     return {};
   }
-};
+}
