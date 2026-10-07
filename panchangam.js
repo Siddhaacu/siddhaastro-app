@@ -5,6 +5,7 @@
 */
 const PANCHANG_API="https://nityapanchangam.com/api/panchangam.php";
 const FALLBACK_API="https://api.apimitra.in/panchang";
+const ENRICH_API="https://jagannatha-hora-359167915530.europe-west1.run.app/panchang";
 const CITIES={
  hyderabad:{name:"Hyderabad",lat:17.385,lng:78.486,slug:"hyderabad"},
  bangalore:{name:"Bengaluru",lat:12.9716,lng:77.5946,slug:"bangalore"},
@@ -76,6 +77,25 @@ async function fetchJson(url){
   return r.json();
 }
 
+async function enrichCalendarIdentity(base,dateStr,c){
+  if(base.rashi!=="Not provided"&&base.samvathsara!=="Not provided"&&base.masa!=="Not provided")return base;
+  try{
+    const r=await fetch(ENRICH_API,{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify({date:dateStr,latitude:c.lat,longitude:c.lng,timezone:5.5,ayanamsa_mode:"LAHIRI"})});
+    if(!r.ok)throw new Error(`HTTP ${r.status}`);
+    const j=await r.json();
+    const p=j?.panchang;
+    if(!p)return base;
+    return {...base,
+      rashi:p.signs?.moon?.name||base.rashi,
+      samvathsara:p.samvat?.samvatsara_name||base.samvathsara,
+      masa:p.month?.amanta||base.masa
+    };
+  }catch(e){
+    console.warn("Calendar identity enrichment unavailable",e);
+    return base;
+  }
+}
+
 async function fetchPanchangam(date=indiaToday(),city=DEFAULT_CITY){
   const c=cityConfig(city);
   const dateStr=typeof date==="string"
@@ -85,7 +105,7 @@ async function fetchPanchangam(date=indiaToday(),city=DEFAULT_CITY){
   try{
     const q=new URLSearchParams({date:dateStr,city:c.slug||"hyderabad"});
     const d=await fetchJson(`${PANCHANG_API}?${q}`);
-    if(d?.date)return normalizePrimary(d,c);
+    if(d?.date)return enrichCalendarIdentity(normalizePrimary(d,c),dateStr,c);
   }catch(e){
     console.warn("Primary Panchang source unavailable",e);
   }
@@ -93,7 +113,7 @@ async function fetchPanchangam(date=indiaToday(),city=DEFAULT_CITY){
   try{
     const q=new URLSearchParams({date:dateStr,city:c.slug||"hyderabad"});
     const d=await fetchJson(`${FALLBACK_API}?${q}`);
-    if(d?.date)return normalizeFallback(d,c);
+    if(d?.date)return enrichCalendarIdentity(normalizeFallback(d,c),dateStr,c);
   }catch(e){
     console.warn("Fallback Panchang source unavailable",e);
   }
