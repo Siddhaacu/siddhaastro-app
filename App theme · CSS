@@ -1,0 +1,560 @@
+/* ============================================
+   SIDDHA ASTRO - APP THEME & STYLING
+   Light & Dark Mode with Spiritual Design
+   ============================================ */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /* Light Theme */
+  --bg-primary-light: #f8f7f3;
+  --bg-secondary-light: #ffffff;
+  --bg-tertiary-light: #f0ede8;
+  --text-primary-light: #2c2c2c;
+  --text-secondary-light: #666666;
+  --accent-light: #d4af37;
+  --accent-dark-light: #c9a227;
+  --border-light: #e8e3db;
+  --shadow-light: rgba(0, 0, 0, 0.08);
+  
+  /* Dark Theme */
+  --bg-primary-dark: #0f0f1e;
+  --bg-secondary-dark: #1a1a2e;
+  --bg-tertiary-dark: #16213e;
+  --text-primary-dark: #e8e8e8;
+  --text-secondary-dark: #b0b0b0;
+  --accent-dark: #ffc107;
+  --accent-dark-dark: #ffb300;
+  --border-dark: #2a2a3e;
+  --shadow-dark: rgba(0, 0, 0, 0.3);
+  
+  /* Spiritual Colors */
+  --spiritual-gold: #d4af37;
+  --spiritual-purple: #6b4ba3;
+  --spiritual-blue: #1e3a8a;
+  --spiritual-saffron: #ff6b35;
+  
+  /* Font Sizes Base (will be multiplied by scale) */
+  --base-font-size: 16px;
+  --scale: 1;
+  
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+}
+
+/* Light Mode */
+body.light-mode {
+  --bg-primary: var(--bg-primary-light);
+  --bg-secondary: var(--bg-secondary-light);
+  --bg-tertiary: var(--bg-tertiary-light);
+  --text-primary: var(--text-primary-light);
+  --text-secondary: var(--text-secondary-light);
+  --accent: var(--accent-light);
+  --accent-dark: var(--accent-dark-light);
+  --border: var(--border-light);
+  --shadow: var(--shadow-light);
+}
+
+/* Dark Mode */
+body.dark-mode {
+  --bg-primary: var(--bg-primary-dark);
+  --bg-secondary: var(--bg-secondary-dark);
+  --bg-tertiary: var(--bg-tertiary-dark);
+  --text-primary: var(--text-primary-dark);
+  --text-secondary: var(--text-secondary-dark);
+  --accent: var(--accent-dark);
+  --accent-dark: var(--accent-dark-dark);
+  --border: var(--border-dark);
+  --shadow: var(--shadow-dark);
+}
+
+/* Default to Dark Mode */
+body {
+  background: var(--bg-primary-dark);
+  color: var(--text-primary-dark);
+  font-family: 'Segoe UI', 'Trebuchet MS', sans-serif;
+  font-size: calc(var(--base-font-size) * var(--scale));
+  line-height: 1.6;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* ============================================
+   APP CONTAINER
+   ============================================ */
+
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-primary);
+  padding-bottom: 80px; /* Space for bottom nav */
+}
+
+.app-header {
+  background: linear-gradient(135deg, var(--spiritual-blue) 0%, var(--spiritual-purple) 100%);
+  color: white;
+  padding: var(--spacing-lg) var(--spacing-md);
+  text-align: center;
+  box-shadow: 0 4px 12px var(--shadow);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.app-header h1 {
+  font-size: calc(2em * var(--scale));
+  margin-bottom: var(--spacing-sm);
+  font-weight: 600;
+}
+
+.app-header-subtitle {
+  font-size: calc(0.85em * var(--scale));
+  opacity: 0.9;
+  letter-spacing: 1px;
+}
+
+.app-content {
+  flex: 1;
+  padding: var(--spacing-lg) var(--spacing-md);
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
+  overflow-y: auto;
+}
+
+/* ============================================
+   BOTTOM NAVIGATION BAR
+   ============================================ */
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--bg-secondary);
+  border-top: 2px solid var(--border);
+  display: flex;
+  justify-content: space-around;
+  padding: var(--spacing-xs) 0;
+  z-index: 1000;
+  box-shadow: 0 -2px 8px var(--shadow);
+}
+
+.nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-md) var(--spacing-sm);
+  text-decoration: none;
+  color: var(--text-secondary);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border-radius: 8px 8px 0 0;
+  margin: 0 2px;
+}
+
+.nav-item:hover,
+.nav-item.active {
+  color: var(--accent);
+  background: var(--bg-tertiary);
+  font-weight: 600;
+}
+
+.nav-icon {
+  font-size: calc(1.5em * var(--scale));
+  margin-bottom: var(--spacing-xs);
+}
+
+.nav-label {
+  font-size: calc(0.7em * var(--scale));
+  text-align: center;
+}
+
+/* ============================================
+   CONTROLS BAR
+   ============================================ */
+
+.controls-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  padding: var(--spacing-md);
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--bg-tertiary);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.theme-toggle:hover {
+  background: var(--border);
+}
+
+.theme-toggle-btn {
+  background: none;
+  border: none;
+  font-size: calc(1.2em * var(--scale));
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.theme-toggle-btn:hover {
+  transform: scale(1.2);
+}
+
+.font-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--bg-tertiary);
+  border-radius: 20px;
+}
+
+.font-control-btn {
+  background: none;
+  border: none;
+  padding: var(--spacing-sm) var(--spacing-md);
+  cursor: pointer;
+  font-weight: bold;
+  color: var(--accent);
+  font-size: calc(1.1em * var(--scale));
+  transition: all 0.3s ease;
+  border-radius: 6px;
+}
+
+.font-control-btn:hover {
+  background: var(--border);
+  transform: scale(1.1);
+}
+
+.font-size-display {
+  font-size: calc(0.85em * var(--scale));
+  color: var(--text-secondary);
+  padding: 0 var(--spacing-sm);
+  min-width: 40px;
+  text-align: center;
+}
+
+/* ============================================
+   CARDS & SECTIONS
+   ============================================ */
+
+.spiritual-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent);
+  border-radius: 12px;
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+  box-shadow: 0 2px 8px var(--shadow);
+  transition: all 0.3s ease;
+}
+
+.spiritual-card:hover {
+  box-shadow: 0 4px 16px var(--shadow);
+  transform: translateY(-2px);
+}
+
+.spiritual-card-title {
+  font-size: calc(1.3em * var(--scale));
+  color: var(--accent);
+  margin-bottom: var(--spacing-md);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.spiritual-card-icon {
+  font-size: calc(1.5em * var(--scale));
+}
+
+.spiritual-card-content {
+  color: var(--text-primary);
+  font-size: calc(1em * var(--scale));
+  line-height: 1.8;
+}
+
+/* ============================================
+   GRID LAYOUTS
+   ============================================ */
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+/* ============================================
+   BUTTONS
+   ============================================ */
+
+.btn {
+  padding: calc(var(--spacing-md) * var(--scale)) calc(var(--spacing-lg) * var(--scale));
+  border: none;
+  border-radius: 8px;
+  font-size: calc(1em * var(--scale));
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+  color: #000;
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(212, 175, 55, 0.4);
+}
+
+.btn-secondary {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+}
+
+.btn-secondary:hover {
+  background: var(--border);
+}
+
+/* ============================================
+   INPUT FIELDS
+   ============================================ */
+
+input[type="date"],
+input[type="time"],
+input[type="text"],
+select,
+textarea {
+  width: 100%;
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  font-size: calc(1em * var(--scale));
+  transition: all 0.3s ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 8px rgba(212, 175, 55, 0.2);
+}
+
+/* ============================================
+   BADGES & LABELS
+   ============================================ */
+
+.badge {
+  display: inline-block;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: 20px;
+  font-size: calc(0.85em * var(--scale));
+  font-weight: 600;
+  background: var(--bg-tertiary);
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  margin-right: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+}
+
+.label {
+  display: block;
+  margin-bottom: var(--spacing-sm);
+  color: var(--accent);
+  font-weight: 600;
+  font-size: calc(0.95em * var(--scale));
+}
+
+/* ============================================
+   SPIRITUAL SECTION
+   ============================================ */
+
+.spiritual-divider {
+  text-align: center;
+  margin: var(--spacing-xl) 0;
+  color: var(--accent);
+  font-size: calc(1.5em * var(--scale));
+  opacity: 0.6;
+}
+
+.mantra-box {
+  background: linear-gradient(135deg, var(--spiritual-blue) 0%, var(--spiritual-purple) 100%);
+  color: white;
+  padding: var(--spacing-lg);
+  border-radius: 12px;
+  text-align: center;
+  margin: var(--spacing-lg) 0;
+  font-style: italic;
+  line-height: 1.8;
+  box-shadow: 0 4px 12px var(--shadow);
+}
+
+.mantra-title {
+  font-size: calc(1.1em * var(--scale));
+  margin-bottom: var(--spacing-md);
+  font-weight: 600;
+}
+
+.mantra-text {
+  font-size: calc(0.95em * var(--scale));
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+  .app-content {
+    padding: var(--spacing-md) var(--spacing-sm);
+  }
+
+  .controls-bar {
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+
+  .theme-toggle,
+  .font-controls {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .grid-2,
+  .grid-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .app-header {
+    padding: var(--spacing-md) var(--spacing-sm);
+  }
+
+  .app-header h1 {
+    font-size: calc(1.5em * var(--scale));
+  }
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes shimmer {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.loading {
+  animation: shimmer 1.5s infinite;
+}
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* ============================================
+   SCROLLBAR STYLING
+   ============================================ */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-tertiary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-dark);
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+
+@media print {
+  .bottom-nav,
+  .controls-bar {
+    display: none;
+  }
+
+  body {
+    padding-bottom: 0;
+  }
+}
