@@ -23,7 +23,7 @@
     "Vinayaka Chaturthi":"వినాయక చవితి", "Sankranti":"సంక్రాంతి",
     "Makar Sankranti":"మకర సంక్రాంతి", "Rama Navami":"శ్రీరామ నవమి",
     "Hanuman Jayanti":"హనుమ జయంతి", "Narasimha Jayanti":"నరసింహ జయంతి",
-    "Raksha Bandhan":"రక్షాబంధన్", "Krishna Janmashtami":"శ్రీకృష్ణ జన్మాష్టమి", "Mahalakshmi Vrat Ends":"మహాలక్ష్మీ వ్రత సమాప్తి", "Jivitputrika Vrat":"జీవిత్పుత్రికా వ్రతం", "Indira Ekadashi":"ఇందిరా ఏకాదశి", "Guru Pradosh Vrat":"గురు ప్రదోష వ్రతం", "Sarva Pitru Amavasya":"సర్వపితృ అమావాస్య", "Darsha Amavasya":"దర్శ అమావాస్య", "Anvadhan":"అన్వాధానం", "Ashwina Amavasya":"ఆశ్వయుజ అమావాస్య", "Navratri Begins":"నవరాత్రులు ప్రారంభం", "Ghatasthapana":"ఘటస్థాపన", "Chandra Darshana":"చంద్ర దర్శనం", "Upang Lalita Vrat":"ఉపాంగ లలితా వ్రతం", "Saraswati Avahan":"సరస్వతీ ఆవాహనం", "Saraswati Puja":"సరస్వతీ పూజ", "Tula Sankranti":"తులా సంక్రాంతి", "Durga Ashtami":"దుర్గాష్టమి", "Maha Navami":"మహానవమి", "Saraswati Visarjan":"సరస్వతీ విసర్జనం", "Durga Visarjan":"దుర్గా విసర్జనం", "Vijayadashami":"విజయదశమి", "Dussehra":"దసరా", "Papankusha Ekadashi":"పాపాంకుశ ఏకాదశి", "Shukra Pradosh Vrat":"శుక్ర ప్రదోష వ్రతం", "Kojagara Puja":"కోజాగర పూజ", "Sharad Purnima":"శరద్ పౌర్ణమి", "Ashwina Purnima":"ఆశ్వయుజ పౌర్ణమి", "Karwa Chauth":"కర్వా చౌత్", "Vakratunda Sankashti":"వక్రతుండ సంకష్టి"
+    "Raksha Bandhan":"రక్షాబంధన్", "Krishna Janmashtami":"శ్రీకృష్ణ జన్మాష్టమి", "Mahalakshmi Vrat Ends":"మహాలక్ష్మీ వ్రత సమాప్తి", "Jivitputrika Vrat":"జీవిత్పుత్రికా వ్రతం", "Indira Ekadashi":"ఇందిరా ఏకాదశి", "Guru Pradosh Vrat":"గురు ప్రదోష వ్రతం", "Sarva Pitru Amavasya":"సర్వపితృ అమావాస్య", "Darsha Amavasya":"దర్శ అమావాస్య", "Anvadhan":"అన్వాధానం", "Ashwina Amavasya":"ఆశ్వయుజ అమావాస్య", "Navratri Begins":"నవరాత్రులు ప్రారంభం", "Ghatasthapana":"ఘటస్థాపన", "Chandra Darshana":"చంద్ర దర్శనం", "Upang Lalita Vrat":"ఉపాంగ లలితా వ్రతం", "Saraswati Avahan":"సరస్వతీ ఆవాహనం", "Saraswati Puja":"సరస్వతీ పూజ", "Tula Sankranti":"తులా సంక్రాంతి", "Durga Ashtami":"దుర్గాష్టమి", "Maha Navami":"మహానవమి", "Saraswati Visarjan":"సరస్వతీ విసర్జనం", "Durga Visarjan":"దుర్గా విసర్జనం", "Vijayadashami":"విజయదశమి", "Dussehra":"దసరా", "Papankusha Ekadashi":"పాపాంకుశ ఏకాదశి", "Shukra Pradosh Vrat":"శుక్ర ప్రదోష వ్రతం", "Kojagara Puja":"కోజాగర పూజ", "Sharad Purnima":"శరద్ పౌర్ణమి", "Ashwina Purnima":"ఆశ్వయుజ పౌర్ణమి", "Karwa Chauth":"కర్వా చౌత్", "Vakratunda Sankashti":"వక్రతుండ సంకష్టి", "Ishti":"ఇష్టి"
   };
 
   let monthCursor = new Date();
@@ -147,6 +147,25 @@
     if(/Krishna Chaturdashi/i.test(full))out.push("Masik Shivaratri");
     return out;
   }
+  const KNOWN_FESTIVALS_2026={
+    "2026-10-03":["Mahalakshmi Vrat Ends","Jivitputrika Vrat"],
+    "2026-10-06":["Indira Ekadashi"],
+    "2026-10-08":["Guru Pradosh Vrat"],
+    "2026-10-10":["Sarva Pitru Amavasya","Darsha Amavasya","Anvadhan","Ashwina Amavasya"],
+    "2026-10-11":["Navratri Begins","Ghatasthapana","Ishti"],
+    "2026-10-12":["Chandra Darshana"],
+    "2026-10-15":["Upang Lalita Vrat"],
+    "2026-10-16":["Saraswati Avahan"],
+    "2026-10-17":["Saraswati Puja","Tula Sankranti"],
+    "2026-10-19":["Durga Ashtami","Maha Navami","Saraswati Visarjan"],
+    "2026-10-20":["Durga Visarjan","Dussehra"],
+    "2026-10-22":["Papankusha Ekadashi"],
+    "2026-10-23":["Shukra Pradosh Vrat"],
+    "2026-10-25":["Kojagara Puja","Sharad Purnima","Anvadhan"],
+    "2026-10-26":["Ashwina Purnima","Ishti"],
+    "2026-10-29":["Karwa Chauth","Vakratunda Sankashti"]
+  };
+
   function dedupe(a){return [...new Set(a)];}
   function festivalDateLabel(date,te){
     const d=new Date(date+"T00:00:00");
@@ -171,10 +190,26 @@
       if(/Amavasya/i.test(n))events.push({date,name:"Amavasya"});
       if(/Purnima/i.test(n))events.push({date,name:"Pournami"});
       if(/Ekadashi/i.test(n))events.push({date,name:"Ekadashi"});
+      inferredFestivals(row).filter(name=>!/^(Amavasya|Pournami|Ekadashi)$/.test(name))
+        .forEach(name=>events.push({date,name}));
     });
+    // October 2026 has a complete regional festival set used as a safety fallback
+    // so the list remains complete even if the remote festival feed is unavailable.
+    if(y===2026 && m===9){
+      Object.entries(KNOWN_FESTIVALS_2026).forEach(([date,names])=>names.forEach(name=>events.push({date,name})));
+    }
     const unique=[];
     const seen=new Set();
-    events.sort((a,b)=>a.date.localeCompare(b.date)||a.name.localeCompare(b.name)).forEach(e=>{
+    // Prefer specific festival names over generic lunar labels on the same date.
+    const genericNames=new Set(["Amavasya","Pournami","Ekadashi","Pradosham","Sankashti Chaturthi","Masik Shivaratri"]);
+    const byDate={};
+    events.forEach(e=>(byDate[e.date] ||= []).push(e));
+    const filtered=events.filter(e=>{
+      const sameDate=byDate[e.date]||[];
+      const hasSpecific=sameDate.some(x=>!genericNames.has(x.name));
+      return !(hasSpecific && genericNames.has(e.name));
+    });
+    filtered.sort((a,b)=>a.date.localeCompare(b.date)||a.name.localeCompare(b.name)).forEach(e=>{
       const key=e.date+"|"+e.name;
       if(!seen.has(key)){seen.add(key);unique.push(e);}
     });
