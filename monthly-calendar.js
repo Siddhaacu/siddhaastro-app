@@ -35,22 +35,53 @@
   function ym(d){ return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0"); }
   function daysInMonth(y,m){ return new Date(y,m+1,0).getDate(); }
   function esc(v){ return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c])); }
+  const TITHI_NAMES=[
+    "Shukla Pratipada","Shukla Dwitiya","Shukla Tritiya","Shukla Chaturthi","Shukla Panchami",
+    "Shukla Shashti","Shukla Saptami","Shukla Ashtami","Shukla Navami","Shukla Dashami",
+    "Shukla Ekadashi","Shukla Dwadashi","Shukla Trayodashi","Shukla Chaturdashi","Pournami",
+    "Krishna Pratipada","Krishna Dwitiya","Krishna Tritiya","Krishna Chaturthi","Krishna Panchami",
+    "Krishna Shashti","Krishna Saptami","Krishna Ashtami","Krishna Navami","Krishna Dashami",
+    "Krishna Ekadashi","Krishna Dwadashi","Krishna Trayodashi","Krishna Chaturdashi","Amavasya"
+  ];
+  const NAKSHATRA_NAMES=[
+    "Ashwini","Bharani","Krittika","Rohini","Mrigashira","Ardra","Punarvasu","Pushya","Ashlesha",
+    "Magha","Purva Phalguni","Uttara Phalguni","Hasta","Chitra","Swati","Vishakha","Anuradha",
+    "Jyeshtha","Mula","Purva Ashadha","Uttara Ashadha","Shravana","Dhanishta","Shatabhisha",
+    "Purva Bhadrapada","Uttara Bhadrapada","Revati"
+  ];
+  function namedValue(value,names){
+    if(value==null||value==="")return "";
+    if(typeof value==="object"){
+      if(value.name!=null)return namedValue(value.name,names);
+      if(value.index!=null)return namedValue(value.index,names);
+      if(value.number!=null)return namedValue(value.number,names);
+    }
+    const n=Number(value);
+    if(Number.isInteger(n)&&n>=0&&n<names.length)return names[n];
+    return String(value).trim();
+  }
   function tithiName(t){
-    if(!t)return "";
-    const s=String(t.name||t).trim();
+    const s=namedValue(t,TITHI_NAMES);
+    if(!s)return "";
     const m=s.match(/^(Shukla|Krishna)\s+(.+)$/i);
     return m ? m[2] : s;
   }
   function paksha(t){
-    const s=String(t?.name||t||"");
+    const s=namedValue(t,TITHI_NAMES);
     return /^Krishna/i.test(s) ? "Krishna" : /^Shukla/i.test(s) ? "Shukla" : "";
   }
   function tithiDisplay(t,te){
-    const raw=String(t?.name||t||"").trim();
+    const raw=namedValue(t,TITHI_NAMES);
+    if(!raw)return "—";
     const m=raw.match(/^(Shukla|Krishna)\s+(.+)$/i);
     if(!m)return te ? (TITHI_TE[raw]||raw) : raw;
     const n=te ? (TITHI_TE[m[2]]||m[2]) : m[2];
-    return (te ? (m[1].toLowerCase()==="krishna"?"కృష్ణ ":"శుక్ల ") : (m[1].toLowerCase()==="krishna"?"Kr. ":"Sh. "))+n;
+    return te ? (m[1].toLowerCase()==="krishna"?"కృష్ణ ":"శుక్ల ")+n : m[1]+" "+n;
+  }
+  function nakshatraDisplay(n,te){
+    const raw=namedValue(n,NAKSHATRA_NAMES);
+    if(!raw)return "—";
+    return te ? ({"Purva Phalguni":"పుబ్బ","Uttara Phalguni":"ఉత్తర ఫల్గుణి","Purva Ashadha":"పూర్వాషాఢ","Uttara Ashadha":"ఉత్తరాషాఢ","Purva Bhadrapada":"పూర్వాభాద్ర","Uttara Bhadrapada":"ఉత్తరాభాద్ర","Mrigashira":"మృగశిర","Jyeshtha":"జ్యేష్ఠ","Dhanishta":"ధనిష్ఠ","Shatabhisha":"శతభిషం","Punarvasu":"పునర్వసు","Pushya":"పుష్యమి","Ashlesha":"ఆశ్లేష","Krittika":"కృత్తిక","Rohini":"రోహిణి","Ardra":"ఆర్ద్ర","Magha":"మఘ","Hasta":"హస్త","Chitra":"చిత్త","Swati":"స్వాతి","Vishakha":"విశాఖ","Anuradha":"అనూరాధ","Mula":"మూల","Shravana":"శ్రవణం","Revati":"రేవతి","Bharani":"భరణి","Ashwini":"అశ్విని"}[raw]||raw) : raw;
   }
   function normalizeRows(payload){
     let rows = Array.isArray(payload) ? payload : (Array.isArray(payload?.days) ? payload.days : []);
@@ -63,13 +94,13 @@
       const d=r?.day||r?.panchang||r||{};
       return {
         date:r.date||d.date,
-        tithi:d.tithi?.name||d.tithi||"",
-        nakshatra:d.nakshatra?.name||d.nakshatra||"",
+        tithi:d.tithi?.name??d.tithi??"",
+        nakshatra:d.nakshatra?.name??d.nakshatra??"",
         moonrise:d.moonrise,
         sunrise:d.sunrise,
         sunset:d.sunset
       };
-    }).filter(x=>x.date);
+    }).filter(x=>/^\d{4}-\d{2}-\d{2}$/.test(String(x.date||"")));
   }
   function collectFestivalMap(payload,city){
     const map={};
@@ -102,16 +133,8 @@
   }
   function inferredFestivals(row){
     const out=[];
-    const t=String(row.tithi||"");
-    const n=tithiName(t);
-    const p=paksha(t);
+    const n=tithiName(row.tithi);
     if(/Amavasya/i.test(n))out.push("Amavasya");
-    if(/Purnima/i.test(n))out.push("Pournami");
-    if(/Ekadashi/i.test(n))out.push("Ekadashi");
-    if(/Chaturthi/i.test(n)&&/Krishna/i.test(p))out.push("Sankashti Chaturthi");
-    if(/Chaturthi/i.test(n)&&/Shukla/i.test(p))out.push("Ganesh Chaturthi");
-    if(/Trayodashi/i.test(n))out.push("Pradosham");
-    if(/Chaturdashi/i.test(n)&&/Krishna/i.test(p))out.push("Masik Shivaratri");
     return out;
   }
   function dedupe(a){return [...new Set(a)];}
@@ -152,7 +175,7 @@
     const monthName=new Intl.DateTimeFormat(te?"te-IN":"en-IN",{month:"long",year:"numeric"}).format(monthCursor);
     const weekdays=te?["ఆది","సోమ","మంగళ","బుధ","గురు","శుక్ర","శని"]:["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
     root.querySelector("[data-month-title]").textContent=monthName;
-    root.querySelector("[data-calendar-note]").textContent=te?"తిథి ఆధారిత ముఖ్య వ్రతాలు మరియు పండుగలు • నగరం: "+(SiddhaPanchangam.cities[document.getElementById("pcity").value]?.name||"Hyderabad"):"Tithi-based observances and festivals • City: "+(SiddhaPanchangam.cities[document.getElementById("pcity").value]?.name||"Hyderabad");
+    root.querySelector("[data-calendar-note]").textContent=te?"తిథి, నక్షత్రం మరియు ముఖ్య వ్రతాలు":"Tithi, Nakshatra & important observances";
     const grid=root.querySelector("[data-calendar-grid]");
     grid.innerHTML=weekdays.map(x=>'<div class="calendar-weekday">'+x+'</div>').join("");
     const first=new Date(y,m,1).getDay();
@@ -171,7 +194,7 @@
           '<button type="button" class="calendar-day '+(date===today?"calendar-today ":"")+(selected?"calendar-selected":"")+'" data-calendar-date="'+date+'">'+
           '<span class="calendar-date">'+d+'</span>'+
           '<span class="calendar-tithi">'+esc(tithiDisplay(row.tithi,teNow))+'</span>'+
-          '<span class="calendar-nakshatra">'+esc(row.nakshatra||"")+'</span>'+
+          '<span class="calendar-nakshatra">'+esc(nakshatraDisplay(row.nakshatra,teNow))+'</span>'+
           (festivalHtml?'<span class="calendar-festivals">'+festivalHtml+'</span>':"")+
           '</button>'
         );
