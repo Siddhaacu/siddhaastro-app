@@ -1,4 +1,5 @@
 /* Siddha Astro — Monthly Panchangam Calendar */
+// Festival completeness patch: parse nested city/date maps and infer core observances.
 (() => {
   const API = "https://shastrapanchangam.com/api/v1";
   const CITY_ALIAS = { hyderabad:"hyderabad", bangalore:"bengaluru", chennai:"chennai", mumbai:"mumbai", delhi:"delhi", rajahmundry:"hyderabad" };
