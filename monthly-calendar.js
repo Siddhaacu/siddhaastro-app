@@ -140,31 +140,75 @@
     if(/Amavasya/i.test(n))out.push("Amavasya");
     if(/Pournami|Purnima/i.test(n))out.push("Pournami");
     if(/Ekadashi/i.test(n))out.push("Ekadashi");
-    // Standard monthly observances. The detailed festival feed, when available,
-    // supplies the more specific regional name (for example Indira Ekadashi).
     if(/Trayodashi/i.test(n))out.push("Pradosham");
     if(/Krishna Chaturthi/i.test(full))out.push("Sankashti Chaturthi");
     if(/Krishna Chaturdashi/i.test(full))out.push("Masik Shivaratri");
+    if(/Shukla Ashtami/i.test(full))out.push("Masik Durgashtami");
+    if(/Shukla Shashti/i.test(full))out.push("Skanda Sashti");
+    if(/Shukla Dwadashi/i.test(full))out.push("Dwadashi");
     return out;
   }
-  const KNOWN_FESTIVALS_2026={
-    "2026-10-03":["Mahalakshmi Vrat Ends","Jivitputrika Vrat"],
-    "2026-10-06":["Indira Ekadashi"],
-    "2026-10-08":["Guru Pradosh Vrat"],
-    "2026-10-10":["Sarva Pitru Amavasya","Darsha Amavasya","Anvadhan","Ashwina Amavasya"],
-    "2026-10-11":["Navratri Begins","Ghatasthapana","Ishti"],
-    "2026-10-12":["Chandra Darshana"],
-    "2026-10-15":["Upang Lalita Vrat"],
-    "2026-10-16":["Saraswati Avahan"],
-    "2026-10-17":["Saraswati Puja","Tula Sankranti"],
-    "2026-10-19":["Durga Ashtami","Maha Navami","Saraswati Visarjan"],
-    "2026-10-20":["Durga Visarjan","Dussehra"],
-    "2026-10-22":["Papankusha Ekadashi"],
-    "2026-10-23":["Shukra Pradosh Vrat"],
-    "2026-10-25":["Kojagara Puja","Sharad Purnima","Anvadhan"],
-    "2026-10-26":["Ashwina Purnima","Ishti"],
-    "2026-10-29":["Karwa Chauth","Vakratunda Sankashti"]
+  const KNOWN_FESTIVALS={
+    "2026-01-14":["Makara Sankranti","Pongal"],"2026-01-23":["Vasant Panchami"],
+    "2026-02-15":["Maha Shivaratri"],"2026-03-03":["Holika Dahan"],"2026-03-04":["Holi"],
+    "2026-03-19":["Ugadi","Gudi Padwa"],"2026-03-26":["Rama Navami"],"2026-04-14":["Mesha Sankranti","Solar New Year"],
+    "2026-05-01":["Buddha Purnima"],"2026-07-16":["Jagannath Rathyatra"],"2026-07-29":["Guru Purnima"],
+    "2026-08-26":["Onam"],"2026-08-28":["Raksha Bandhan"],"2026-09-04":["Krishna Janmashtami"],
+    "2026-09-14":["Ganesh Chaturthi"],
+    "2026-10-03":["Mahalakshmi Vrat Ends","Jivitputrika Vrat"],"2026-10-06":["Indira Ekadashi"],
+    "2026-10-08":["Guru Pradosh Vrat"],"2026-10-10":["Sarva Pitru Amavasya","Darsha Amavasya","Anvadhan","Ashwina Amavasya"],
+    "2026-10-11":["Navratri Begins","Ghatasthapana","Ishti"],"2026-10-12":["Chandra Darshana"],"2026-10-15":["Upang Lalita Vrat"],
+    "2026-10-16":["Saraswati Avahan"],"2026-10-17":["Saraswati Puja","Tula Sankranti"],"2026-10-19":["Durga Ashtami","Maha Navami","Saraswati Visarjan"],
+    "2026-10-20":["Durga Visarjan","Dussehra"],"2026-10-22":["Papankusha Ekadashi"],"2026-10-23":["Shukra Pradosh Vrat"],
+    "2026-10-25":["Kojagara Puja","Sharad Purnima","Anvadhan"],"2026-10-26":["Ashwina Purnima","Ishti"],"2026-10-29":["Karwa Chauth","Vakratunda Sankashti"],
+    "2026-11-08":["Dhanteras","Naraka Chaturdashi","Lakshmi Puja","Deepavali"],"2026-11-10":["Govardhan Puja"],"2026-11-11":["Bhai Dooj"],"2026-11-15":["Chhath Puja"],"2026-11-24":["Kartika Purnima","Guru Nanak Jayanti"],
+    "2027-01-15":["Makara Sankranti","Pongal"],"2027-02-11":["Vasant Panchami"],"2027-03-06":["Maha Shivaratri"],"2027-03-21":["Holika Dahan"],"2027-03-22":["Holi"],
+    "2027-04-07":["Ugadi","Gudi Padwa"],"2027-04-15":["Rama Navami"],"2027-04-14":["Mesha Sankranti","Solar New Year"],
+    "2027-05-20":["Buddha Purnima"],"2027-07-05":["Jagannath Rathyatra"],"2027-07-18":["Guru Purnima"],"2027-08-17":["Raksha Bandhan"],
+    "2027-08-25":["Krishna Janmashtami"],"2027-09-04":["Ganesh Chaturthi"],"2027-10-07":["Durga Ashtami"],"2027-10-08":["Maha Navami"],
+    "2027-10-09":["Dussehra"],"2027-10-18":["Karwa Chauth"],"2027-10-28":["Naraka Chaturdashi"],
+    "2027-10-29":["Dhanteras","Lakshmi Puja","Deepavali"],"2027-10-30":["Govardhan Puja"],"2027-10-31":["Bhai Dooj"],
+    "2027-11-04":["Chhath Puja"],"2027-11-14":["Kartika Purnima","Guru Nanak Jayanti"],
+    "2028-01-15":["Makara Sankranti","Pongal"],"2028-01-31":["Vasant Panchami"],"2028-02-23":["Maha Shivaratri"],
+    "2028-03-10":["Holika Dahan"],"2028-03-11":["Holi"],"2028-03-27":["Ugadi","Gudi Padwa"],"2028-04-03":["Rama Navami"],
+    "2028-04-13":["Mesha Sankranti","Solar New Year"],"2028-05-08":["Buddha Purnima"],"2028-06-24":["Jagannath Rathyatra"],
+    "2028-07-06":["Guru Purnima"],"2028-08-05":["Raksha Bandhan"],"2028-08-13":["Krishna Janmashtami"],"2028-08-23":["Ganesh Chaturthi"],
+    "2028-09-01":["Onam"],"2028-09-26":["Durga Ashtami","Maha Navami"],"2028-09-27":["Dussehra"],"2028-10-07":["Karwa Chauth"],
+    "2028-10-17":["Dhanteras","Naraka Chaturdashi","Lakshmi Puja","Deepavali"],"2028-10-18":["Govardhan Puja"],
+    "2028-10-19":["Bhai Dooj"],"2028-10-23":["Chhath Puja"],"2028-11-02":["Kartika Purnima","Guru Nanak Jayanti"],
+    "2029-01-14":["Makara Sankranti","Pongal"],"2029-01-19":["Vasant Panchami"],"2029-02-11":["Maha Shivaratri"],
+    "2029-02-28":["Holika Dahan"],"2029-03-01":["Holi"],"2029-04-14":["Ugadi","Gudi Padwa","Mesha Sankranti","Solar New Year"],
+    "2029-04-23":["Rama Navami"],"2029-05-27":["Buddha Purnima"],"2029-07-13":["Jagannath Rathyatra"],"2029-07-25":["Guru Purnima"],
+    "2029-08-23":["Raksha Bandhan"],"2029-09-01":["Krishna Janmashtami"],"2029-09-11":["Ganesh Chaturthi"],
+    "2029-10-14":["Durga Ashtami"],"2029-10-15":["Maha Navami"],"2029-10-16":["Dussehra"],"2029-10-26":["Karwa Chauth"],
+    "2029-11-05":["Dhanteras","Naraka Chaturdashi","Lakshmi Puja","Deepavali"],"2029-11-06":["Govardhan Puja"],
+    "2029-11-07":["Bhai Dooj"],"2029-11-11":["Chhath Puja"],"2029-11-21":["Kartika Purnima","Guru Nanak Jayanti"],
+    "2030-01-14":["Makara Sankranti","Pongal"],"2030-02-07":["Vasant Panchami"],"2030-03-02":["Maha Shivaratri"],
+    "2030-03-19":["Holika Dahan"],"2030-03-20":["Holi"],"2030-04-03":["Ugadi","Gudi Padwa"],"2030-04-12":["Rama Navami"],
+    "2030-04-14":["Mesha Sankranti","Solar New Year"],"2030-05-17":["Buddha Purnima"],"2030-07-02":["Jagannath Rathyatra"],
+    "2030-07-15":["Guru Purnima"],"2030-08-13":["Raksha Bandhan"],"2030-08-21":["Krishna Janmashtami"],"2030-09-01":["Ganesh Chaturthi"],
+    "2030-09-09":["Onam"],"2030-10-04":["Durga Ashtami"],"2030-10-05":["Maha Navami"],"2030-10-06":["Dussehra"],"2030-10-15":["Karwa Chauth"],
+    "2030-10-26":["Dhanteras","Naraka Chaturdashi","Lakshmi Puja","Deepavali"],"2030-10-27":["Govardhan Puja"],"2030-10-28":["Bhai Dooj"],
+    "2030-11-01":["Chhath Puja"],"2030-11-10":["Kartika Purnima","Guru Nanak Jayanti"],
+    "2031-01-15":["Makara Sankranti","Pongal"],"2031-01-27":["Vasant Panchami"],"2031-02-20":["Maha Shivaratri"],
+    "2031-03-08":["Holika Dahan"],"2031-03-09":["Holi"],"2031-03-24":["Ugadi","Gudi Padwa"],
+    "2031-04-01":["Rama Navami"],"2031-04-14":["Mesha Sankranti","Solar New Year"],"2031-05-07":["Buddha Purnima"],
+    "2031-06-22":["Jagannath Rathyatra"],"2031-07-04":["Guru Purnima"],"2031-08-02":["Raksha Bandhan"],"2031-08-09":["Krishna Janmashtami"],
+    "2031-09-20":["Ganesh Chaturthi"],"2031-08-30":["Onam"],"2031-10-23":["Durga Ashtami"],"2031-10-24":["Maha Navami"],"2031-10-25":["Dussehra"],
+    "2031-11-02":["Karwa Chauth"],"2031-11-13":["Naraka Chaturdashi"],"2031-11-14":["Dhanteras","Lakshmi Puja","Deepavali"],
+    "2031-11-15":["Govardhan Puja"],"2031-11-16":["Bhai Dooj"],"2031-11-20":["Chhath Puja"],"2031-11-28":["Kartika Purnima","Guru Nanak Jayanti"]
   };
+
+  const SANKRANTI_NAMES=["Mesha","Vrishabha","Mithuna","Karka","Simha","Kanya","Tula","Vrischika","Dhanu","Makara","Kumbha","Meena"];
+  const SANKRANTI_TE={Mesha:"మేష సంక్రాంతి",Vrishabha:"వృషభ సంక్రాంతి",Mithuna:"మిథున సంక్రాంతి",Karka:"కర్కాటక సంక్రాంతి",Simha:"సింహ సంక్రాంతి",Kanya:"కన్యా సంక్రాంతి",Tula:"తులా సంక్రాంతి",Vrischika:"వృశ్చిక సంక్రాంతి",Dhanu:"ధనుస్సు సంక్రాంతి",Makara:"మకర సంక్రాంతి",Kumbha:"కుంభ సంక్రాంతి",Meena:"మీన సంక్రాంతి"};
+
+  function knownFestivalMapForMonth(y,m){
+    const map={};
+    Object.entries(KNOWN_FESTIVALS).forEach(([date,names])=>{
+      if(date.slice(0,7)===y+"-"+String(m+1).padStart(2,"0"))map[date]=names.slice();
+    });
+    return map;
+  }
 
   function dedupe(a){return [...new Set(a)];}
   function festivalDateLabel(date,te){
@@ -195,9 +239,9 @@
     });
     // October 2026 has a complete regional festival set used as a safety fallback
     // so the list remains complete even if the remote festival feed is unavailable.
-    if(y===2026 && m===9){
-      Object.entries(KNOWN_FESTIVALS_2026).forEach(([date,names])=>names.forEach(name=>events.push({date,name})));
-    }
+    Object.entries(KNOWN_FESTIVALS).forEach(([date,names])=>{
+      if(date.slice(0,7)===y+"-"+String(m+1).padStart(2,"0"))names.forEach(name=>events.push({date,name}));
+    });
     const unique=[];
     const seen=new Set();
     // Prefer specific festival names over generic lunar labels on the same date.
@@ -238,9 +282,36 @@
     const from=year+"-"+String(month+1).padStart(2,"0")+"-01";
     const days=daysInMonth(year,month);
 
-    // Prefer the range endpoint. If an older/browser cache/network path rejects it,
-    // fall back to the documented single-day endpoint so every month remains navigable.
     let rows=[];
+    // Shastra covers the current historical window; Nitya Panchangam supports
+    // future dates through 2100 and also gives Sun longitude for Sankranti detection.
+    if(year>2027){
+      const dates=Array.from({length:days},(_,i)=>year+"-"+String(month+1).padStart(2,"0")+"-"+String(i+1).padStart(2,"0"));
+      const results=await Promise.allSettled(dates.map(date=>
+        fetch("https://nityapanchangam.com/api/panchangam.php?date="+date+"&city=hyderabad",{headers:{Accept:"application/json"},cache:"no-store"})
+          .then(r=>{if(!r.ok)throw new Error("Nitya HTTP "+r.status);return r.json()})
+          .then(p=>({date:p.date,tithi:p.tithi?.name||"",nakshatra:p.nakshatra?.name||"",sunrise:p.sun?.sunrise,sunset:p.sun?.sunset,sunLongitude:p.sun_longitude}))
+      ));
+      rows=results.filter(x=>x.status==="fulfilled"&&x.value).map(x=>x.value);
+      if(!rows.length)throw new Error("Future Panchang data unavailable");
+    }else{
+      // Prefer the range endpoint. If an older/browser cache/network path rejects it,
+      // fall back to the documented single-day endpoint so every month remains navigable.
+      try{
+        const r=await fetch(API+"/range/"+sourceCity+".json?from="+from+"&days="+days,{headers:{Accept:"application/json"},cache:"no-store"});
+        if(!r.ok)throw new Error("Range HTTP "+r.status);
+        rows=normalizeRows(await r.json());
+      }catch(rangeError){
+        const dates=Array.from({length:days},(_,i)=>year+"-"+String(month+1).padStart(2,"0")+"-"+String(i+1).padStart(2,"0"));
+        const results=await Promise.allSettled(dates.map(date=>
+          fetch(API+"/day/"+sourceCity+"/"+date+".json",{headers:{Accept:"application/json"},cache:"no-store"})
+            .then(r=>{if(!r.ok)throw new Error("Day HTTP "+r.status);return r.json()})
+            .then(payload=>normalizeRows(payload)[0])
+        ));
+        rows=results.filter(x=>x.status==="fulfilled"&&x.value).map(x=>x.value);
+        if(!rows.length)throw rangeError;
+      }
+    }
     try{
       const r=await fetch(API+"/range/"+sourceCity+".json?from="+from+"&days="+days,{headers:{Accept:"application/json"},cache:"no-store"});
       if(!r.ok)throw new Error("Range HTTP "+r.status);
@@ -256,12 +327,29 @@
       if(!rows.length)throw rangeError;
     }
 
-    let festivalMap={};
-    try{
-      const fr=await fetch(API+"/festivals.json",{headers:{Accept:"application/json"},cache:"no-store"});
-      if(fr.ok)festivalMap=collectFestivalMap(await fr.json(),sourceCity);
-    }catch(e){
-      console.warn("Festival calendar unavailable",e);
+    let festivalMap=knownFestivalMapForMonth(year,month);
+    if(year<=2027){
+      try{
+        const fr=await fetch(API+"/festivals.json",{headers:{Accept:"application/json"},cache:"no-store"});
+        if(fr.ok){
+          const feed=collectFestivalMap(await fr.json(),sourceCity);
+          Object.entries(feed).forEach(([date,names])=>festivalMap[date]=dedupe([...(festivalMap[date]||[]),...names]));
+        }
+      }catch(e){ console.warn("Festival feed unavailable",e); }
+    }
+    // Detect every solar ingress (Sankranti) from Sun's sidereal longitude for future years.
+    if(rows.some(r=>Number.isFinite(Number(r.sunLongitude)))){
+      rows.forEach((row,i)=>{
+        const cur=Number(row.sunLongitude);
+        const prev=i>0?Number(rows[i-1].sunLongitude):NaN;
+        if(Number.isFinite(cur)&&Number.isFinite(prev)){
+          const a=Math.floor(((prev%360)+360)%360/30),b=Math.floor(((cur%360)+360)%360/30);
+          if(a!==b){
+            const name=SANKRANTI_NAMES[b]+" Sankranti";
+            (festivalMap[row.date] ||= []).push(name);
+          }
+        }
+      });
     }
     const data={rows,festivalMap,sourceCity};
     cached.set(key,data);
