@@ -83,7 +83,7 @@ export default async function(request){
     data?.horoscopes?.Mesha?.health?.te
   );
 
-  // Older records were English-only. Regenerate them once so Telugu
+  // Legacy records were English-only. Regenerate them once so Telugu
   // rendering has the bilingual fields it needs.
   if(data && !bilingual){
     try{
