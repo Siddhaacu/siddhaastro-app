@@ -156,13 +156,32 @@
     const sourceCity=CITY_ALIAS[city]||"hyderabad";
     const from=year+"-"+String(month+1).padStart(2,"0")+"-01";
     const days=daysInMonth(year,month);
-    const [rangeRes,festRes]=await Promise.allSettled([
-      fetch(API+"/range/"+sourceCity+".json?from="+from+"&days="+days,{headers:{Accept:"application/json"}}).then(r=>{if(!r.ok)throw new Error("Calendar HTTP "+r.status);return r.json()}),
-      fetch(API+"/festivals.json",{headers:{Accept:"application/json"}}).then(r=>{if(!r.ok)throw new Error("Festival HTTP "+r.status);return r.json()})
-    ]);
-    if(rangeRes.status!=="fulfilled")throw rangeRes.reason;
-    const rows=normalizeRows(rangeRes.value);
-    const festivalMap=festRes.status==="fulfilled"?collectFestivalMap(festRes.value,sourceCity):{};
+
+    // Prefer the range endpoint. If an older/browser cache/network path rejects it,
+    // fall back to the documented single-day endpoint so every month remains navigable.
+    let rows=[];
+    try{
+      const r=await fetch(API+"/range/"+sourceCity+".json?from="+from+"&days="+days,{headers:{Accept:"application/json"},cache:"no-store"});
+      if(!r.ok)throw new Error("Range HTTP "+r.status);
+      rows=normalizeRows(await r.json());
+    }catch(rangeError){
+      const dates=Array.from({length:days},(_,i)=>year+"-"+String(month+1).padStart(2,"0")+"-"+String(i+1).padStart(2,"0"));
+      const results=await Promise.allSettled(dates.map(date=>
+        fetch(API+"/day/"+sourceCity+"/"+date+".json",{headers:{Accept:"application/json"},cache:"no-store"})
+          .then(r=>{if(!r.ok)throw new Error("Day HTTP "+r.status);return r.json()})
+          .then(payload=>normalizeRows(payload)[0])
+      ));
+      rows=results.filter(x=>x.status==="fulfilled"&&x.value).map(x=>x.value);
+      if(!rows.length)throw rangeError;
+    }
+
+    let festivalMap={};
+    try{
+      const fr=await fetch(API+"/festivals.json",{headers:{Accept:"application/json"},cache:"no-store"});
+      if(fr.ok)festivalMap=collectFestivalMap(await fr.json(),sourceCity);
+    }catch(e){
+      console.warn("Festival calendar unavailable",e);
+    }
     const data={rows,festivalMap,sourceCity};
     cached.set(key,data);
     return data;
