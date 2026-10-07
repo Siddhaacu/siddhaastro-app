@@ -31,3 +31,18 @@
 /* Monthly festival dates */
 .monthly-festivals{margin-top:18px;padding-top:16px;border-top:1px solid var(--border)}.monthly-festivals .section-head{margin-bottom:10px}.monthly-festivals h3{margin:0;font-size:1.02rem;font-weight:900}.monthly-festivals p{margin:3px 0 0;font-size:.68rem;color:var(--muted)}.monthly-festival-list{display:flex;flex-direction:column;gap:6px}.monthly-festival-row{display:grid;grid-template-columns:72px 1fr;align-items:center;gap:10px;padding:9px 11px;border:1px solid var(--border);border-radius:11px;background:var(--surface-2)}.monthly-festival-date{font-size:.7rem;font-weight:900;color:var(--accent-dark)}.monthly-festival-name{font-size:.74rem;font-weight:750;color:var(--text);line-height:1.3}.monthly-festival-empty{padding:12px;border:1px dashed var(--border);border-radius:11px;color:var(--muted);font-size:.7rem;text-align:center}
 @media(max-width:480px){.monthly-festival-row{grid-template-columns:66px 1fr;padding:8px 9px}.monthly-festival-date{font-size:.66rem}.monthly-festival-name{font-size:.7rem}}
+
+/* Related Pooja and Vrata books */
+.monthly-book-links{margin-top:18px;padding-top:16px;border-top:1px solid var(--border)}
+.monthly-book-links .section-head{margin-bottom:10px}
+.monthly-book-links h3{margin:0;font-size:1.02rem;font-weight:900}
+.monthly-book-links .link{white-space:nowrap}
+.monthly-book-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.monthly-book-link{display:flex;align-items:center;gap:9px;min-width:0;padding:10px 11px;border:1px solid var(--border);border-radius:12px;background:var(--surface-2);text-decoration:none;color:var(--text);transition:transform .18s ease,border-color .18s ease,background .18s ease}
+.monthly-book-link:hover{transform:translateY(-1px);border-color:var(--accent);background:var(--accent-soft)}
+.monthly-book-icon{display:grid;place-items:center;flex:0 0 30px;width:30px;height:30px;border-radius:9px;background:var(--surface);color:var(--gold);font-family:"Noto Serif Devanagari",serif;font-weight:700}
+.monthly-book-link span:nth-child(2){min-width:0;flex:1}
+.monthly-book-link strong{display:block;font-size:.72rem;line-height:1.35;color:var(--accent-dark)}
+.monthly-book-link small{display:block;margin-top:2px;color:var(--muted);font-size:.58rem;line-height:1.25}
+.monthly-book-arrow{font-size:1.15rem;color:var(--accent);font-weight:900}
+@media(max-width:480px){.monthly-book-list{grid-template-columns:1fr}.monthly-book-link{padding:9px 10px}.monthly-book-link strong{font-size:.7rem}}
