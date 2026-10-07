@@ -41,6 +41,8 @@ export default async req=>{
     subscription:payload.subscription,
     city:payload.city||"hyderabad",
     language:payload.language==="te"?"te":"en",
+    nakshatra:payload.nakshatra||"",
+    rashi:payload.rashi||"",
     updatedAt:new Date().toISOString()
   });
 
