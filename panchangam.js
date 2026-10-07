@@ -83,7 +83,7 @@ async function fetchJson(url){
   return r.json();
 }
 
-async function formatWindow(w){
+function formatWindow(w){
   if(!w)return "";
   const start=w.start||w.startLocal||w.from;
   const end=w.end||w.endLocal||w.to;
