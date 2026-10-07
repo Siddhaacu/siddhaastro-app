@@ -1,0 +1,22 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "hero": {
+    "title": "Welcome to SS",
+    "subtitle": "Fast. Beautiful. Bilingual."
+  },
+  "features": {
+    "title": "Features",
+    "items": [
+      "Responsive UI",
+      "Telugu + English",
+      "PWA ready"
+    ]
+  },
+  "footer": {
+    "copyright": "© {{year}} SS"
+  }
+}
