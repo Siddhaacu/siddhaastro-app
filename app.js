@@ -6,4 +6,61 @@ let translating=false;let languageObserver=null;function applyLanguage(){if(tran
 function sync(){r.style.setProperty("--scale",s);document.querySelectorAll("[data-font-size]").forEach(e=>e.textContent=Math.round(s*100)+"%");applyLanguage()}
 function renderNav(){const file=location.pathname.split("/").pop()||"index.html";const items=[["index.html","Home"],["panchangam.html","Panchangam"],["horoscope.html","Horoscope"],["kundali.html","Kundali"],["more.html","More"]];const icons={Home:'<path d="M3 10.8 12 3l9 7.8"/><path d="M5.5 9.8V21h13V9.8M9.5 21v-6.5h5V21"/>',Panchangam:'<rect x="3.5" y="5" width="17" height="16" rx="2.5"/><path d="M7.5 3v4M16.5 3v4M3.5 9.5h17"/>',Horoscope:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2"/>',Kundali:'<circle cx="12" cy="12" r="8.5"/><path d="M12 3.5v17M3.5 12h17M6 6l12 12M18 6 6 18"/>',More:'<circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/>'};const nav=document.querySelector(".nav");if(!nav)return;nav.innerHTML=items.map(x=>'<a href="'+x[0]+'" class="'+(file===x[0]?"active":"")+'"><svg viewBox="0 0 24 24">'+icons[x[1]]+'</svg><span>'+(lang==="te"?dict[x[1]]:x[1])+'</span></a>').join("")}
 window.SiddhaApp={getLanguage:()=>lang,setLanguage(v){lang=v==="te"?"te":"en";localStorage.setItem("siddha-language",lang);renderNav();applyLanguage();document.dispatchEvent(new CustomEvent("languagechange"))},toggleTheme(){r.classList.toggle("dark");localStorage.setItem("siddha-theme",r.classList.contains("dark")?"dark":"light");document.dispatchEvent(new CustomEvent("themechange"))},getTheme:()=>localStorage.getItem("siddha-theme")||"light",changeFont(d){s=Math.min(1.18,Math.max(.9,s+d));localStorage.setItem("siddha-scale",s);sync()}};
-document.addEventListener("DOMContentLoaded",()=>{renderNav();sync();document.querySelectorAll("[data-theme]").forEach(b=>b.onclick=()=>SiddhaApp.toggleTheme());document.querySelectorAll("[data-font='up']").forEach(b=>b.onclick=()=>SiddhaApp.changeFont(.04));document.querySelectorAll("[data-font='down']").forEach(b=>b.onclick=()=>SiddhaApp.changeFont(-.04));document.querySelectorAll("[data-lang]").forEach(b=>b.onclick=()=>SiddhaApp.setLanguage(lang==="en"?"te":"en"));languageObserver=new MutationObserver(()=>{if(!translating&&lang==="te")applyLanguage()});languageObserver.observe(document.body,{childList:true,subtree:true})})})();
+
+async function getPushRegistration(){
+  if(!("serviceWorker" in navigator)||!("PushManager" in window)||!("Notification" in window))throw new Error("Push notifications are not supported in this browser.");
+  return await navigator.serviceWorker.register("/service-worker.js",{scope:"/"});
+}
+function urlBase64ToUint8Array(base64String){
+  const padding="=".repeat((4-base64String.length%4)%4);
+  const base64=(base64String+padding).replace(/-/g,"+").replace(/_/g,"/");
+  const raw=atob(base64);const output=new Uint8Array(raw.length);
+  for(let i=0;i<raw.length;i++)output[i]=raw.charCodeAt(i);
+  return output;
+}
+async function getPushConfig(){
+  const res=await fetch("/.netlify/functions/push-config",{cache:"no-store"});
+  let data={};try{data=await res.json();}catch(e){}
+  if(!res.ok||!data.configured||!data.publicKey)throw new Error("Push notifications are not configured on the server yet.");
+  return data;
+}
+async function savePushSubscription(subscription){
+  const payload={subscription:subscription.toJSON(),city:localStorage.getItem("siddha-panchang-city")||"hyderabad",language:lang,nakshatra:localStorage.getItem("siddha-janma-nakshatra")||"",rashi:localStorage.getItem("siddha-janma-rashi")||""};
+  const res=await fetch("/.netlify/functions/push-subscribe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
+  if(!res.ok)throw new Error("Could not save notification subscription.");
+}
+async function enableNotifications(){
+  const status=document.querySelector("[data-notification-status]");
+  const button=document.querySelector("[data-notifications]");
+  try{
+    if(status)status.textContent="Setting up notifications…";
+    if(button){button.disabled=true;button.textContent="Setting up…";}
+    if(location.protocol!=="https:"&&location.hostname!=="localhost")throw new Error("Notifications require a secure HTTPS connection.");
+    const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(/Macintosh/.test(navigator.userAgent)&&"ontouchend" in document);
+    if(isIOS&&!window.matchMedia("(display-mode: standalone)").matches&&!navigator.standalone)throw new Error("On iPhone/iPad, first add Siddha Astro to the Home Screen and open it from there, then enable notifications.");
+    const registration=await getPushRegistration();
+    const permission=Notification.permission==="granted"?"granted":await Notification.requestPermission();
+    if(permission!=="granted")throw new Error("Notification permission was not granted. You can enable it in iPhone Settings → Notifications → Siddha Astro.");
+    const config=await getPushConfig();
+    let subscription=await registration.pushManager.getSubscription();
+    if(!subscription)subscription=await registration.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:urlBase64ToUint8Array(config.publicKey)});
+    await savePushSubscription(subscription);
+    if(status)status.textContent="Notifications enabled. Your daily Panchangam will use your saved language, city, Janma Nakshatra and Janma Rashi.";
+    if(button){button.textContent="Notifications enabled";button.disabled=false;}
+    return true;
+  }catch(error){
+    console.error("Notification setup failed",error);
+    if(status)status.textContent=error?.message||"Unable to enable notifications.";
+    if(button){button.textContent="Enable notifications";button.disabled=false;}
+    return false;
+  }
+}
+async function syncNotificationPreferences(){
+  try{
+    const registration=await navigator.serviceWorker?.getRegistration("/");
+    const subscription=await registration?.pushManager?.getSubscription();
+    if(!subscription)return;
+    await savePushSubscription(subscription);
+  }catch(error){console.warn("Notification preferences sync failed",error)}
+}
+\ndocument.addEventListener("DOMContentLoaded",()=>{\n  document.querySelectorAll("[data-notifications]").forEach(b=>b.onclick=enableNotifications);renderNav();sync();document.querySelectorAll("[data-theme]").forEach(b=>b.onclick=()=>SiddhaApp.toggleTheme());document.querySelectorAll("[data-font='up']").forEach(b=>b.onclick=()=>SiddhaApp.changeFont(.04));document.querySelectorAll("[data-font='down']").forEach(b=>b.onclick=()=>SiddhaApp.changeFont(-.04));document.querySelectorAll("[data-lang]").forEach(b=>b.onclick=()=>SiddhaApp.setLanguage(lang==="en"?"te":"en"));languageObserver=new MutationObserver(()=>{if(!translating&&lang==="te")applyLanguage()});languageObserver.observe(document.body,{childList:true,subtree:true})})})();
