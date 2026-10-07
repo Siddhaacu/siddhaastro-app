@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded",()=>{
   star.innerHTML='<option value="">Select Janma Nakshatra</option>'+stars.map(x=>'<option value="'+x[0]+'">'+x[0]+' • '+x[1]+'</option>').join("");
   rashi.innerHTML='<option value="">Select Janma Rashi</option>'+rashis.map(x=>'<option value="'+x[0]+'">'+x[0]+' • '+x[1]+'</option>').join("");
   lang.value=SiddhaApp.getLanguage();theme.value=SiddhaApp.getTheme();city.value=localStorage.getItem("siddha-panchang-city")||"hyderabad";star.value=localStorage.getItem("siddha-janma-nakshatra")||"";rashi.value=localStorage.getItem("siddha-janma-rashi")||"";
-  const saved=()=>{localStorage.setItem("siddha-panchang-city",city.value);localStorage.setItem("siddha-janma-nakshatra",star.value);localStorage.setItem("siddha-janma-rashi",rashi.value);status.textContent="Settings saved.";};
+  const saved=()=>{localStorage.setItem("siddha-panchang-city",city.value);localStorage.setItem("siddha-janma-nakshatra",star.value);localStorage.setItem("siddha-janma-rashi",rashi.value);status.textContent="Settings saved.";if(typeof syncNotificationPreferences==="function")syncNotificationPreferences();};
   lang.onchange=()=>{SiddhaApp.setLanguage(lang.value);saved();};
   theme.onchange=()=>{if(theme.value!==SiddhaApp.getTheme())SiddhaApp.toggleTheme();saved();};
   city.onchange=saved;star.onchange=saved;rashi.onchange=saved;
