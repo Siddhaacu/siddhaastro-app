@@ -64,5 +64,5 @@ function render(){
 document.querySelectorAll(".horo-rashi").forEach(b=>b.addEventListener("click",()=>{current=b.dataset.r;render()}));
 fetch("/.netlify/functions/horoscope-data",{cache:"no-store"}).then(r=>r.ok?r.json():Promise.reject()).then(d=>{data=d;document.getElementById("date").textContent=d.date||"2026-10-07";render()}).catch(()=>{data={panchang:{tithi:"Krishna Dwadashi",nakshatra:"Magha",rashi:"Simha"},horoscopes:{}};render()});
 </script>
-</body>
+<!-- production-horoscope-final-20261007 --></body>
 </html>
