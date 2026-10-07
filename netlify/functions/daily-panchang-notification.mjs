@@ -13,6 +13,22 @@ const CITIES={
   rajahmundry:{name:"Rajahmundry",lat:16.9891,lng:81.2292,slug:null}
 };
 
+const NAKSHATRAS=["Ashwini","Bharani","Krittika","Rohini","Mrigashira","Ardra","Punarvasu","Pushya","Ashlesha","Magha","Purva Phalguni","Uttara Phalguni","Hasta","Chitra","Swati","Vishakha","Anuradha","Jyeshtha","Mula","Purva Ashadha","Uttara Ashadha","Shravana","Dhanishtha","Shatabhisha","Purva Bhadrapada","Uttara Bhadrapada","Revati"];
+const RASHIS=["Aries","Taurus","Gemini","Cancer","Leo","Virgo","Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"];
+const TARA_NAMES=["Janma","Sampat","Vipat","Kshema","Pratyari","Sadhana","Naidhana","Mitra","Parama Mitra"];
+const TARA_TE=["జన్మ","సంపత్","విపత్","క్షేమ","ప్రత్యరి","సాధన","నైధన","మిత్ర","పరమ మిత్ర"];
+const TARA_VERDICT=["Mixed","Favourable","Caution","Favourable","Caution","Favourable","Avoid","Favourable","Favourable"];
+function indexByName(value,list){const v=String(value||"").toLowerCase();return list.findIndex(x=>v.includes(x.toLowerCase()));}
+function personalStrength(record,p){
+  const bi=indexByName(record.nakshatra,NAKSHATRAS),ci=indexByName(p.nakshatra,NAKSHATRAS);
+  const br=indexByName(record.rashi,RASHIS),cr=indexByName(p.rashi,RASHIS);
+  if(bi<0&&br<0)return null;
+  let taraText="",chandraText="";
+  if(bi>=0&&ci>=0){const n=((ci-bi+27)%27)%9||9;taraText=(record.language==="te"?TARA_TE[n-1]:TARA_NAMES[n-1])+" • "+(record.language==="te"?(TARA_VERDICT[n-1]==="Favourable"?"అనుకూలం":TARA_VERDICT[n-1]==="Caution"?"జాగ్రత్త":TARA_VERDICT[n-1]==="Avoid"?"వర్జించాలి":"మిశ్రమం"):TARA_VERDICT[n-1]);}
+  if(br>=0&&cr>=0){const pos=(cr-br+12)%12+1;const strong=[1,3,6,7,10,11].includes(pos);chandraText=strong?(record.language==="te"?"అనుకూలం":"Favourable"):(record.language==="te"?"జాగ్రత్త":"Caution");}
+  return {taraText,chandraText};
+}
+
 function indiaToday(){
   return new Intl.DateTimeFormat("en-CA",{
     timeZone:"Asia/Kolkata",year:"numeric",month:"2-digit",day:"2-digit"
@@ -100,7 +116,11 @@ export default async ()=>{
         "⭐ Nakshatram: "+values.nakshatra,
         "♈ Rashi: "+values.rashi,
         "☀️ Sunrise: "+p.sunrise,
-        "🌇 Sunset: "+p.sunset
+        "🌇 Sunset: "+p.sunset,
+        ...(personalStrength(record,p)?[
+          "✦ "+(record.language==="te"?"తారాబలం":"Tarabalam")+": "+personalStrength(record,p).taraText,
+          "☾ "+(record.language==="te"?"చంద్రబలం":"Chandrabalam")+": "+personalStrength(record,p).chandraText
+        ]:[])
       ].join("\n");
 
       await webpush.sendNotification(record.subscription,JSON.stringify({
