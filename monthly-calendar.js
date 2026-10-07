@@ -134,8 +134,16 @@
   }
   function inferredFestivals(row){
     const out=[];
+    const full=namedValue(row.tithi,TITHI_NAMES);
     const n=tithiName(row.tithi);
     if(/Amavasya/i.test(n))out.push("Amavasya");
+    if(/Pournami|Purnima/i.test(n))out.push("Pournami");
+    if(/Ekadashi/i.test(n))out.push("Ekadashi");
+    // Standard monthly observances. The detailed festival feed, when available,
+    // supplies the more specific regional name (for example Indira Ekadashi).
+    if(/Trayodashi/i.test(n))out.push("Pradosham");
+    if(/Krishna Chaturthi/i.test(full))out.push("Sankashti Chaturthi");
+    if(/Krishna Chaturdashi/i.test(full))out.push("Masik Shivaratri");
     return out;
   }
   function dedupe(a){return [...new Set(a)];}
