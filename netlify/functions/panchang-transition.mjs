@@ -3,7 +3,7 @@ export default async (req) => {
   const date = url.searchParams.get("date");
   const city = url.searchParams.get("city") || "hyderabad";
 
-  if (!/^\\d{4}-\\d{2}-\\d{2}$/.test(date) || !/^[a-z]+$/.test(city)) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || !/^[a-z]+$/.test(city)) {
     return new Response(JSON.stringify({ error: "Invalid date or city" }), {
       status: 400,
       headers: { "Content-Type": "application/json" }
@@ -50,22 +50,22 @@ export default async (req) => {
 
 function cleanText(html) {
   return html
-    .replace(/<script[\\s\\S]*?<\\/script>/gi, " ")
-    .replace(/<style[\\s\\S]*?<\\/style>/gi, " ")
+    .replace(/<script[\s\S]*?<\/script>/gi, " ")
+    .replace(/<style[\s\S]*?<\/style>/gi, " ")
     .replace(/<[^>]+>/g, " ")
     .replace(/&nbsp;/gi, " ")
     .replace(/&middot;/gi, "·")
-    .replace(/\\s+/g, " ")
+    .replace(/\s+/g, " ")
     .trim();
 }
 
 function extractEnd(text, kind) {
   const re = new RegExp(
-    kind + "\\\\s*[·:.-]?\\\\s*[^.]{0,100}?\\\\s+until\\\\s+(\\\\d{1,2}:\\\\d{2}\\\\s*(?:am|pm))(?:\\\\s+(?:next|the)\\\\s+day)?",
+    kind + "\\s*[·:.-]?\\s*[^.]{0,100}?\\s+until\\s+(\\d{1,2}:\\d{2}\\s*(?:am|pm))(?:\\s+(?:next|the)\\s+day)?",
     "i"
   );
   const m = text.match(re);
-  return m ? m[1].replace(/\\s+/g, " ").toUpperCase() : null;
+  return m ? m[1].replace(/\s+/g, " ").toUpperCase() : null;
 }
 
 function formatRange(start, end) {
