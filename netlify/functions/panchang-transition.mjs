@@ -10,28 +10,30 @@ export default async (req) => {
     });
   }
 
-  const prevDate = (() => {
+  const previousDate = (() => {
     const p = date.split("-").map(Number);
     const d = new Date(Date.UTC(p[0], p[1] - 1, p[2] - 1));
     return d.toISOString().slice(0, 10);
   })();
 
-  const page = async (d) => {
-    const r = await fetch("https://shastrapanchangam.com/en/panchangam/" + city + "/" + d + "/");
+  const fetchDay = async (d) => {
+    const r = await fetch("https://shastrapanchangam.com/api/v1/day/" + city + "/" + d + ".json");
     if (!r.ok) throw new Error("HTTP " + r.status);
-    return cleanText(await r.text());
+    return r.json();
   };
 
   try {
-    const [today, prev] = await Promise.all([page(date), page(prevDate)]);
-    const tithiEnd = extractEnd(today, "Tithi");
-    const nakshatraEnd = extractEnd(today, "Nakshatra");
-    const previousTithiEnd = extractEnd(prev, "Tithi");
-    const previousNakshatraEnd = extractEnd(prev, "Nakshatra");
+    const [today, previous] = await Promise.all([
+      fetchDay(date),
+      fetchDay(previousDate)
+    ]);
+
+    const t = today?.day || {};
+    const p = previous?.day || {};
 
     return new Response(JSON.stringify({
-      tithiTiming: formatRange(previousTithiEnd, tithiEnd),
-      nakshatraTiming: formatRange(previousNakshatraEnd, nakshatraEnd),
+      tithiTiming: formatRange(minutesToTime(p.tithi_ends), minutesToTime(t.tithi_ends)),
+      nakshatraTiming: formatRange(minutesToTime(p.nakshatra_ends), minutesToTime(t.nakshatra_ends)),
       timingSource: "Shastra Panchangam"
     }), {
       headers: {
@@ -48,24 +50,15 @@ export default async (req) => {
   }
 };
 
-function cleanText(html) {
-  return html
-    .replace(/<script[\s\S]*?<\/script>/gi, " ")
-    .replace(/<style[\s\S]*?<\/style>/gi, " ")
-    .replace(/<[^>]+>/g, " ")
-    .replace(/&nbsp;/gi, " ")
-    .replace(/&middot;/gi, "·")
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
-function extractEnd(text, kind) {
-  const re = new RegExp(
-    kind + "\\s*[·:.-]?\\s*[^.]{0,100}?\\s+until\\s+(\\d{1,2}:\\d{2}\\s*(?:am|pm))(?:\\s+(?:next|the)\\s+day)?",
-    "i"
-  );
-  const m = text.match(re);
-  return m ? m[1].replace(/\s+/g, " ").toUpperCase() : null;
+function minutesToTime(value) {
+  if (typeof value !== "number" || !Number.isFinite(value)) return null;
+  let minutes = Math.round(value) % 1440;
+  if (minutes < 0) minutes += 1440;
+  let h = Math.floor(minutes / 60);
+  const m = minutes % 60;
+  const ap = h >= 12 ? "PM" : "AM";
+  h = h % 12 || 12;
+  return h + ":" + String(m).padStart(2, "0") + " " + ap;
 }
 
 function formatRange(start, end) {
