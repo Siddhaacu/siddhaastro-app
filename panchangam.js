@@ -44,7 +44,10 @@ function normalizePrimary(d,c){
     sunset:d.sun?.sunset||d.sunset||"—",
     rahuKalam:d.muhurta?.rahu_kalam||d.rahuKalam||"—",
     yamagandam:d.muhurta?.yamagandam||d.yamagandamKalam||d.yamagandam||"—",
-    abhijit:d.muhurta?.abhijit_muhurtam||d.abhijitMuhurtham||d.abhijit||"—"
+    abhijit:d.muhurta?.abhijit_muhurtam||d.abhijitMuhurtham||d.abhijit||"—",
+    gulikaKalam:d.muhurta?.gulika_kalam||d.gulikaKalam||"—",
+    durmuhurtham:d.muhurta?.durmuhurtam||d.durmuhurtham||"—",
+    varjyam:d.muhurta?.varjyam||d.varjyam||"—"
   };
 }
 
@@ -67,7 +70,10 @@ function normalizeFallback(d,c){
     sunset:d.sun?.sunset||d.sunset||"—",
     rahuKalam:d.muhurta?.rahu_kalam||d.rahuKalam||"—",
     yamagandam:d.muhurta?.yamagandam||d.yamagandam||"—",
-    abhijit:d.muhurta?.abhijit_muhurtam||d.abhijit||"—"
+    abhijit:d.muhurta?.abhijit_muhurtam||d.abhijit||"—",
+    gulikaKalam:d.muhurta?.gulika_kalam||d.gulikaKalam||"—",
+    durmuhurtham:d.muhurta?.durmuhurtam||d.durmuhurtham||"—",
+    varjyam:d.muhurta?.varjyam||d.varjyam||"—"
   };
 }
 
@@ -77,18 +83,36 @@ async function fetchJson(url){
   return r.json();
 }
 
+async function formatWindow(w){
+  if(!w)return "";
+  const start=w.start||w.startLocal||w.from;
+  const end=w.end||w.endLocal||w.to;
+  if(!start&&!end)return "";
+  return [start,end].filter(Boolean).join(" – ");
+}
+
+function formatWindows(value){
+  if(!value)return "";
+  if(Array.isArray(value))return value.map(formatWindow).filter(Boolean).join("; ");
+  if(value.windows&&Array.isArray(value.windows))return value.windows.map(formatWindow).filter(Boolean).join("; ");
+  return formatWindow(value)||String(value);
+}
+
 async function enrichCalendarIdentity(base,dateStr,c){
-  if(base.rashi!=="Not provided"&&base.samvathsara!=="Not provided"&&base.masa!=="Not provided")return base;
   try{
     const r=await fetch(ENRICH_API,{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify({date:dateStr,latitude:c.lat,longitude:c.lng,timezone:5.5,ayanamsa_mode:"LAHIRI"})});
     if(!r.ok)throw new Error(`HTTP ${r.status}`);
     const j=await r.json();
     const p=j?.panchang;
     if(!p)return base;
+    const bad=p.inauspicious||{};
     return {...base,
       rashi:p.signs?.moon?.name||base.rashi,
       samvathsara:p.samvat?.samvatsara_name||base.samvathsara,
-      masa:p.month?.amanta||base.masa
+      masa:p.month?.amanta||base.masa,
+      gulikaKalam:formatWindows(bad.gulika_kalam)||base.gulikaKalam,
+      durmuhurtham:formatWindows(bad.durmuhurtam)||base.durmuhurtham,
+      varjyam:formatWindows(bad.varjyam)||base.varjyam
     };
   }catch(e){
     console.warn("Calendar identity enrichment unavailable",e);
