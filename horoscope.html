@@ -78,4 +78,4 @@ document.addEventListener("languagechange",render);
 fetch("/.netlify/functions/horoscope-data",{cache:"no-store"}).then(r=>r.ok?r.json():Promise.reject()).then(d=>{data=d;document.getElementById("date").textContent=d.date||"2026-10-07";render()}).catch(()=>{data={panchang:{tithi:"Krishna Dwadashi",nakshatra:"Magha",rashi:"Simha"},horoscopes:{}};render()});
 </script>
 <!-- production-horoscope-final-20261007 --></body>
-<!-- integrated-horoscope-final-20261007 --></html>
+<!-- integrated-horoscope-bilingual-final-20261007 --></html>
