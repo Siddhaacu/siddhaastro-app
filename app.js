@@ -71,5 +71,5 @@ document.addEventListener("DOMContentLoaded",()=>{
   document.querySelectorAll("[data-notifications]").forEach(b=>b.onclick=enableNotifications);
   // Keep every page clean and app-like: the bottom navigation is the primary way
   // to move between sections, so remove legacy language/back controls.
-  document.querySelectorAll("[data-lang],.book-back,.script-back,img[src$="12.png"],img[src*="/12.png"],img[src*="\\12.png"]").forEach(el=>el.remove());
+  document.querySelectorAll('[data-lang],.book-back,.script-back,img[src$="12.png"],img[src*="/12.png"],img[src*="\\\\12.png"]').forEach(el=>el.remove());
   renderNav();sync();document.querySelectorAll("[data-theme]").forEach(b=>b.onclick=()=>SiddhaApp.toggleTheme());document.querySelectorAll("[data-font='up']").forEach(b=>b.onclick=()=>SiddhaApp.changeFont(.04));document.querySelectorAll("[data-font='down']").forEach(b=>b.onclick=()=>SiddhaApp.changeFont(-.04));document.querySelectorAll("[data-lang]").forEach(b=>b.onclick=()=>SiddhaApp.setLanguage(lang==="en"?"te":"en"));languageObserver=new MutationObserver(()=>{if(!translating&&lang==="te")applyLanguage()});languageObserver.observe(document.body,{childList:true,subtree:true})})})();
