@@ -286,6 +286,68 @@
     "Masik Shivaratri":"మాస శివరాత్రి"
   });
 
+  const RELATED_BOOKS=[
+    {title:"ఉగాది పూజా విధానం",en:"Ugadi",href:"zbxx.html",keys:["ugadi","gudi padwa"]},
+    {title:"శ్రీ రామ నవమి",en:"Sri Rama Navami",href:"zb20.html",keys:["rama navami"]},
+    {title:"అక్షయ తృతీయ",en:"Akshaya Tritiya",href:"zb25.html",keys:["akshaya tritiya"]},
+    {title:"శంకర జయంతి",en:"Sankara Jayanti",href:"zb22.html",keys:["sankara jayanti"]},
+    {title:"తొలి ఏకాదశి",en:"Toli Ekadashi",href:"zb26.html",keys:["tholi ekadashi","toli ekadashi"]},
+    {title:"వ్యాస పౌర్ణమి",en:"Vyasa Purnima",href:"zb21.html",keys:["guru purnima","vyasa purnima"]},
+    {title:"మంగళ గౌరీ వ్రతం",en:"Mangala Gauri Vratam",href:"zb28.html",keys:["mangala gauri"]},
+    {title:"వరలక్ష్మీ వ్రతం పూజా విధానం",en:"Varalakshmi Vratam Puja Vidhanam",href:"zb18.html",keys:["varalakshmi"]},
+    {title:"శ్రావణ పౌర్ణమి",en:"Shravana Purnima",href:"zb5.html",keys:["shravan","sravana"]},
+    {title:"పొలాల అమావాస్య — స్కంద పూజ",en:"Polala Amavasya",href:"zb24.html",keys:["polala amavasya"]},
+    {title:"శ్రీ వినాయక పూజా విధానం",en:"Sri Vinayaka Puja Vidhanam",href:"zb17.html",keys:["ganesh chaturthi","vinayaka chavithi","vinayaka chaturthi"]},
+    {title:"ఋషి పంచమి",en:"Rishi Panchami",href:"zbxx.html",keys:["rishi panchami"]},
+    {title:"శ్రీరాధాష్టమి / శ్రీకృష్ణాష్టమి",en:"Radhashtami / Krishna Ashtami",href:"zb23.html",keys:["radhashtami","janmashtami","krishna ashtami"]},
+    {title:"మహాలయ అమావాస్య — స్కంద పూజ",en:"Mahalaya Amavasya",href:"zb24.html",keys:["mahalaya amavasya","sarva pitru amavasya"]},
+    {title:"నవరాత్రి పూజా విధానం — శైలపుత్రి",en:"Navaratri — Shailaputri",href:"zb31.html",keys:["navratri","durga ashtami","dussehra","vijayadashami"]},
+    {title:"నవరాత్రి పూజా విధానం — బాలా త్రిపురసుందరి",en:"Navaratri — Bala Tripurasundari",href:"zb32.html",keys:["navratri","durga ashtami","dussehra","vijayadashami"]},
+    {title:"నవరాత్రి పూజా విధానం — అన్నపూర్ణ",en:"Navaratri — Annapurna",href:"zb33.html",keys:["navratri","durga ashtami","dussehra","vijayadashami"]},
+    {title:"నవరాత్రి పూజా విధానం — గాయత్రీ",en:"Navaratri — Gayatri",href:"zb34.html",keys:["navratri","durga ashtami","dussehra","vijayadashami"]},
+    {title:"నవరాత్రి పూజా విధానం — లలిత త్రిపురసుందరి",en:"Navaratri — Lalita Tripurasundari",href:"zb35.html",keys:["navratri","durga ashtami","dussehra","vijayadashami"]},
+    {title:"నవరాత్రి పూజా విధానం — మహా సరస్వతి",en:"Navaratri — Maha Saraswati",href:"zb36.html",keys:["navratri","durga ashtami","dussehra","vijayadashami"]},
+    {title:"నవరాత్రి పూజా విధానం — మహా లక్ష్మి",en:"Navaratri — Maha Lakshmi",href:"zb37.html",keys:["navratri","durga ashtami","dussehra","vijayadashami"]},
+    {title:"నవరాత్రి పూజా విధానం — మహా కాళీ",en:"Navaratri — Maha Kali",href:"zb38.html",keys:["navratri","durga ashtami","dussehra","vijayadashami"]},
+    {title:"నవరాత్రి పూజా విధానం — శ్రీ రాజరాజేశ్వరీ",en:"Navaratri — Sri Rajarajeswari",href:"zb40.html",keys:["navratri","durga ashtami","dussehra","vijayadashami"]},
+    {title:"ధనలక్ష్మి పూజా విధానం — ధనత్రయోదశి",en:"Dhanalakshmi Puja — Dhanteras",href:"zb25.html",keys:["dhanteras","dhanatrayodashi"]},
+    {title:"లక్ష్మి పూజా విధానం — దీపావళి",en:"Lakshmi Puja — Deepavali",href:"zb25.html",keys:["deepavali","diwali","lakshmi puja"]},
+    {title:"నాగుల చవితి",en:"Nagula Chavithi",href:"zb29.html",keys:["nagula chavithi","naga panchami"]},
+    {title:"ఉత్థాన ఏకాదశి",en:"Utthana Ekadashi",href:"zb26.html",keys:["devutthana ekadashi","utthana ekadashi"]},
+    {title:"క్షీరాబ్ధి ద్వాదశి",en:"Ksheerabdi Dwadashi",href:"zb27.html",keys:["ksheerabdi","tulasi vivah"]},
+    {title:"కార్తీక పౌర్ణమి",en:"Kartika Purnima",href:"zb30.html",keys:["kartika purnima","karthika purnima","karthika deepam"]},
+    {title:"సుబ్రహ్మణ్య షష్ఠి",en:"Subrahmanya Shashti",href:"zb29.html",keys:["subrahmanya shashti"]},
+    {title:"గీత జయంతి",en:"Gita Jayanti",href:"zbxx.html",keys:["gita jayanti"]},
+    {title:"రథసప్తమి",en:"Ratha Saptami",href:"zb30.html",keys:["ratha saptami"]},
+    {title:"మాఘ శుద్ధ పంచమి",en:"Magha Shuddha Panchami",href:"zb41.html",keys:["magha shuddha panchami","vasant panchami"]},
+    {title:"శివరాత్రి",en:"Shiva Ratri",href:"zb30.html",keys:["maha shivaratri","shivaratri","shiva ratri"]},
+    {title:"నిత్య పారాయణ శ్లోకాః",en:"Nitya Parayana Slokah",href:"zb1-4.html",keys:["ekadashi","pournami","amavasya","pradosh","vrata"]}
+  ];
+
+  function renderRelatedBooks(root,festivalMap,rows,te){
+    const list=root.querySelector("[data-month-books-list]");
+    const subtitle=root.querySelector("[data-month-books-subtitle]");
+    if(!list)return;
+    if(subtitle)subtitle.textContent=te
+      ?"ఈ నెల పండుగలు మరియు వ్రతాలకు సంబంధించిన పూజా విధానాలు, పారాయణ గ్రంథాలు"
+      :"Puja, Vrata and Parayana books related to this month's observances";
+    const names=[];
+    Object.values(festivalMap||{}).flat().forEach(n=>names.push(String(n)));
+    rows.forEach(row=>inferredFestivals(row).forEach(n=>names.push(String(n))));
+    const haystack=names.join(" | ").toLowerCase();
+    const selected=[];
+    RELATED_BOOKS.forEach(book=>{
+      if(selected.length>=8)return;
+      if(book.keys.some(k=>haystack.includes(k.toLowerCase())))selected.push(book);
+    });
+    // Always provide a useful general prayer/vrata entry when the month has
+    // no exact match in the existing book catalogue.
+    if(!selected.length)selected.push(RELATED_BOOKS[RELATED_BOOKS.length-1]);
+    list.innerHTML=selected.map(book=>'<a class="monthly-book-link" href="'+esc(book.href)+'">'+
+      '<span class="monthly-book-icon">ॐ</span><span><strong>'+esc(te?book.title:book.en)+'</strong>'+
+      '<small>'+esc(te?"పూజా / వ్రత సంబంధిత గ్రంథం":"Open related Pooja / Vrata book")+'</small></span><span class="monthly-book-arrow">›</span></a>').join("");
+  }
+
   function labelFestival(name,te){
     if(!te)return name;
     return FEST_TE[name]||name;
@@ -392,6 +454,7 @@
     loadMonth(y,m,document.getElementById("pcity").value).then(({rows,festivalMap,sourceCity})=>{
       const byDate=Object.fromEntries(rows.map(r=>[r.date,r]));
       renderFestivalList(root,y,m,festivalMap,rows,te);
+      renderRelatedBooks(root,festivalMap,rows,te);
       const today=indiaTodayDate();
       for(let d=1;d<=daysInMonth(y,m);d++){
         const date=y+"-"+String(m+1).padStart(2,"0")+"-"+String(d).padStart(2,"0");
