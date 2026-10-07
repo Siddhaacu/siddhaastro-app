@@ -78,7 +78,8 @@ const languageButton=document.querySelector("[data-lang]");
 if(languageButton) languageButton.addEventListener("click",()=>{
   horoscopeLang=horoscopeLang==="en"?"te":"en";
   localStorage.setItem("siddha-language",horoscopeLang);
-  if(window.SiddhaApp&&SiddhaApp.setLanguage) SiddhaApp.setLanguage(horoscopeLang);
+  // app.js owns the global toggle; avoid calling setLanguage here because
+  // its own click handler would toggle the state a second time.
   render();
 });
 document.addEventListener("languagechange",()=>{
