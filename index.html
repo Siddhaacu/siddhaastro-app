@@ -111,37 +111,163 @@
             color: var(--accent);
         }
 
-        .daily-sloka {
-            background: linear-gradient(135deg, var(--spiritual-purple) 0%, var(--spiritual-blue) 100%);
-            color: white;
-            padding: var(--spacing-xl);
-            border-radius: 12px;
+                .home-panchangam {
+            background: var(--surface, #fff);
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            padding: 20px;
+            margin-bottom: 18px;
+            box-shadow: 0 10px 30px var(--shadow);
+        }
+
+        .home-section-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .home-section-heading h2 {
+            margin: 2px 0 0;
+            color: var(--text-primary);
+            font-size: calc(1.2em * var(--scale));
+            letter-spacing: -0.025em;
+        }
+
+        .home-eyebrow {
+            color: var(--accent);
+            font-size: calc(0.68em * var(--scale));
+            font-weight: 800;
+            letter-spacing: 0.13em;
+        }
+
+        .home-section-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 0.78em;
+            font-weight: 800;
+            padding: 8px 11px;
+            border-radius: 999px;
+            background: var(--accent-soft);
+        }
+
+        .home-date {
+            color: var(--text-secondary);
+            font-size: calc(0.82em * var(--scale));
+            margin-bottom: 14px;
+        }
+
+        .panchangam-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 9px;
+            margin-top: 0;
+        }
+
+        .panchangam-item {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            padding: 12px 8px;
+            border-radius: 14px;
             text-align: center;
-            margin-bottom: var(--spacing-xl);
-            box-shadow: 0 8px 24px var(--shadow);
+        }
+
+        .panchangam-label {
+            font-size: calc(0.66em * var(--scale));
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 5px;
+        }
+
+        .panchangam-value {
+            font-size: calc(0.88em * var(--scale));
+            font-weight: 800;
+            color: var(--accent);
+            line-height: 1.35;
+        }
+
+        .daily-sloka {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(145deg, #fffdf6 0%, #f6f8f2 100%);
+            color: var(--text-primary);
+            padding: 22px 20px;
+            border: 1px solid rgba(162, 122, 42, 0.22);
+            border-radius: 22px;
+            text-align: center;
+            margin-bottom: 22px;
+            box-shadow: 0 10px 30px var(--shadow);
+        }
+
+        .daily-sloka::before {
+            content: "ॐ";
+            position: absolute;
+            right: 18px;
+            top: 5px;
+            color: rgba(162, 122, 42, 0.09);
+            font-family: "Noto Serif Devanagari", serif;
+            font-size: 5rem;
+            line-height: 1;
         }
 
         .sloka-title {
-            font-size: calc(0.9em * var(--scale));
+            position: relative;
+            font-size: calc(0.72em * var(--scale));
+            color: var(--accent);
             text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: var(--spacing-md);
-            opacity: 0.9;
+            letter-spacing: 0.15em;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .sloka-scripture {
+            position: relative;
+            margin: 0;
+            color: var(--text-primary);
+            font-family: "Noto Serif Devanagari", serif;
+            font-size: calc(1.15em * var(--scale));
+            font-weight: 700;
+        }
+
+        .sloka-meta {
+            position: relative;
+            display: inline-block;
+            margin: 9px 0 13px;
+            padding: 5px 10px;
+            border-radius: 999px;
+            background: var(--accent-soft);
+            color: var(--accent);
+            font-size: calc(0.72em * var(--scale));
+            font-weight: 800;
         }
 
         .sloka-text {
-            font-size: calc(1.15em * var(--scale));
-            line-height: 2;
-            margin-bottom: var(--spacing-md);
-            font-style: italic;
+            position: relative;
+            max-width: 760px;
+            margin: 0 auto;
+            white-space: pre-line;
+            font-family: "Noto Serif Devanagari", serif;
+            font-size: calc(1.18em * var(--scale));
+            line-height: 2.05;
+            font-weight: 600;
+            color: var(--text-primary);
         }
 
-        .sloka-translation {
-            font-size: calc(0.95em * var(--scale));
-            opacity: 0.85;
-            margin-top: var(--spacing-md);
-            border-top: 1px solid rgba(255, 255, 255, 0.3);
-            padding-top: var(--spacing-md);
+        .sloka-footer {
+            position: relative;
+            margin-top: 14px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: calc(0.72em * var(--scale));
+        }
+
+        @media (max-width: 560px) {
+            .panchangam-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .home-panchangam, .daily-sloka { border-radius: 19px; padding: 18px 14px; }
+            .sloka-text { font-size: calc(1.05em * var(--scale)); line-height: 1.9; }
         }
 
         .festivals-section {
