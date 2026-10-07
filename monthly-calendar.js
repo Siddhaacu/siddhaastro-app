@@ -351,15 +351,13 @@
     }
 
     let festivalMap=knownFestivalMapForMonth(year,month);
-    if(year<=2027){
-      try{
-        const fr=await fetch(API+"/festivals.json",{headers:{Accept:"application/json"},cache:"no-store"});
+    try{
+      const fr=await fetch(API+"/festivals.json",{headers:{Accept:"application/json"},cache:"no-store"});
         if(fr.ok){
           const feed=collectFestivalMap(await fr.json(),sourceCity);
           Object.entries(feed).forEach(([date,names])=>festivalMap[date]=dedupe([...(festivalMap[date]||[]),...names]));
         }
       }catch(e){ console.warn("Festival feed unavailable",e); }
-    }
     // Detect every solar ingress (Sankranti) from Sun's sidereal longitude for future years.
     if(rows.some(r=>Number.isFinite(Number(r.sunLongitude)))){
       rows.forEach((row,i)=>{
