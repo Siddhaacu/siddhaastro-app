@@ -1,48 +1,68 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Horoscope — Siddha Astro</title><link rel="stylesheet" href="styles.css"></head><body><div class="app"><header class="header"><div class="header-inner"><a class="brand" href="index.html"><img src="logo.png" alt="Siddha Astro"><span><span class="brand-name">Siddha Astro</span><span class="brand-tag">Vedic wisdom, simply presented</span></span></a><div class="page-title"><strong>Horoscope</strong><span>Rashi guidance</span></div></div></header><div class="controls"><button class="lang-btn" data-lang aria-label="Language">తెలుగు</button><button class="icon-btn" data-theme>◐</button><button class="font-btn" data-font="down">−</button><span class="font-size" data-font-size>100%</span><button class="font-btn" data-font="up">+</button></div><main class="main"><section class="hero"><div class="eyebrow">Daily guidance</div><h1>Horoscope</h1><p>Select your rashi.</p></section><section class="card"><div class="rashi-grid" id="rashiGrid"><button class="rashi" data-r="Mesha"><span class="rashi-symbol">♈</span><span class="rashi-name">Mesha</span></button><button class="rashi" data-r="Vrishabha"><span class="rashi-symbol">♉</span><span class="rashi-name">Vrishabha</span></button><button class="rashi" data-r="Mithuna"><span class="rashi-symbol">♊</span><span class="rashi-name">Mithuna</span></button><button class="rashi" data-r="Karkataka"><span class="rashi-symbol">♋</span><span class="rashi-name">Karkataka</span></button><button class="rashi" data-r="Simha"><span class="rashi-symbol">♌</span><span class="rashi-name">Simha</span></button><button class="rashi" data-r="Kanya"><span class="rashi-symbol">♍</span><span class="rashi-name">Kanya</span></button><button class="rashi" data-r="Tula"><span class="rashi-symbol">♎</span><span class="rashi-name">Tula</span></button><button class="rashi" data-r="Vrischika"><span class="rashi-symbol">♏</span><span class="rashi-name">Vrischika</span></button><button class="rashi" data-r="Dhanu"><span class="rashi-symbol">♐</span><span class="rashi-name">Dhanu</span></button><button class="rashi" data-r="Makara"><span class="rashi-symbol">♑</span><span class="rashi-name">Makara</span></button><button class="rashi" data-r="Kumbha"><span class="rashi-symbol">♒</span><span class="rashi-name">Kumbha</span></button><button class="rashi" data-r="Meena"><span class="rashi-symbol">♓</span><span class="rashi-name">Meena</span></button></div></section><section class="card" id="horoscopeDisplay"><div class="empty">Choose a rashi.</div></section></main><nav class="nav"><a href="index.html" class="">⌂<span>Home</span></a><a href="panchangam.html" class="">◫<span>Panchangam</span></a><a href="horoscope.html" class="active">✦<span>Horoscope</span></a><a href="kundali.html" class="">◈<span>Kundali</span></a><a href="more.html" class="">•••<span>More</span></a></nav></div><script src="app.js"></script><script>
-const R=[["Mesha","♈","మేషం"],["Vrishabha","♉","వృషభం"],["Mithuna","♊","మిథునం"],["Karkataka","♋","కర్కాటకం"],["Simha","♌","సింహం"],["Kanya","♍","కన్య"],["Tula","♎","తుల"],["Vrischika","♏","వృశ్చికం"],["Dhanu","♐","ధనుస్సు"],["Makara","♑","మకరం"],["Kumbha","♒","కుంభం"],["Meena","♓","మీనం"]];
-let dailyData=null;
-const rashiGridEl=document.getElementById("rashiGrid");
-const horoscopeDisplayEl=document.getElementById("horoscopeDisplay");
-const getLang=()=>window.SiddhaApp&&typeof SiddhaApp.getLanguage==="function"?SiddhaApp.getLanguage():"en";
-const tx=(en,te)=>getLang()==="te"?te:en;
-const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-async function loadDaily(){
-  renderRashiGrid();
-  try{
-    const r=await fetch("/.netlify/functions/horoscope-data",{cache:"no-store"});
-    if(!r.ok)throw new Error("Daily horoscope unavailable");
-    dailyData=await r.json();
-  }catch(e){
-    const fallback={
-      ok:true,date:"2026-10-07",
-      panchang:{tithi:"Krishna Dwadashi",nakshatra:"Magha",rashi:"Simha",sunrise:"6:07 AM",sunset:"6:00 PM"},
-      horoscopes:{}
-    };
-    R.forEach((x,i)=>fallback.horoscopes[x[0]]={
-      rashi:x[0],icon:x[1],period:["Mar 21 - Apr 19","Apr 20 - May 20","May 21 - Jun 20","Jun 21 - Jul 22","Jul 23 - Aug 22","Aug 23 - Sep 22","Sep 23 - Oct 22","Oct 23 - Nov 21","Nov 22 - Dec 21","Dec 22 - Jan 19","Jan 20 - Feb 18","Feb 19 - Mar 20"][i],
-      periodTe:x[2],element:["Fire","Earth","Air","Water"][i%4],elementTe:["అగ్ని","భూమి","వాయువు","జలం"][i%4],
-      ruler:["Mars","Venus","Mercury","Moon","Sun","Mercury","Venus","Mars","Jupiter","Saturn","Saturn","Jupiter"][i],
-      rulerTe:["కుజుడు","శుక్రుడు","బుధుడు","చంద్రుడు","సూర్యుడు","బుధుడు","శుక్రుడు","కుజుడు","గురుడు","శని","శని","గురుడు"][i],
-      daily:{en:"Today encourages practical action, clear thinking and steady progress. Use the day's energy wisely and avoid unnecessary distractions.",te:"ఈ రోజు ఆచరణాత్మక చర్యలు, స్పష్టమైన ఆలోచన మరియు స్థిరమైన పురోగతికి అనుకూలంగా ఉంటుంది. రోజులోని శక్తిని సద్వినియోగం చేసుకుని అనవసరమైన దృష్టి మళ్లింపులను నివారించండి."},
-      career:{en:"Stay focused on priorities. A practical approach can move important work forward.",te:"ప్రాధాన్యతలపై దృష్టి పెట్టండి. ఆచరణాత్మక విధానం ముఖ్యమైన పనిని ముందుకు తీసుకెళ్లగలదు."},
-      love:{en:"Open and respectful communication strengthens relationships today.",te:"బహిరంగమైన మరియు గౌరవపూర్వకమైన సంభాషణ సంబంధాలను బలపరుస్తుంది."},
-      health:{en:"Maintain a steady routine, rest adequately and avoid overexertion.",te:"స్థిరమైన దినచర్యను పాటించి తగిన విశ్రాంతి తీసుకోండి; అతిగా శ్రమించవద్దు."}
-    });
-    dailyData=fallback;
-  }
-  renderRashiGrid();
-  show("Mesha");
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Horoscope — Siddha Astro</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+.horoscope-page{max-width:1080px;margin:0 auto;padding:24px 20px 130px}
+.horo-hero{background:#fff;border:1px solid #dfe7e1;border-radius:24px;padding:24px;margin-bottom:18px;box-shadow:0 10px 30px rgba(38,51,47,.08)}
+.horo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.horo-rashi{border:1px solid #dfe7e1;background:#fff;border-radius:16px;padding:14px 8px;text-align:center;color:#36594d;font-weight:800}
+.horo-rashi.active{background:#e5efe9;border-color:#4f7567}
+.horo-symbol{font-size:1.7rem;display:block}.horo-name{font-size:.78rem}
+.horo-result{margin-top:18px;background:#fff;border:1px solid #dfe7e1;border-radius:20px;padding:20px;box-shadow:0 10px 30px rgba(38,51,47,.08)}
+.horo-result h2{margin:5px 0}.horo-result p{color:#68766f}
+.horo-tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.horo-tile{background:#eef3ee;border-radius:14px;padding:14px}.horo-tile b{display:block;color:#68766f;font-size:.72rem;text-transform:uppercase}.horo-tile span{display:block;margin-top:5px}
+@media(max-width:600px){.horo-grid{grid-template-columns:repeat(3,1fr)}.horo-tiles{grid-template-columns:1fr}.horo-hero{padding:20px}.horoscope-page{padding-left:14px;padding-right:14px}}
+</style>
+</head>
+<body>
+<div class="horoscope-page">
+<header class="horo-hero">
+<div style="color:#a27a2a;font-size:.7rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase">Daily Guidance</div>
+<h1 style="margin:5px 0">Horoscope</h1>
+<p style="margin:0;color:#68766f">Daily Rashi guidance • <span id="date">2026-10-07</span></p>
+</header>
+<section class="horo-grid" id="rashiGrid">
+<button class="horo-rashi active" data-r="Mesha"><span class="horo-symbol">♈</span><span class="horo-name">Mesha</span></button>
+<button class="horo-rashi" data-r="Vrishabha"><span class="horo-symbol">♉</span><span class="horo-name">Vrishabha</span></button>
+<button class="horo-rashi" data-r="Mithuna"><span class="horo-symbol">♊</span><span class="horo-name">Mithuna</span></button>
+<button class="horo-rashi" data-r="Karkataka"><span class="horo-symbol">♋</span><span class="horo-name">Karkataka</span></button>
+<button class="horo-rashi" data-r="Simha"><span class="horo-symbol">♌</span><span class="horo-name">Simha</span></button>
+<button class="horo-rashi" data-r="Kanya"><span class="horo-symbol">♍</span><span class="horo-name">Kanya</span></button>
+<button class="horo-rashi" data-r="Tula"><span class="horo-symbol">♎</span><span class="horo-name">Tula</span></button>
+<button class="horo-rashi" data-r="Vrischika"><span class="horo-symbol">♏</span><span class="horo-name">Vrischika</span></button>
+<button class="horo-rashi" data-r="Dhanu"><span class="horo-symbol">♐</span><span class="horo-name">Dhanu</span></button>
+<button class="horo-rashi" data-r="Makara"><span class="horo-symbol">♑</span><span class="horo-name">Makara</span></button>
+<button class="horo-rashi" data-r="Kumbha"><span class="horo-symbol">♒</span><span class="horo-name">Kumbha</span></button>
+<button class="horo-rashi" data-r="Meena"><span class="horo-symbol">♓</span><span class="horo-name">Meena</span></button>
+</section>
+<section class="horo-result" id="result">
+<div style="color:#a27a2a;font-size:.7rem;font-weight:800;letter-spacing:.1em">DAILY HOROSCOPE</div>
+<h2>♈ Mesha</h2>
+<p>Today encourages practical action, clear thinking and steady progress. Use the day's energy wisely and avoid unnecessary distractions.</p>
+<div class="horo-tiles">
+<div class="horo-tile"><b>Career</b><span>Stay focused on priorities. A practical approach can move important work forward.</span></div>
+<div class="horo-tile"><b>Love</b><span>Open and respectful communication strengthens relationships today.</span></div>
+<div class="horo-tile"><b>Health</b><span>Maintain a steady routine, rest adequately and avoid overexertion.</span></div>
+<div class="horo-tile"><b>Panchang</b><span>Krishna Dwadashi • Magha • Moon Rashi: Simha</span></div>
+</div>
+</section>
+</div>
+<script>
+const names={Mesha:["♈","Mesha"],Vrishabha:["♉","Vrishabha"],Mithuna:["♊","Mithuna"],Karkataka:["♋","Karkataka"],Simha:["♌","Simha"],Kanya:["♍","Kanya"],Tula:["♎","Tula"],Vrischika:["♏","Vrischika"],Dhanu:["♐","Dhanu"],Makara:["♑","Makara"],Kumbha:["♒","Kumbha"],Meena:["♓","Meena"]};
+let data=null,current="Mesha";
+function render(){
+ const h=data&&data.horoscopes&&data.horoscopes[current];
+ if(!h)return;
+ const p=h.daily||{},career=h.career||{},love=h.love||{},health=h.health||{};
+ document.querySelectorAll(".horo-rashi").forEach(b=>b.classList.toggle("active",b.dataset.r===current));
+ document.getElementById("result").innerHTML='<div style="color:#a27a2a;font-size:.7rem;font-weight:800;letter-spacing:.1em">DAILY HOROSCOPE</div><h2>'+names[current][0]+' '+names[current][1]+'</h2><p>'+((p.en||p)||"Today brings steady progress and useful opportunities.")+'</p><div class="horo-tiles"><div class="horo-tile"><b>Career</b><span>'+((career.en||career)||"Stay focused on priorities.")+'</span></div><div class="horo-tile"><b>Love</b><span>'+((love.en||love)||"Communicate openly and respectfully.")+'</span></div><div class="horo-tile"><b>Health</b><span>'+((health.en||health)||"Maintain a steady routine and rest well.")+'</span></div><div class="horo-tile"><b>Panchang</b><span>'+((data.panchang?.tithi)||"Krishna Dwadashi")+' • '+((data.panchang?.nakshatra)||"Magha")+' • Moon Rashi: '+((data.panchang?.rashi)||"Simha")+'</span></div></div>';
 }
-function renderRashiGrid(){
-  rashiGridEl.innerHTML=R.map(x=>'<button class="rashi" data-r="'+x[0]+'"><span class="rashi-symbol">'+x[1]+'</span><span class="rashi-name">'+(getLang()==="te"?x[2]:x[0])+'</span></button>').join("");
-  document.querySelectorAll(".rashi").forEach(b=>b.onclick=()=>show(b.dataset.r));
-}
-function show(r){
-  const h=dailyData?.horoscopes?.[r];if(!h)return;
-  const item=R.find(x=>x[0]===r)||R[0],te=getLang()==="te";
-  document.querySelectorAll(".rashi").forEach(b=>b.classList.toggle("active",b.dataset.r===r));
-  horoscopeDisplayEl.innerHTML='<div class="eyebrow">'+tx("Daily Horoscope","దైనందిన రాశిఫలం")+' • '+dailyData.date+'</div><h2>'+h.icon+' '+(te?item[2]:r)+'</h2><p>'+(te?h.periodTe:h.period)+' • '+(te?h.elementTe:h.element)+' • '+(te?h.rulerTe:h.ruler)+'</p><div class="result-grid"><div class="tile"><div class="tile-label">'+tx("Today","ఈ రోజు")+'</div><div class="tile-value">'+esc(te?h.daily.te:h.daily.en)+'</div></div><div class="tile"><div class="tile-label">'+tx("Career","వృత్తి")+'</div><div class="tile-value">'+esc(te?h.career.te:h.career.en)+'</div></div><div class="tile"><div class="tile-label">'+tx("Love","ప్రేమ")+'</div><div class="tile-value">'+esc(te?h.love.te:h.love.en)+'</div></div><div class="tile"><div class="tile-label">'+tx("Health","ఆరోగ్యం")+'</div><div class="tile-value">'+esc(te?h.health.te:h.health.en)+'</div></div></div><p class="muted">'+tx("Today’s Panchang influence: ","ఈ రోజు పంచాంగ ప్రభావం: ")+(te?dailyData.panchang.tithi:dailyData.panchang.tithi)+' • '+dailyData.panchang.nakshatra+' • '+tx("Moon Rashi: ","చంద్ర రాశి: ")+dailyData.panchang.rashi+'</p>';
-}
-document.addEventListener("DOMContentLoaded",loadDaily);
-document.addEventListener("languagechange",()=>{if(dailyData){renderRashiGrid();show(document.querySelector(".rashi.active")?.dataset.r||"Mesha")}});
-</script><!-- horoscope fallback v3: static rashi grid + inline renderer --><!-- force horoscope production rebuild 2026-10-07-1508 --></body></html>
+document.querySelectorAll(".horo-rashi").forEach(b=>b.addEventListener("click",()=>{current=b.dataset.r;render()}));
+fetch("/.netlify/functions/horoscope-data",{cache:"no-store"}).then(r=>r.ok?r.json():Promise.reject()).then(d=>{data=d;document.getElementById("date").textContent=d.date||"2026-10-07";render()}).catch(()=>{data={panchang:{tithi:"Krishna Dwadashi",nakshatra:"Magha",rashi:"Simha"},horoscopes:{}};render()});
+</script>
+</body>
+</html>
