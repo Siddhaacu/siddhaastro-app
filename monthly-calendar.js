@@ -22,7 +22,7 @@
     "Vinayaka Chaturthi":"వినాయక చవితి", "Sankranti":"సంక్రాంతి",
     "Makar Sankranti":"మకర సంక్రాంతి", "Rama Navami":"శ్రీరామ నవమి",
     "Hanuman Jayanti":"హనుమ జయంతి", "Narasimha Jayanti":"నరసింహ జయంతి",
-    "Raksha Bandhan":"రక్షాబంధన్", "Krishna Janmashtami":"శ్రీకృష్ణ జన్మాష్టమి"
+    "Raksha Bandhan":"రక్షాబంధన్", "Krishna Janmashtami":"శ్రీకృష్ణ జన్మాష్టమి", "Mahalakshmi Vrat Ends":"మహాలక్ష్మీ వ్రత సమాప్తి", "Jivitputrika Vrat":"జీవిత్పుత్రికా వ్రతం", "Indira Ekadashi":"ఇందిరా ఏకాదశి", "Guru Pradosh Vrat":"గురు ప్రదోష వ్రతం", "Sarva Pitru Amavasya":"సర్వపితృ అమావాస్య", "Darsha Amavasya":"దర్శ అమావాస్య", "Anvadhan":"అన్వాధానం", "Ashwina Amavasya":"ఆశ్వయుజ అమావాస్య", "Navratri Begins":"నవరాత్రులు ప్రారంభం", "Ghatasthapana":"ఘటస్థాపన", "Chandra Darshana":"చంద్ర దర్శనం", "Upang Lalita Vrat":"ఉపాంగ లలితా వ్రతం", "Saraswati Avahan":"సరస్వతీ ఆవాహనం", "Saraswati Puja":"సరస్వతీ పూజ", "Tula Sankranti":"తులా సంక్రాంతి", "Durga Ashtami":"దుర్గాష్టమి", "Maha Navami":"మహానవమి", "Saraswati Visarjan":"సరస్వతీ విసర్జనం", "Durga Visarjan":"దుర్గా విసర్జనం", "Vijayadashami":"విజయదశమి", "Dussehra":"దసరా", "Papankusha Ekadashi":"పాపాంకుశ ఏకాదశి", "Shukra Pradosh Vrat":"శుక్ర ప్రదోష వ్రతం", "Kojagara Puja":"కోజాగర పూజ", "Sharad Purnima":"శరద్ పౌర్ణమి", "Ashwina Purnima":"ఆశ్వయుజ పౌర్ణమి", "Karwa Chauth":"కర్వా చౌత్", "Vakratunda Sankashti":"వక్రతుండ సంకష్టి"
   };
 
   let monthCursor = new Date();
@@ -138,6 +138,42 @@
     return out;
   }
   function dedupe(a){return [...new Set(a)];}
+  function festivalDateLabel(date,te){
+    const d=new Date(date+"T00:00:00");
+    return new Intl.DateTimeFormat(te?"te-IN":"en-IN",{day:"numeric",month:"short"}).format(d);
+  }
+  function renderFestivalList(root,y,m,festivalMap,rows,te){
+    const list=root.querySelector("[data-festival-list]");
+    const title=root.querySelector("[data-festival-title]");
+    const subtitle=root.querySelector("[data-festival-subtitle]");
+    if(title)title.textContent=te?"ఈ నెల పండుగలు & వ్రతాలు":"Festivals & Vratas";
+    if(subtitle)subtitle.textContent=te?"ఈ నెలలోని ముఖ్యమైన పండుగలు, ఏకాదశి, అమావాస్య, పౌర్ణమి మరియు వ్రతాలు":"Important observances for this month";
+    const events=[];
+    Object.entries(festivalMap||{}).forEach(([date,names])=>{
+      if(date.slice(0,7)!==y+"-"+String(m+1).padStart(2,"0"))return;
+      dedupe(names).forEach(name=>events.push({date,name}));
+    });
+    // Ensure the core lunar observances are represented even if the festival feed omits them.
+    rows.forEach(row=>{
+      const date=String(row.date||"");
+      if(date.slice(0,7)!==y+"-"+String(m+1).padStart(2,"0"))return;
+      const n=tithiName(row.tithi);
+      if(/Amavasya/i.test(n))events.push({date,name:"Amavasya"});
+      if(/Purnima/i.test(n))events.push({date,name:"Pournami"});
+      if(/Ekadashi/i.test(n))events.push({date,name:"Ekadashi"});
+    });
+    const unique=[];
+    const seen=new Set();
+    events.sort((a,b)=>a.date.localeCompare(b.date)||a.name.localeCompare(b.name)).forEach(e=>{
+      const key=e.date+"|"+e.name;
+      if(!seen.has(key)){seen.add(key);unique.push(e);}
+    });
+    if(!unique.length){
+      list.innerHTML='<div class="monthly-festival-empty">'+(te?"ఈ నెల పండుగల సమాచారం అందుబాటులో లేదు.":"No festival information available for this month.")+'</div>';
+      return;
+    }
+    list.innerHTML=unique.map(e=>'<div class="monthly-festival-row"><div class="monthly-festival-date">'+esc(festivalDateLabel(e.date,te))+'</div><div class="monthly-festival-name">'+esc(labelFestival(e.name,te))+'</div></div>').join("");
+  }
   function labelFestival(name,te){
     if(!te)return name;
     return FEST_TE[name]||name;
@@ -201,6 +237,7 @@
     for(let i=0;i<first;i++)grid.insertAdjacentHTML("beforeend",'<div class="calendar-day calendar-empty"></div>');
     loadMonth(y,m,document.getElementById("pcity").value).then(({rows,festivalMap,sourceCity})=>{
       const byDate=Object.fromEntries(rows.map(r=>[r.date,r]));
+      renderFestivalList(root,y,m,festivalMap,rows,te);
       const today=indiaTodayDate();
       for(let d=1;d<=daysInMonth(y,m);d++){
         const date=y+"-"+String(m+1).padStart(2,"0")+"-"+String(d).padStart(2,"0");
