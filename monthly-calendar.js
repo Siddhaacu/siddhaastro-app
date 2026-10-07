@@ -110,8 +110,9 @@
       (map[date] ||= []).push(String(name));
     };
     const dateList=v=>{
-      if(typeof v==="string")return [v];
+      if(typeof v==="string")return /^\\d{4}-\\d{2}-\\d{2}/.test(v) ? [v] : [];
       if(Array.isArray(v))return v.flatMap(dateList);
+      if(v&&typeof v==="object")return Object.values(v).flatMap(dateList);
       return [];
     };
     const walk=(node)=>{
