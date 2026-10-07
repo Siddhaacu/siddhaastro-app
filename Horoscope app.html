@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horoscope - Siddha Astro</title>
+    <link rel="stylesheet" href="app-theme.css">
+    <style>
+        .rashi-selector-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: var(--spacing-md);
+            margin: var(--spacing-lg) 0;
+        }
+
+        .rashi-card {
+            background: var(--bg-secondary);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .rashi-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 6px 16px var(--shadow);
+            transform: translateY(-5px);
+        }
+
+        .rashi-card.active {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+            border-color: var(--accent);
+            color: #000;
+        }
+
+        .rashi-icon {
+            font-size: calc(2.5em * var(--scale));
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .rashi-name {
+            font-size: calc(1em * var(--scale));
+            font-weight: 600;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .rashi-english {
+            font-size: calc(0.8em * var(--scale));
+            opacity: 0.7;
+            color: var(--text-secondary);
+        }
+
+        .rashi-card.active .rashi-english {
+            opacity: 0.8;
+        }
+
+        .horoscope-display {
+            background: var(--bg-secondary);
+            border-left: 4px solid var(--spiritual-gold);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            margin-top: var(--spacing-lg);
+        }
+
+        .horoscope-date {
+            font-size: calc(0.9em * var(--scale));
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-md);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .horoscope-rashi-title {
+            font-size: calc(1.5em * var(--scale));
+            color: var(--accent);
+            margin-bottom: var(--spacing-md);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+
+        .horoscope-icon {
+            font-size: calc(2em * var(--scale));
+        }
+
+        .horoscope-content {
+            display: grid;
+            gap: var(--spacing-lg);
+        }
+
+        .horoscope-section {
+            background: var(--bg-tertiary);
+            padding: var(--spacing-lg);
+            border-radius: 8px;
+            border-left: 3px solid var(--accent);
+        }
+
+        .horoscope-section-title {
+            font-size: calc(1.05em * var(--scale));
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .horoscope-section-text {
+            font-size: calc(0.95em * var(--scale));
+            color: var(--text-primary);
+            line-height: 1.8;
+        }
+
+        .lucky-elements {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-md);
+        }
+
+        .lucky-item {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+            color: #000;
+            padding: var(--spacing-md);
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .lucky-label {
+            font-size: calc(0.75em * var(--scale));
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: var(--spacing-xs);
+            opacity: 0.8;
+        }
+
+        .lucky-value {
+            font-size: calc(1em * var(--scale));
+        }
+
+        .cosmic-message {
+            background: linear-gradient(135deg, var(--spiritual-purple) 0%, var(--spiritual-blue) 100%);
+            color: white;
+            padding: var(--spacing-xl);
+            border-radius: 12px;
+            text-align: center;
+            margin-top: var(--spacing-lg);
+        }
+
+        .cosmic-icon {
+            font-size: calc(2em * var(--scale));
+            margin-bottom: var(--spacing-md);
+        }
+
+        .cosmic-text {
+            font-size: calc(1em * var(--scale));
+            font-style: italic;
+            line-height: 1.8;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: var(--spacing-xl);
+            color: var(--text-secondary);
+        }
+
+        .empty-icon {
+            font-size: calc(3em * var(--scale));
+            margin-bottom: var(--spacing-md);
+        }
+
+        .empty-text {
+            font-size: calc(1em * var(--scale));
+        }
+    </style>
+</head>
+<body class="dark-mode">
+    <div class="app-container">
+        <!-- Header -->
+        <div class="app-header">
+            <h1>☀️ Horoscope</h1>
+            <p class="app-header-subtitle">Daily Rashi Predictions</p>
+        </div>
+
+        <!-- Controls Bar -->
+        <div class="app-content" style="padding-top: 0;">
+            <div class="controls-bar">
+                <div class="theme-toggle">
+                    <span>Theme:</span>
+                    <button class="theme-toggle-btn" id="theme-toggle-btn">☀️</button>
+                </div>
+                <div class="font-controls">
+                    <button class="font-control-btn" id="font-decrease-btn">−</button>
+                    <span class="font-size-display" id="font-size-display">100%</span>
+                    <button class="font-control-btn" id="font-increase-btn">+</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="app-content">
+            <!-- Rashi Selector -->
+            <div class="spiritual-card">
+                <div class="spiritual-card-title">
+                    <span class="spiritual-card-icon">🔮</span>
+                    Select Your Rashi
+                </div>
+                <div class="rashi-selector-grid" id="rashiGrid">
+                    <!-- Rashi cards will be generated here -->
+                </div>
+            </div>
+
+            <!-- Horoscope Display -->
+            <div id="horoscopeDisplay">
+                <div class="empty-state">
+                    <div class="empty-icon">✨</div>
+                    <div class="empty-text">Select your Rashi to view daily predictions</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <a href="index-app.html" class="nav-item">
+            <div class="nav-icon">🏠</div>
+            <div class="nav-label">Home</div>
+        </a>
+        <a href="panchangam-app.html" class="nav-item">
+            <div class="nav-icon">📅</div>
+            <div class="nav-label">Panchangam</div>
+        </a>
+        <a href="horoscope-app.html" class="nav-item active">
+            <div class="nav-icon">☀️</div>
+            <div class="nav-label">Horoscope</div>
+        </a>
+        <a href="kundali-app.html" class="nav-item">
+            <div class="nav-icon">📊</div>
+            <div class="nav-label">Kundali</div>
+        </a>
+        <a href="more-app.html" class="nav-item">
+            <div class="nav-icon">⭐</div>
+            <div class="nav-label">More</div>
+        </a>
+    </div>
+
+    <script src="app-controls.js"></script>
+    <script src="horoscope-free-api.js"></script>
+    <script>
+        // Rashi data
+        const rashis = [
+            { name: 'Mesha', english: 'Aries', icon: '♈' },
+            { name: 'Vrishabha', english: 'Taurus', icon: '♉' },
+            { name: 'Mithuna', english: 'Gemini', icon: '♊' },
+            { name: 'Karka', english: 'Cancer', icon: '♋' },
+            { name: 'Simha', english: 'Leo', icon: '♌' },
+            { name: 'Kanya', english: 'Virgo', icon: '♍' },
+            { name: 'Tula', english: 'Libra', icon: '♎' },
+            { name: 'Vrischika', english: 'Scorpio', icon: '♏' },
+            { name: 'Dhanu', english: 'Sagittarius', icon: '♐' },
+            { name: 'Makara', english: 'Capricorn', icon: '♑' },
+            { name: 'Kumbha', english: 'Aquarius', icon: '♒' },
+            { name: 'Meena', english: 'Pisces', icon: '♓' }
+        ];
+
+        // Initialize rashi selector
+        function initRashiSelector() {
+            const rashiGrid = document.getElementById('rashiGrid');
+            rashiGrid.innerHTML = '';
+
+            rashis.forEach(rashi => {
+                const card = document.createElement('div');
+                card.className = 'rashi-card';
+                card.innerHTML = `
+                    <div class="rashi-icon">${rashi.icon}</div>
+                    <div class="rashi-name">${rashi.name}</div>
+                    <div class="rashi-english">${rashi.english}</div>
+                `;
+                card.addEventListener('click', () => selectRashi(rashi.name));
+                rashiGrid.appendChild(card);
+            });
+        }
+
+        // Select rashi and display horoscope
+        function selectRashi(rashiName) {
+            // Update active card
+            document.querySelectorAll('.rashi-card').forEach((card, index) => {
+                card.classList.remove('active');
+                if (rashis[index].name === rashiName) {
+                    card.classList.add('active');
+                }
+            });
+
+            // Get horoscope data
+            const horoscope = window.SiddhaHoroscope.getTodayHoroscope(rashiName);
+            displayHoroscope(horoscope, rashiName);
+        }
+
+        // Display horoscope
+        function displayHoroscope(horoscope, rashiName) {
+            const rashi = rashis.find(r => r.name === rashiName);
+            const today = new Date().toLocaleDateString('en-US', { 
+                weekday: 'long', 
+                month: 'long', 
+                day: 'numeric',
+                year: 'numeric'
+            });
+
+            let html = `
+                <div class="horoscope-display">
+                    <div class="horoscope-date">📅 ${today}</div>
+                    <div class="horoscope-rashi-title">
+                        <span class="horoscope-icon">${rashi.icon}</span>
+                        <div>
+                            <div>${rashi.name}</div>
+                            <div style="font-size: 0.7em; color: var(--text-secondary);">${rashi.english}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="horoscope-content">
+            `;
+
+            if (horoscope.daily) {
+                html += `
+                    <div class="horoscope-section">
+                        <div class="horoscope-section-title">📆 Daily Prediction</div>
+                        <div class="horoscope-section-text">${horoscope.daily}</div>
+                    </div>
+                `;
+            }
+
+            if (horoscope.career) {
+                html += `
+                    <div class="horoscope-section">
+                        <div class="horoscope-section-title">💼 Career</div>
+                        <div class="horoscope-section-text">${horoscope.career}</div>
+                    </div>
+                `;
+            }
+
+            if (horoscope.love) {
+                html += `
+                    <div class="horoscope-section">
+                        <div class="horoscope-section-title">💕 Love & Relationships</div>
+                        <div class="horoscope-section-text">${horoscope.love}</div>
+                    </div>
+                `;
+            }
+
+            if (horoscope.health) {
+                html += `
+                    <div class="horoscope-section">
+                        <div class="horoscope-section-title">🏥 Health</div>
+                        <div class="horoscope-section-text">${horoscope.health}</div>
+                    </div>
+                `;
+            }
+
+            // Lucky Elements
+            html += `
+                <div class="horoscope-section">
+                    <div class="horoscope-section-title">✨ Lucky Elements</div>
+                    <div class="lucky-elements">
+                        <div class="lucky-item">
+                            <div class="lucky-label">Color</div>
+                            <div class="lucky-value">${horoscope.luckyColor || '—'}</div>
+                        </div>
+                        <div class="lucky-item">
+                            <div class="lucky-label">Number</div>
+                            <div class="lucky-value">${horoscope.luckyNumber || '—'}</div>
+                        </div>
+                        <div class="lucky-item">
+                            <div class="lucky-label">Stone</div>
+                            <div class="lucky-value">${horoscope.luckyStone || '—'}</div>
+                        </div>
+                        <div class="lucky-item">
+                            <div class="lucky-label">Metal</div>
+                            <div class="lucky-value">${horoscope.luckyMetal || '—'}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            html += `
+                    </div>
+                    
+                    <div class="cosmic-message">
+                        <div class="cosmic-icon">🌟</div>
+                        <div class="cosmic-text">
+                            "As the stars align above, so does your destiny unfold. Trust the cosmic forces and embrace your journey with wisdom."
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('horoscopeDisplay').innerHTML = html;
+        }
+
+        // Initialize on page load
+        window.addEventListener('load', () => {
+            console.log('☀️ Horoscope App loaded');
+            initRashiSelector();
+            
+            // Auto-select today's rashi based on moon position
+            if (window.SiddhaHoroscope) {
+                const allHoroscopes = window.SiddhaHoroscope.getAllRashiHoroscopes();
+                if (allHoroscopes && allHoroscopes[0]) {
+                    const firstRashi = rashis[0];
+                    selectRashi(firstRashi.name);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
