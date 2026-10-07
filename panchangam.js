@@ -6,6 +6,7 @@
 const PANCHANG_API="https://nityapanchangam.com/api/panchangam.php";
 const FALLBACK_API="https://api.apimitra.in/panchang";
 const ENRICH_API="https://jagannatha-hora-359167915530.europe-west1.run.app/panchang";
+const TRANSITION_API="https://shastrapanchangam.com/api/v1/day";
 const CITIES={
  hyderabad:{name:"Hyderabad",lat:17.385,lng:78.486,slug:"hyderabad"},
  bangalore:{name:"Bengaluru",lat:12.9716,lng:77.5946,slug:"bangalore"},
@@ -98,6 +99,66 @@ function formatWindows(value){
   return formatWindow(value)||String(value);
 }
 
+function previousIndiaDate(dateStr){
+  const parts=dateStr.split("-").map(Number);
+  const d=new Date(Date.UTC(parts[0],parts[1]-1,parts[2]-1));
+  return d.toISOString().slice(0,10);
+}
+function transitionValue(value){
+  if(value==null)return null;
+  if(typeof value==="number")return {minutes:((Math.round(value)%1440)+1440)%1440,dayOffset:Math.floor(value/1440)};
+  const s=String(value).trim();
+  const iso=s.match(/(\d{4}-\d{2}-\d{2})T(\d{2}):(\d{2})/);
+  if(iso)return {date:iso[1],minutes:Number(iso[2])*60+Number(iso[3])};
+  const tm=s.match(/(\d{1,2}):(\d{2})\s*(am|pm)?/i);
+  if(tm){let h=Number(tm[1]),m=Number(tm[2]);if(tm[3]){const ap=tm[3].toLowerCase();if(ap==="pm"&&h<12)h+=12;if(ap==="am"&&h===12)h=0;}return {minutes:h*60+m};}
+  return null;
+}
+function findTransition(obj,kind){
+  let found=null;
+  const walk=node=>{
+    if(found||node==null)return;
+    if(Array.isArray(node)){node.forEach(walk);return;}
+    if(typeof node!=="object")return;
+    for(const [k,v] of Object.entries(node)){
+      const key=k.toLowerCase().replace(/[^a-z]/g,"");
+      if(key.includes(kind)&&(key.includes("end")||key.includes("until")||key.includes("finish"))){
+        const t=transitionValue(v);if(t){found=t;return;}
+      }
+      if(key===kind&&v&&typeof v==="object"){
+        for(const [kk,vv] of Object.entries(v)){
+          const kk2=kk.toLowerCase().replace(/[^a-z]/g,"");
+          if(kk2.includes("end")||kk2.includes("until")||kk2.includes("finish")){const t=transitionValue(vv);if(t){found=t;return;}}
+        }
+      }
+      walk(v);if(found)return;
+    }
+  };
+  walk(obj);return found;
+}
+function transitionLabel(start,end){
+  if(!end)return "";
+  const fmt=t=>{
+    if(!t)return "";
+    let h=Math.floor(t.minutes/60),m=t.minutes%60;
+    const ap=h>=12?"PM":"AM";h=h%12||12;
+    return h+":"+String(m).padStart(2,"0")+" "+ap;
+  };
+  return start?fmt(start)+" – "+fmt(end):fmt(end);
+}
+async function fetchTransitionTimings(dateStr,city){
+  if(!city?.slug)return {};
+  try{
+    const today=await fetchJson(TRANSITION_API+"/"+city.slug+"/"+dateStr+".json");
+    const previous=await fetchJson(TRANSITION_API+"/"+city.slug+"/"+previousIndiaDate(dateStr)+".json");
+    return {
+      tithiTiming:transitionLabel(findTransition(previous,"tithi"),findTransition(today,"tithi")),
+      nakshatraTiming:transitionLabel(findTransition(previous,"nakshatra"),findTransition(today,"nakshatra")),
+      timingSource:"Shastra Panchangam"
+    };
+  }catch(e){console.warn("Transition timing source unavailable",e);return {};}
+}
+
 async function enrichCalendarIdentity(base,dateStr,c){
   try{
     const r=await fetch(ENRICH_API,{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify({date:dateStr,latitude:c.lat,longitude:c.lng,timezone:5.5,ayanamsa_mode:"LAHIRI"})});
@@ -129,7 +190,7 @@ async function fetchPanchangam(date=indiaToday(),city=DEFAULT_CITY){
   try{
     const q=new URLSearchParams({date:dateStr,city:c.slug||"hyderabad"});
     const d=await fetchJson(`${PANCHANG_API}?${q}`);
-    if(d?.date)return enrichCalendarIdentity(normalizePrimary(d,c),dateStr,c);
+    if(d?.date){const base=await enrichCalendarIdentity(normalizePrimary(d,c),dateStr,c);return {...base,...await fetchTransitionTimings(dateStr,c)};}
   }catch(e){
     console.warn("Primary Panchang source unavailable",e);
   }
@@ -137,7 +198,7 @@ async function fetchPanchangam(date=indiaToday(),city=DEFAULT_CITY){
   try{
     const q=new URLSearchParams({date:dateStr,city:c.slug||"hyderabad"});
     const d=await fetchJson(`${FALLBACK_API}?${q}`);
-    if(d?.date)return enrichCalendarIdentity(normalizeFallback(d,c),dateStr,c);
+    if(d?.date){const base=await enrichCalendarIdentity(normalizeFallback(d,c),dateStr,c);return {...base,...await fetchTransitionTimings(dateStr,c)};}
   }catch(e){
     console.warn("Fallback Panchang source unavailable",e);
   }
@@ -181,5 +242,6 @@ window.SiddhaPanchangam={
   indiaToday,
   cityConfig,
   cities:CITIES,
-  translateValue:translatePanchangValue
+  translateValue:translatePanchangValue,
+  formatTransition:transitionLabel
 };
