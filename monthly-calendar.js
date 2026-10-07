@@ -196,7 +196,13 @@
     "2031-06-22":["Jagannath Rathyatra"],"2031-07-04":["Guru Purnima"],"2031-08-02":["Raksha Bandhan"],"2031-08-09":["Krishna Janmashtami"],
     "2031-09-20":["Ganesh Chaturthi"],"2031-08-30":["Onam"],"2031-10-23":["Durga Ashtami"],"2031-10-24":["Maha Navami"],"2031-10-25":["Dussehra"],
     "2031-11-02":["Karwa Chauth"],"2031-11-13":["Naraka Chaturdashi"],"2031-11-14":["Dhanteras","Lakshmi Puja","Deepavali"],
-    "2031-11-15":["Govardhan Puja"],"2031-11-16":["Bhai Dooj"],"2031-11-20":["Chhath Puja"],"2031-11-28":["Kartika Purnima","Guru Nanak Jayanti"]
+    "2031-11-15":["Govardhan Puja"],"2031-11-16":["Bhai Dooj"],"2031-11-20":["Chhath Puja"],"2031-11-28":["Kartika Purnima","Karthika Deepam","Guru Nanak Jayanti"],
+    "2026-01-15":["Kanuma"],"2026-01-16":["Mukkanuma"],"2026-01-25":["Ratha Saptami"],"2026-08-21":["Varalakshmi Vratam"],"2026-08-26":["Raksha Bandhan"],"2026-09-14":["Vinayaka Chavithi"],"2026-11-13":["Nagula Chavithi"],"2026-11-20":["Devutthana Ekadashi"],"2026-11-24":["Karthika Purnima","Karthika Deepam"],"2026-12-14":["Naga Panchami"],"2026-12-20":["Vaikuntha Ekadashi"],
+    "2027-02-13":["Ratha Saptami"],"2027-05-31":["Hanuman Jayanti"],"2027-07-04":["Bonalu"],"2027-07-14":["Tholi Ekadashi"],"2027-08-06":["Naga Panchami"],"2027-08-13":["Varalakshmi Vratam"],"2027-09-04":["Vinayaka Chavithi"],"2027-11-02":["Nagula Chavithi"],"2027-11-11":["Ksheerabdi Dwadashi (Tulasi Vivah)"],"2027-11-14":["Karthika Purnima","Karthika Deepam"],"2027-12-03":["Subrahmanya Shashti"],"2027-12-13":["Dattatreya Jayanti"],
+    "2028-02-03":["Ratha Saptami"],"2028-05-19":["Hanuman Jayanti"],"2028-08-04":["Varalakshmi Vratam"],"2028-08-23":["Vinayaka Chavithi"],"2028-10-21":["Nagula Chavithi"],"2028-10-30":["Ksheerabdi Dwadashi (Tulasi Vivah)"],"2028-11-02":["Karthika Purnima","Karthika Deepam"],"2028-11-21":["Subrahmanya Shashti"],"2028-12-01":["Dattatreya Jayanti"],
+    "2029-01-22":["Ratha Saptami"],"2029-06-06":["Hanuman Jayanti"],"2029-08-24":["Varalakshmi Vratam"],"2029-09-11":["Vinayaka Chavithi"],"2029-11-09":["Nagula Chavithi"],"2029-11-17":["Ksheerabdi Dwadashi (Tulasi Vivah)"],"2029-11-21":["Karthika Purnima","Karthika Deepam"],"2029-12-10":["Subrahmanya Shashti"],"2029-12-20":["Dattatreya Jayanti"],
+    "2030-01-09":["Ratha Saptami"],"2030-05-26":["Hanuman Jayanti"],"2030-08-09":["Varalakshmi Vratam"],"2030-09-01":["Vinayaka Chavithi"],"2030-10-30":["Nagula Chavithi"],"2030-11-06":["Ksheerabdi Dwadashi (Tulasi Vivah)"],"2030-11-10":["Karthika Purnima","Karthika Deepam"],"2030-11-29":["Subrahmanya Shashti"],"2030-12-09":["Dattatreya Jayanti"],
+    "2031-01-29":["Ratha Saptami"],"2031-05-16":["Hanuman Jayanti"],"2031-08-01":["Varalakshmi Vratam"],"2031-09-20":["Vinayaka Chavithi"],"2031-11-18":["Nagula Chavithi"],"2031-11-25":["Ksheerabdi Dwadashi (Tulasi Vivah)"],"2031-11-28":["Karthika Purnima","Karthika Deepam"],"2031-12-19":["Subrahmanya Shashti"],"2031-12-28":["Dattatreya Jayanti"]
   };
 
   const SANKRANTI_NAMES=["Mesha","Vrishabha","Mithuna","Karka","Simha","Kanya","Tula","Vrischika","Dhanu","Makara","Kumbha","Meena"];
@@ -263,6 +269,23 @@
     }
     list.innerHTML=unique.map(e=>'<div class="monthly-festival-row"><div class="monthly-festival-date">'+esc(festivalDateLabel(e.date,te))+'</div><div class="monthly-festival-name">'+esc(labelFestival(e.name,te))+'</div></div>').join("");
   }
+  Object.assign(FEST_TE,{
+    "Makara Sankranti":"మకర సంక్రాంతి","Pongal":"పొంగల్","Bhogi":"భోగి","Kanuma":"కనుమ","Mukkanuma":"ముక్కనుమ",
+    "Vasant Panchami":"వసంత పంచమి","Ratha Saptami":"రథ సప్తమి","Maha Shivaratri":"మహా శివరాత్రి","Holika Dahan":"హోలికా దహనం","Holi":"హోళీ",
+    "Ugadi":"ఉగాది","Gudi Padwa":"గుడి పడ్వా","Rama Navami":"శ్రీ రామ నవమి","Akshaya Tritiya":"అక్షయ తృతీయ","Hanuman Jayanti":"హనుమాన్ జయంతి",
+    "Jagannath Rathyatra":"జగన్నాథ రథయాత్ర","Guru Purnima":"గురు పౌర్ణమి","Naga Panchami":"నాగ పంచమి","Varalakshmi Vratam":"వరలక్ష్మీ వ్రతం",
+    "Raksha Bandhan":"రక్షా బంధన్","Krishna Janmashtami":"శ్రీ కృష్ణ జన్మాష్టమి","Ganesh Chaturthi":"వినాయక చవితి","Vinayaka Chavithi":"వినాయక చవితి",
+    "Navratri Begins":"నవరాత్రులు ప్రారంభం","Ghatasthapana":"ఘటస్థాపన","Durga Ashtami":"దుర్గాష్టమి","Maha Navami":"మహానవమి",
+    "Dussehra":"దసరా","Vijayadashami":"విజయదశమి","Atla Tadde":"అట్ల తద్దె","Naraka Chaturdashi":"నరక చతుర్దశి","Dhanteras":"ధన త్రయోదశి",
+    "Lakshmi Puja":"లక్ష్మీ పూజ","Deepavali":"దీపావళి","Diwali":"దీపావళి","Govardhan Puja":"గోవర్ధన పూజ","Bhai Dooj":"భాయ్ దూజ్",
+    "Nagula Chavithi":"నాగుల చవితి","Devutthana Ekadashi":"దేవుత్థాన ఏకాదశి","Ksheerabdi Dwadashi (Tulasi Vivah)":"క్షీరాబ్ధి ద్వాదశి (తులసీ వివాహం)",
+    "Tulasi Vivah":"తులసీ వివాహం","Karthika Purnima":"కార్తీక పౌర్ణమి","Kartika Purnima":"కార్తీక పౌర్ణమి","Karthika Deepam":"కార్తీక దీపం",
+    "Subrahmanya Shashti":"సుబ్రహ్మణ్య షష్ఠి","Dattatreya Jayanti":"దత్తాత్రేయ జయంతి","Mukkoti (Vaikuntha) Ekadashi":"ముక్కోటి వైకుంఠ ఏకాదశి",
+    "Vaikuntha Ekadashi":"వైకుంఠ ఏకాదశి","Tholi Ekadashi":"తొలి ఏకాదశి","Nirjala Ekadashi":"నిర్జల ఏకాదశి","Bonalu":"బోనాలు",
+    "Bathukamma":"బతుకమ్మ","Karthika Somavaram":"కార్తీక సోమవారం","Karthika Masam":"కార్తీక మాసం","Sankashti Chaturthi":"సంకష్టహర చతుర్థి",
+    "Masik Shivaratri":"మాస శివరాత్రి"
+  });
+
   function labelFestival(name,te){
     if(!te)return name;
     return FEST_TE[name]||name;
