@@ -110,5 +110,5 @@ const VISHNU_SAHASRANAMA = [
 ];
 function getIndiaDateKey(){return new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Kolkata',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date())}
 function getTodayVishnuSloka(){const [y,m,d]=getIndiaDateKey().split('-').map(Number);const today=Date.UTC(y,m-1,d);const epoch=Date.UTC(2026,0,1);const index=Math.floor((today-epoch)/86400000)%VISHNU_SAHASRANAMA.length;return {number:index+1,text:VISHNU_SAHASRANAMA[(index+VISHNU_SAHASRANAMA.length)%VISHNU_SAHASRANAMA.length]}}
-function renderDailySloka(){const s=getTodayVishnuSloka();const n=document.getElementById('slokaNumber'),t=document.getElementById('slokaTelugu');if(!n||!t)return;n.textContent='Sloka '+s.number+' of 108';t.textContent=s.text}
+function renderDailySloka(){const s=getTodayVishnuSloka();const n=document.getElementById('slokaNumber'),t=document.getElementById('slokaTelugu');if(!n||!t)return;n.textContent='Sloka '+s.number+' of 107';t.textContent=s.text}
 document.addEventListener('DOMContentLoaded',()=>{renderDailySloka();const now=new Date(),next=new Date(now);next.setHours(24,0,0,0);setTimeout(()=>{renderDailySloka();setInterval(renderDailySloka,86400000)},next-now)});
