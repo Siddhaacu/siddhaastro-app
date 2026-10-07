@@ -46,3 +46,8 @@
 .monthly-book-link small{display:block;margin-top:2px;color:var(--muted);font-size:.58rem;line-height:1.25}
 .monthly-book-arrow{font-size:1.15rem;color:var(--accent);font-weight:900}
 @media(max-width:480px){.monthly-book-list{grid-template-columns:1fr}.monthly-book-link{padding:9px 10px}.monthly-book-link strong{font-size:.7rem}}
+
+/* Clean global navigation and reader UI */
+.lang-btn,[data-lang]{display:none!important}
+.book-back,.script-back{display:none!important}
+img[src$="12.png"],img[src*="/12.png"],img[src*="\\12.png"]{display:none!important}
