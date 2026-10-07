@@ -1,0 +1,358 @@
+/* ============================================
+   SIDDHA ASTRO - APP CONTROLS
+   Theme Switching & Font Size Management
+   ============================================ */
+
+// ============================================
+// THEME MANAGEMENT
+// ============================================
+
+class ThemeManager {
+  constructor() {
+    this.LIGHT_MODE = 'light-mode';
+    this.DARK_MODE = 'dark-mode';
+    this.STORAGE_KEY = 'siddha-theme';
+    this.init();
+  }
+
+  init() {
+    // Get saved theme or default to dark mode
+    const savedTheme = localStorage.getItem(this.STORAGE_KEY) || this.DARK_MODE;
+    this.setTheme(savedTheme);
+    this.setupToggleButton();
+  }
+
+  setTheme(theme) {
+    // Remove both classes
+    document.body.classList.remove(this.LIGHT_MODE, this.DARK_MODE);
+    
+    // Add the new theme class
+    document.body.classList.add(theme);
+    
+    // Save to localStorage
+    localStorage.setItem(this.STORAGE_KEY, theme);
+    
+    // Update toggle button
+    this.updateToggleButton(theme);
+    
+    console.log(`✨ Theme changed to: ${theme}`);
+  }
+
+  toggleTheme() {
+    const currentTheme = document.body.classList.contains(this.DARK_MODE) 
+      ? this.DARK_MODE 
+      : this.LIGHT_MODE;
+    
+    const newTheme = currentTheme === this.DARK_MODE ? this.LIGHT_MODE : this.DARK_MODE;
+    this.setTheme(newTheme);
+  }
+
+  setupToggleButton() {
+    const toggleBtn = document.getElementById('theme-toggle-btn');
+    if (toggleBtn) {
+      toggleBtn.addEventListener('click', () => this.toggleTheme());
+    }
+  }
+
+  updateToggleButton(theme) {
+    const toggleBtn = document.getElementById('theme-toggle-btn');
+    if (toggleBtn) {
+      // 🌙 = moon (dark mode), ☀️ = sun (light mode)
+      toggleBtn.innerHTML = theme === this.DARK_MODE ? '☀️' : '🌙';
+      toggleBtn.title = theme === this.DARK_MODE ? 'Switch to Light Mode' : 'Switch to Dark Mode';
+    }
+  }
+
+  isDarkMode() {
+    return document.body.classList.contains(this.DARK_MODE);
+  }
+
+  isLightMode() {
+    return document.body.classList.contains(this.LIGHT_MODE);
+  }
+}
+
+// ============================================
+// FONT SIZE MANAGEMENT
+// ============================================
+
+class FontSizeManager {
+  constructor() {
+    this.MIN_SCALE = 0.8;
+    this.MAX_SCALE = 1.5;
+    this.STEP = 0.1;
+    this.DEFAULT_SCALE = 1;
+    this.STORAGE_KEY = 'siddha-font-scale';
+    this.init();
+  }
+
+  init() {
+    // Get saved scale or use default
+    const savedScale = parseFloat(localStorage.getItem(this.STORAGE_KEY)) || this.DEFAULT_SCALE;
+    this.setScale(savedScale);
+    this.setupControls();
+  }
+
+  setScale(scale) {
+    // Clamp between min and max
+    scale = Math.max(this.MIN_SCALE, Math.min(this.MAX_SCALE, scale));
+    
+    // Set CSS variable
+    document.documentElement.style.setProperty('--scale', scale);
+    
+    // Save to localStorage
+    localStorage.setItem(this.STORAGE_KEY, scale);
+    
+    // Update display
+    this.updateDisplay(scale);
+    
+    console.log(`📝 Font scale changed to: ${(scale * 100).toFixed(0)}%`);
+  }
+
+  increase() {
+    const current = parseFloat(localStorage.getItem(this.STORAGE_KEY)) || this.DEFAULT_SCALE;
+    this.setScale(current + this.STEP);
+  }
+
+  decrease() {
+    const current = parseFloat(localStorage.getItem(this.STORAGE_KEY)) || this.DEFAULT_SCALE;
+    this.setScale(current - this.STEP);
+  }
+
+  reset() {
+    this.setScale(this.DEFAULT_SCALE);
+  }
+
+  setupControls() {
+    const increaseBtn = document.getElementById('font-increase-btn');
+    const decreaseBtn = document.getElementById('font-decrease-btn');
+    const resetBtn = document.getElementById('font-reset-btn');
+
+    if (increaseBtn) {
+      increaseBtn.addEventListener('click', () => this.increase());
+    }
+
+    if (decreaseBtn) {
+      decreaseBtn.addEventListener('click', () => this.decrease());
+    }
+
+    if (resetBtn) {
+      resetBtn.addEventListener('click', () => this.reset());
+    }
+  }
+
+  updateDisplay(scale) {
+    const display = document.getElementById('font-size-display');
+    if (display) {
+      const percentage = Math.round(scale * 100);
+      display.textContent = `${percentage}%`;
+    }
+  }
+
+  getScale() {
+    return parseFloat(localStorage.getItem(this.STORAGE_KEY)) || this.DEFAULT_SCALE;
+  }
+}
+
+// ============================================
+// BOTTOM NAVIGATION
+// ============================================
+
+class BottomNavigation {
+  constructor() {
+    this.init();
+  }
+
+  init() {
+    this.setupActiveState();
+    this.setupNavigation();
+  }
+
+  setupActiveState() {
+    const currentPage = this.getCurrentPage();
+    const navItems = document.querySelectorAll('.nav-item');
+
+    navItems.forEach(item => {
+      const href = item.getAttribute('href');
+      if (href && href.includes(currentPage)) {
+        item.classList.add('active');
+      } else {
+        item.classList.remove('active');
+      }
+    });
+  }
+
+  getCurrentPage() {
+    const path = window.location.pathname;
+    return path.substring(path.lastIndexOf('/') + 1) || 'index.html';
+  }
+
+  setupNavigation() {
+    const navItems = document.querySelectorAll('.nav-item');
+
+    navItems.forEach(item => {
+      item.addEventListener('click', (e) => {
+        // Only prevent default for anchor links
+        if (item.tagName === 'A') {
+          return;
+        }
+        
+        e.preventDefault();
+        const href = item.getAttribute('href');
+        if (href) {
+          window.location.href = href;
+        }
+      });
+
+      // Show ripple effect on click
+      item.addEventListener('click', (e) => {
+        const ripple = document.createElement('span');
+        ripple.style.position = 'absolute';
+        ripple.style.borderRadius = '50%';
+        ripple.style.background = 'rgba(255, 255, 255, 0.6)';
+        ripple.style.transform = 'scale(0)';
+        ripple.style.animation = 'ripple 0.6s ease-out';
+        item.style.position = 'relative';
+        item.style.overflow = 'hidden';
+        item.appendChild(ripple);
+        
+        setTimeout(() => ripple.remove(), 600);
+      });
+    });
+  }
+}
+
+// ============================================
+// PAGE TRANSITION EFFECTS
+// ============================================
+
+class PageTransition {
+  constructor() {
+    this.init();
+  }
+
+  init() {
+    // Fade in on page load
+    window.addEventListener('load', () => {
+      document.querySelectorAll('.app-content').forEach(el => {
+        el.classList.add('fade-in');
+      });
+    });
+
+    // Fade out on navigation
+    document.addEventListener('click', (e) => {
+      const link = e.target.closest('a');
+      if (link && !link.target && link.href && !link.href.startsWith('#')) {
+        const content = document.querySelector('.app-content');
+        if (content) {
+          content.style.opacity = '0';
+          content.style.transition = 'opacity 0.3s ease';
+        }
+      }
+    });
+  }
+}
+
+// ============================================
+// INITIALIZATION
+// ============================================
+
+let themeManager;
+let fontSizeManager;
+let bottomNavigation;
+let pageTransition;
+
+// Initialize when DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initApp);
+} else {
+  initApp();
+}
+
+function initApp() {
+  console.log('🌟 Initializing Siddha Astro App Controls...');
+  
+  themeManager = new ThemeManager();
+  fontSizeManager = new FontSizeManager();
+  bottomNavigation = new BottomNavigation();
+  pageTransition = new PageTransition();
+  
+  console.log('✅ App Controls initialized successfully');
+}
+
+// ============================================
+// UTILITY FUNCTIONS
+// ============================================
+
+// Get current theme
+function getCurrentTheme() {
+  return themeManager.isDarkMode() ? 'dark' : 'light';
+}
+
+// Get current font scale
+function getCurrentFontScale() {
+  return fontSizeManager.getScale();
+}
+
+// Reload app state
+function reloadAppState() {
+  themeManager.init();
+  fontSizeManager.init();
+  bottomNavigation.init();
+  console.log('🔄 App state reloaded');
+}
+
+// Set accessible focus
+function setFocusOnElement(selector) {
+  const element = document.querySelector(selector);
+  if (element) {
+    element.focus();
+    element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
+
+// Add animation style
+function addAnimationStyles() {
+  const style = document.createElement('style');
+  style.innerHTML = `
+    @keyframes ripple {
+      to {
+        transform: scale(4);
+        opacity: 0;
+      }
+    }
+  `;
+  document.head.appendChild(style);
+}
+
+addAnimationStyles();
+
+// ============================================
+// PERFORMANCE MONITORING
+// ============================================
+
+function logPerformanceMetrics() {
+  if (window.performance && window.performance.timing) {
+    const timing = window.performance.timing;
+    const pageLoadTime = timing.loadEventEnd - timing.navigationStart;
+    console.log(`⚡ Page load time: ${pageLoadTime}ms`);
+  }
+}
+
+window.addEventListener('load', logPerformanceMetrics);
+
+// ============================================
+// EXPORT FOR TESTING
+// ============================================
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    ThemeManager,
+    FontSizeManager,
+    BottomNavigation,
+    PageTransition,
+    getCurrentTheme,
+    getCurrentFontScale,
+    reloadAppState
+  };
+}
