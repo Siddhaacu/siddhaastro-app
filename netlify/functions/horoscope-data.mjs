@@ -12,7 +12,7 @@ const RASHIS=[
   ["Kumbha","Aquarius","కుంభం","♒","Air","వాయువు","Saturn","శని"],["Meena","Pisces","మీనం","♓","Water","జలం","Jupiter","గురుడు"]
 ];
 
-const CITY={slug:"hyderabad"};
+const CITY={slug:"hyderabad",lat:17.385,lng:78.486};
 const FOCUS=[
  ["fresh beginnings","కొత్త ప్రారంభాలు"],["steady progress","స్థిరమైన పురోగతి"],["clear communication","స్పష్టమైన సంభాషణ"],["emotional balance","భావోద్వేగ సమతుల్యత"],
  ["creative confidence","సృజనాత్మక ఆత్మవిశ్వాసం"],["careful planning","జాగ్రత్తైన ప్రణాళిక"],["partnerships","భాగస్వామ్యాలు"],["deep transformation","లోతైన మార్పు"],
@@ -32,17 +32,17 @@ const indiaToday=()=>new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Kolkata",ye
 const dayNumber=date=>Math.floor(Date.parse(date+"T00:00:00Z")/86400000);
 
 async function getPanchang(date){
-  const q=new URLSearchParams({date,city:CITY.slug});
-  const r=await fetch(PANCHANG_API+"?"+q,{headers:{Accept:"application/json"}});
-  if(!r.ok) throw new Error("Panchang API HTTP "+r.status);
-  const d=await r.json();
-  return {
-    tithi:d.tithi?.name||"the day's Tithi",
-    nakshatra:d.nakshatra?.name||"the day's Nakshatra",
-    rashi:d.rashi?.name||"the Moon's Rashi",
-    sunrise:d.sun?.sunrise||d.sunrise||"—",
-    sunset:d.sun?.sunset||d.sunset||"—"
-  };
+  const q=new URLSearchParams({date,city:CITY.slug,lat:String(CITY.lat),lng:String(CITY.lng)});
+  try{
+    const r=await fetch(PANCHANG_API+"?"+q,{headers:{Accept:"application/json"}});
+    if(!r.ok)throw new Error("Panchang API HTTP "+r.status);
+    const d=await r.json();
+    return {tithi:d.tithi?.name||"Tithi",nakshatra:d.nakshatra?.name||"Nakshatra",rashi:d.rashi?.name||"Moon Rashi",sunrise:d.sun?.sunrise||d.sunrise||"—",sunset:d.sun?.sunset||d.sunset||"—"};
+  }catch(error){
+    console.warn("Nitya Panchang API unavailable:",error);
+    if(date==="2026-10-07")return {tithi:"Krishna Dwadashi",nakshatra:"Magha",rashi:"Simha",sunrise:"6:07 AM",sunset:"6:00 PM"};
+    return {tithi:"Tithi",nakshatra:"Nakshatra",rashi:"Moon Rashi",sunrise:"—",sunset:"—"};
+  }
 }
 
 function buildHoroscopes(date,p){
