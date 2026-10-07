@@ -76,6 +76,22 @@ export default async function(request){
   const date=indiaToday();
   const store=getStore(STORE_NAME,{consistency:"strong"});
   let data=await store.get(date,{type:"json"});
+  const bilingual=Boolean(
+    data?.horoscopes?.Mesha?.daily?.te &&
+    data?.horoscopes?.Mesha?.career?.te &&
+    data?.horoscopes?.Mesha?.love?.te &&
+    data?.horoscopes?.Mesha?.health?.te
+  );
+
+  // Older records were English-only. Regenerate them once so Telugu
+  // rendering has the bilingual fields it needs.
+  if(data && !bilingual){
+    try{
+      data=await generateToday(store,date);
+    }catch(error){
+      console.error("Bilingual horoscope regeneration failed:",error);
+    }
+  }
 
   if(!data){
     try{
