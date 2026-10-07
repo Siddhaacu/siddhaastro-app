@@ -1,48 +1,440 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#17102b"><link rel="icon" type="image/png" href="./logo.png"><link rel="apple-touch-icon" href="./logo.png"><title>Siddha Astro</title>
-<style>
-:root{--bg:#0e0919;--panel:#17102b;--gold:#f4c65d;--gold2:#ffe8a4;--text:#fffaf0;--muted:#b9accb;--line:#ffffff18}*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#08050e;color:var(--text);font-family:Inter,system-ui,sans-serif}body{display:flex;justify-content:center}.app{width:100%;max-width:430px;min-height:100vh;background:radial-gradient(circle at 50% 0,#38205c,#17102b 34%,#0e0919 75%);padding-bottom:88px}.top{padding:18px;background:linear-gradient(180deg,#21133b,#17102b);border-bottom:1px solid var(--line)}.topline{display:flex;align-items:center;justify-content:space-between}.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px}.brand span{color:var(--gold)}.logo{width:48px;height:48px;border-radius:15px;border:2px solid var(--gold);object-fit:cover}.lang{border:1px solid #f4c65d88;background:#ffffff0d;color:var(--gold2);border-radius:22px;padding:9px 12px;font-weight:700}.eyebrow{margin-top:22px;color:var(--gold);font-size:11px;letter-spacing:1.8px;font-weight:800}.top h1{font:700 28px Georgia,serif;line-height:1.18;margin:7px 0}.content{padding:18px}.section{display:flex;align-items:center;justify-content:space-between;margin:0 0 12px}.section h2{font-size:18px;margin:0}.section small{color:var(--muted);font-size:11px}.sloka,.panchang,.quote{border:1px solid #f4c65d55;border-radius:22px;padding:17px;background:linear-gradient(145deg,#382448,#211532);box-shadow:0 12px 30px #0003}.sloka{margin-bottom:22px}.sloka-head{display:flex;justify-content:space-between;gap:10px;align-items:center}.sloka-head strong{color:var(--gold2);font-size:15px}.sloka-head span{font-size:11px;color:var(--muted)}.sloka h3{font-size:15px;color:var(--gold);margin:16px 0 8px}.sloka pre{white-space:pre-wrap;font-family:Georgia,serif;font-size:15px;line-height:1.8;margin:0;color:var(--text)}.sloka .english{font-family:Georgia,serif;font-style:italic;color:var(--gold2)}.facts{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:15px}.fact{background:#ffffff09;border:1px solid var(--line);border-radius:14px;padding:12px}.fact span{display:block;color:var(--muted);font-size:11px}.fact b{display:block;margin-top:5px;font-size:14px}.festivals{display:flex;gap:10px;overflow-x:auto;padding:2px 2px 10px;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin:0 0 22px}.festivals::-webkit-scrollbar{display:none}.festival{flex:0 0 148px;scroll-snap-align:start;background:linear-gradient(160deg,#25183d,#17102b);border:1px solid #f4c65d33;border-radius:18px;padding:10px;text-align:left;box-shadow:0 8px 22px #0002;overflow:hidden}.festival .fimage{width:100%;height:92px;object-fit:contain;display:block;border-radius:12px;background:radial-gradient(circle,#4a2d63,#211532)}.festival .ficon{font-size:22px;line-height:1}.festival .fdate{color:var(--gold);font-size:10px;font-weight:800;margin-top:9px;letter-spacing:.4px}.festival h3{font-size:13px;margin:6px 0 4px;color:var(--gold2)}.festival p{font-size:10px;line-height:1.35;color:var(--muted);margin:0}.services{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.card{background:linear-gradient(160deg,#25183d,#17102b);border:1px solid var(--line);border-radius:18px;padding:12px 8px;text-align:center;min-height:118px;text-decoration:none;color:inherit;cursor:pointer;transition:all 0.2s}.card:hover{border-color:var(--gold);transform:translateY(-2px)}.ico{width:42px;height:42px;border-radius:14px;margin:auto;background:#f4c65d16;border:1px solid #f4c65d33;display:grid;place-items:center;font-size:23px}.card h3{font-size:12px;margin:10px 0 4px}.card p{font-size:10px;line-height:1.35;color:var(--muted);margin:0}.quote{margin-top:18px;text-align:center}.quote .mark{font-size:30px;color:var(--gold)}.quote p{font:italic 16px Georgia,serif;line-height:1.5;color:var(--gold2)}.cta{margin-top:18px;border-radius:20px;padding:18px;background:linear-gradient(135deg,#7040b0,#422268)}.cta h2{font-size:18px;margin:0 0 7px}.cta p{font-size:12px;color:#eadcf5}.btn{border:0;border-radius:24px;background:var(--gold);color:#251530;padding:12px 17px;font-weight:800;cursor:pointer}.bottom{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;display:grid;grid-template-columns:repeat(5,1fr);padding:10px 5px calc(10px + env(safe-area-inset-bottom));background:#120c21ee;backdrop-filter:blur(16px);border-top:1px solid var(--line)}.bottom a{color:var(--muted);text-decoration:none;text-align:center;font-size:10px;cursor:pointer}.bottom b{display:block;font-size:21px;line-height:24px;color:var(--gold);margin-bottom:3px}.active{color:var(--gold2)!important}.panchang-link{display:block;text-align:center;color:var(--gold);font-size:12px;font-weight:800;text-decoration:none;margin-top:15px}.panchang-link:hover{text-decoration:underline}
-</style></head>
-<body><div class="app">
-<header class="top"><div class="topline"><div class="brand"><img class="logo" src="./logo.png" alt="Siddha Astro logo"><div>Siddha <span>Astro</span></div></div><button class="lang" id="lang">తెలుగు</button></div><div class="eyebrow" id="eyebrow">GUIDANCE • WISDOM • DESTINY</div><h1 id="hero">Ancient wisdom for a brighter tomorrow.</h1></header>
-<main class="content">
-<div class="section"><h2>Today's Sloka</h2></div>
-<section class="sloka"><div class="sloka-head"><strong id="slokaCollection">Daily Sloka</strong><span id="slokaNumber"></span></div><h3>తెలుగు</h3><pre id="slokaTelugu">Loading sloka…</pre><h3>English transliteration</h3><pre class="english" id="slokaEnglish">Loading sloka…</pre></section>
-<div class="section"><h2 id="pt">Today's Panchangam</h2><small>Hyderabad</small></div><section class="panchang"><div class="sloka-head"><strong>Daily cosmic details</strong><span id="date"></span></div><div class="facts"><div class="fact">🌞 <span>Vara</span><b id="vara">Wednesday</b></div><div class="fact">🌙 <span>Thithi</span><b>To be calculated</b></div><div class="fact">⭐ <span>Nakshatra</span><b>To be calculated</b></div><div class="fact">🪔 <span>Masa</span><b>To be calculated</b></div></div><a class="panchang-link" href="./panchangam.html">View complete Panchangam →</a></section>
-<div class="section" style="margin-top:22px"><h2 id="ft">Yearly Festivals</h2><small>2026</small></div><section class="festivals" aria-label="Yearly festivals">
-<article class="festival"><div class="ficon">🪔</div><div class="fdate">1 JAN 2026</div><h3>New Year</h3><p>Gregorian New Year</p></article>
-<article class="festival"><div class="ficon">🎊</div><div class="fdate">14 JAN 2026</div><h3>Makara Sankranti</h3><p>Harvest festival</p></article>
-<article class="festival"><div class="ficon">🌾</div><div class="fdate">15 JAN 2026</div><h3>Pongal</h3><p>Tamil harvest festival</p></article>
-<article class="festival"><div class="ficon">🌙</div><div class="fdate">29 JAN 2026</div><h3>Mauni Amavasya</h3><p>Sacred new moon</p></article>
-<article class="festival"><div class="ficon">🔱</div><div class="fdate">15 FEB 2026</div><h3>Maha Shivaratri</h3><p>Night of Lord Shiva</p></article>
-<article class="festival"><div class="ficon">🎨</div><div class="fdate">4 MAR 2026</div><h3>Holi</h3><p>Festival of colours</p></article>
-<article class="festival"><div class="ficon">🌸</div><div class="fdate">19 MAR 2026</div><h3>Ugadi</h3><p>Telugu New Year</p></article>
-<article class="festival"><img class="fimage" src="https://www.pngkey.com/png/detail/28-289246_lord-rama-transparent-background-shri-ram-darbar-png.png" alt="Sri Rama"><div class="fdate">26 MAR 2026</div><h3>Sri Rama Navami</h3><p>Birth of Lord Rama</p></article>
-<article class="festival"><div class="ficon">⚡</div><div class="fdate">29 MAR 2026</div><h3>Mahavir Jayanti</h3><p>Jain festival</p></article>
-<article class="festival"><div class="ficon">🪔</div><div class="fdate">2 APR 2026</div><h3>Gudi Padwa</h3><p>Marathi New Year</p></article>
-<article class="festival"><div class="ficon">🌾</div><div class="fdate">13 APR 2026</div><h3>Vaishakhi</h3><p>Punjabi harvest</p></article>
-<article class="festival"><div class="ficon">💰</div><div class="fdate">15 APR 2026</div><h3>Akshaya Tritiya</h3><p>Auspicious day</p></article>
-<article class="festival"><div class="ficon">🛕</div><div class="fdate">25 JUN 2026</div><h3>Rath Yatra</h3><p>Chariot festival</p></article>
-<article class="festival"><img class="fimage" src="https://www.transparentpng.com/thumb/lord-krishna/De0jPc-lord-krishna-transparent-image.png" alt="Sri Krishna"><div class="fdate">4 SEP 2026</div><h3>Krishna Janmashtami</h3><p>Birth of Lord Krishna</p></article>
-<article class="festival"><img class="fimage" src="https://www.vhv.rs/dpng/d/407-4077751_famous-god-vinayaka-hd-png-photos-and-images.png" alt="Lord Ganesh"><div class="fdate">14 SEP 2026</div><h3>Ganesh Chaturthi</h3><p>Honoring Lord Ganesha</p></article>
-<article class="festival"><div class="ficon">🌙</div><div class="fdate">2 OCT 2026</div><h3>Gandhi Jayanti</h3><p>Birthday of Gandhi</p></article>
-<article class="festival"><div class="ficon">🎉</div><div class="fdate">10 OCT 2026</div><h3>Dussehra</h3><p>Victory over evil</p></article>
-<article class="festival"><img class="fimage" src="https://allpngfree.com/apf-prod-storage-api/storage/thumbnails/durga-maa-navratri-editing-png-images--thumbnail-1663866084.jpg" alt="Vijaya Durga"><div class="fdate">21 OCT 2026</div><h3>Vijaya Dashami</h3><p>Final day of Dussehra</p></article>
-<article class="festival"><div class="ficon">🪔</div><div class="fdate">8 NOV 2026</div><h3>Deepavali</h3><p>Festival of lights</p></article>
-<article class="festival"><div class="ficon">🌙</div><div class="fdate">22 NOV 2026</div><h3>Guru Nanak Jayanti</h3><p>Sikh celebration</p></article>
-<article class="festival"><div class="ficon">🎄</div><div class="fdate">25 DEC 2026</div><h3>Christmas</h3><p>Christian festival</p></article>
-</section>
-<div class="section"><h2 id="st">Explore Siddha Astro</h2><small>Choose your journey</small></div><section class="services">
-<a href="./panchangam.html" class="card"><div class="ico">📅</div><h3>Panchangam</h3><p>Daily cosmic details</p></a>
-<a href="./horoscope.html" class="card"><div class="ico">🔮</div><h3>Horoscope</h3><p>Rashi predictions</p></a>
-<a href="./kundali.html" class="card"><div class="ico">☀️</div><h3>Kundali</h3><p>Birth chart analysis</p></a>
-<a href="./tarabalam.html" class="card"><div class="ico">⭐</div><h3>Tarabalam</h3><p>Star strength</p></a>
-<a href="./chandrabalam.html" class="card"><div class="ico">🌙</div><h3>Chandrabalam</h3><p>Moon strength</p></a>
-<a href="./scriptures.html" class="card"><div class="ico">📜</div><h3>Vedic Texts</h3><p>Sacred wisdom</p></a>
-</section>
-<section class="quote"><div class="mark">"</div><p>Let the stars guide you,<br>but let your actions shape your destiny.</p></section><section class="cta"><h2>Need personal guidance?</h2><p>Book an astrology consultation with Siddha Astro.</p><button class="btn" onclick="alert('Appointment booking will be added next.')">Book Appointment →</button></section></main>
-<nav class="bottom"><a class="active" href="./index.html"><b>⌂</b>Home</a><a href="./horoscope.html"><b>☀</b>Horoscope</a><a href="./panchangam.html"><b>📅</b>Panchangam</a><a href="./scriptures.html"><b>📜</b>Scriptures</a><a href="#"><b>☷</b>More</a></nav></div>
-<script src="./daily-slokas.js"></script><script>const d=new Date();document.getElementById('date').textContent=d.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});let te=false;document.getElementById('lang').onclick=()=>{te=!te;document.getElementById('lang').textContent=te?'English':'తెలుగు';document.getElementById('eyebrow').textContent=te?'మార్గదర్శనం • జ్ఞానం • విధి':'GUIDANCE • WISDOM • DESTINY';document.getElementById('hero').textContent=te?'ప్రకాశవంతమైన రేపటి కోసం ప్రాచీన జ్ఞానం.':'Ancient wisdom for a brighter tomorrow.';document.getElementById('pt').textContent=te?'ఈరోజు పంచాంగం':"Today's Panchangam";document.getElementById('ft').textContent=te?'వార్షిక పండుగలు':'Yearly Festivals';document.getElementById('st').textContent=te?'సిద్ధ ఆస్ట్రో సేవలు':'Explore Siddha Astro';};</script>
-</body></html>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Siddha Astro - Ancient Vedic Astrology in Modern App Format">
+    <title>Siddha Astro - Home</title>
+    <link rel="stylesheet" href="app-theme.css">
+    <style>
+        .welcome-section {
+            background: linear-gradient(135deg, var(--spiritual-blue) 0%, var(--spiritual-purple) 100%);
+            color: white;
+            padding: var(--spacing-xl) var(--spacing-lg);
+            border-radius: 12px;
+            margin-bottom: var(--spacing-xl);
+            text-align: center;
+            box-shadow: 0 8px 24px var(--shadow);
+        }
+
+        .welcome-icon {
+            font-size: calc(3em * var(--scale));
+            margin-bottom: var(--spacing-md);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .welcome-text {
+            font-size: calc(1.2em * var(--scale));
+            margin-bottom: var(--spacing-md);
+            line-height: 1.8;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .feature-card {
+            background: var(--bg-secondary);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .feature-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 8px 24px var(--shadow);
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: calc(2.5em * var(--scale));
+            margin-bottom: var(--spacing-md);
+            color: var(--accent);
+        }
+
+        .feature-title {
+            font-size: calc(1.1em * var(--scale));
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .feature-desc {
+            font-size: calc(0.9em * var(--scale));
+            color: var(--text-secondary);
+        }
+
+        .today-panchangam {
+            background: var(--bg-secondary);
+            border-left: 4px solid var(--accent);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .panchangam-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-lg);
+        }
+
+        .panchangam-item {
+            background: var(--bg-tertiary);
+            padding: var(--spacing-md);
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .panchangam-label {
+            font-size: calc(0.8em * var(--scale));
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .panchangam-value {
+            font-size: calc(1.1em * var(--scale));
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .daily-sloka {
+            background: linear-gradient(135deg, var(--spiritual-purple) 0%, var(--spiritual-blue) 100%);
+            color: white;
+            padding: var(--spacing-xl);
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: var(--spacing-xl);
+            box-shadow: 0 8px 24px var(--shadow);
+        }
+
+        .sloka-title {
+            font-size: calc(0.9em * var(--scale));
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: var(--spacing-md);
+            opacity: 0.9;
+        }
+
+        .sloka-text {
+            font-size: calc(1.15em * var(--scale));
+            line-height: 2;
+            margin-bottom: var(--spacing-md);
+            font-style: italic;
+        }
+
+        .sloka-translation {
+            font-size: calc(0.95em * var(--scale));
+            opacity: 0.85;
+            margin-top: var(--spacing-md);
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+            padding-top: var(--spacing-md);
+        }
+
+        .festivals-section {
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .festivals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: var(--spacing-md);
+        }
+
+        .festival-badge {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--accent);
+            border-radius: 8px;
+            padding: var(--spacing-md);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .festival-badge:hover {
+            box-shadow: 0 4px 12px var(--shadow);
+            transform: translateY(-3px);
+        }
+
+        .festival-icon {
+            font-size: calc(1.8em * var(--scale));
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .festival-name {
+            font-size: calc(0.95em * var(--scale));
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .festival-date {
+            font-size: calc(0.85em * var(--scale));
+            color: var(--text-secondary);
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: calc(var(--spacing-md) * var(--scale)) calc(var(--spacing-lg) * var(--scale));
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+            color: #000;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            text-align: center;
+            margin: var(--spacing-sm);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(212, 175, 55, 0.4);
+        }
+
+        .about-section {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            margin-top: var(--spacing-xl);
+        }
+
+        .about-title {
+            color: var(--accent);
+            font-size: calc(1.3em * var(--scale));
+            margin-bottom: var(--spacing-md);
+        }
+
+        .about-text {
+            color: var(--text-primary);
+            font-size: calc(0.95em * var(--scale));
+            line-height: 1.8;
+            margin-bottom: var(--spacing-md);
+        }
+    </style>
+</head>
+<body class="dark-mode">
+    <div class="app-container">
+        <!-- Header -->
+        <div class="app-header">
+            <h1>🔮 Siddha Astro</h1>
+            <p class="app-header-subtitle">Ancient Vedic Wisdom for Modern Life</p>
+        </div>
+
+        <!-- Controls Bar -->
+        <div class="app-content" style="padding-top: 0;">
+            <div class="controls-bar">
+                <div class="theme-toggle">
+                    <span>Theme:</span>
+                    <button class="theme-toggle-btn" id="theme-toggle-btn" title="Toggle theme">☀️</button>
+                </div>
+                <div class="font-controls">
+                    <button class="font-control-btn" id="font-decrease-btn" title="Decrease font size">−</button>
+                    <span class="font-size-display" id="font-size-display">100%</span>
+                    <button class="font-control-btn" id="font-increase-btn" title="Increase font size">+</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="app-content">
+            <!-- Welcome Section -->
+            <div class="welcome-section">
+                <div class="welcome-icon">🌟</div>
+                <div class="welcome-text">
+                    Welcome to Siddha Astro<br>
+                    <span style="font-size: 0.9em; opacity: 0.9;">Explore Vedic Wisdom Through Modern Technology</span>
+                </div>
+            </div>
+
+            <!-- Daily Sloka -->
+            <div class="daily-sloka">
+                <div class="sloka-title">✨ Sloka of the Day ✨</div>
+                <div class="sloka-text">
+                    "तत्त्वमसि"<br>
+                    <span style="font-size: 0.9em;">(Tat Tvam Asi)</span>
+                </div>
+                <div class="sloka-translation">
+                    "Thou Art That" - The eternal truth connecting the individual soul with the universal consciousness
+                </div>
+            </div>
+
+            <!-- Features Grid -->
+            <h2 style="color: var(--accent); font-size: calc(1.5em * var(--scale)); margin: var(--spacing-xl) 0 var(--spacing-lg) 0;">
+                Explore Our Services
+            </h2>
+            <div class="features-grid">
+                <div class="feature-card" onclick="window.location.href='panchangam-app.html'">
+                    <div class="feature-icon">📅</div>
+                    <div class="feature-title">Panchangam</div>
+                    <div class="feature-desc">Daily Hindu Calendar</div>
+                </div>
+
+                <div class="feature-card" onclick="window.location.href='horoscope-app.html'">
+                    <div class="feature-icon">☀️</div>
+                    <div class="feature-title">Horoscope</div>
+                    <div class="feature-desc">Daily Predictions</div>
+                </div>
+
+                <div class="feature-card" onclick="window.location.href='kundali-app.html'">
+                    <div class="feature-icon">📊</div>
+                    <div class="feature-title">Kundali</div>
+                    <div class="feature-desc">Birth Chart Analysis</div>
+                </div>
+
+                <div class="feature-card" onclick="window.location.href='tarabalam-app.html'">
+                    <div class="feature-icon">⭐</div>
+                    <div class="feature-title">Nakshatras</div>
+                    <div class="feature-desc">Star Analysis</div>
+                </div>
+
+                <div class="feature-card" onclick="window.location.href='chandrabalam-app.html'">
+                    <div class="feature-icon">🌙</div>
+                    <div class="feature-title">Moon Phase</div>
+                    <div class="feature-desc">Lunar Calendar</div>
+                </div>
+
+                <div class="feature-card" onclick="window.location.href='scriptures-app.html'">
+                    <div class="feature-icon">📜</div>
+                    <div class="feature-title">Scriptures</div>
+                    <div class="feature-desc">Sacred Texts</div>
+                </div>
+            </div>
+
+            <!-- Today's Panchangam -->
+            <div class="today-panchangam">
+                <h2 style="color: var(--accent); font-size: calc(1.3em * var(--scale)); margin-bottom: var(--spacing-md);">
+                    📅 Today's Panchangam
+                </h2>
+                <div class="panchangam-grid">
+                    <div class="panchangam-item">
+                        <div class="panchangam-label">Vara</div>
+                        <div class="panchangam-value">Wednesday</div>
+                    </div>
+                    <div class="panchangam-item">
+                        <div class="panchangam-label">Tithi</div>
+                        <div class="panchangam-value">Shukla Dashami</div>
+                    </div>
+                    <div class="panchangam-item">
+                        <div class="panchangam-label">Nakshatra</div>
+                        <div class="panchangam-value">Punarvasu</div>
+                    </div>
+                    <div class="panchangam-item">
+                        <div class="panchangam-label">Rashi</div>
+                        <div class="panchangam-value">Mithuna</div>
+                    </div>
+                    <div class="panchangam-item">
+                        <div class="panchangam-label">Yoga</div>
+                        <div class="panchangam-value">Ayushman</div>
+                    </div>
+                    <div class="panchangam-item">
+                        <div class="panchangam-label">Sunrise</div>
+                        <div class="panchangam-value">06:15</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Festivals Section -->
+            <h2 style="color: var(--accent); font-size: calc(1.5em * var(--scale)); margin: var(--spacing-xl) 0 var(--spacing-lg) 0;">
+                🎉 Upcoming Festivals
+            </h2>
+            <div class="festivals-grid">
+                <div class="festival-badge">
+                    <div class="festival-icon">🕯️</div>
+                    <div class="festival-name">Diwali</div>
+                    <div class="festival-date">Nov 1</div>
+                </div>
+                <div class="festival-badge">
+                    <div class="festival-icon">🐘</div>
+                    <div class="festival-name">Ganesh Chaturthi</div>
+                    <div class="festival-date">Sep 7</div>
+                </div>
+                <div class="festival-badge">
+                    <div class="festival-icon">🎊</div>
+                    <div class="festival-name">Ugadi</div>
+                    <div class="festival-date">Mar 29</div>
+                </div>
+                <div class="festival-badge">
+                    <div class="festival-icon">🌾</div>
+                    <div class="festival-name">Pongal</div>
+                    <div class="festival-date">Jan 14</div>
+                </div>
+                <div class="festival-badge">
+                    <div class="festival-icon">🎯</div>
+                    <div class="festival-name">Holi</div>
+                    <div class="festival-date">Mar 14</div>
+                </div>
+                <div class="festival-badge">
+                    <div class="festival-icon">🙏</div>
+                    <div class="festival-name">Maha Shivaratri</div>
+                    <div class="festival-date">Feb 26</div>
+                </div>
+            </div>
+
+            <!-- About Section -->
+            <div class="about-section">
+                <h2 class="about-title">🕉️ About Siddha Astro</h2>
+                <p class="about-text">
+                    Siddha Astro brings ancient Vedic wisdom to modern times. Our app provides authentic astrological insights 
+                    based on traditional Hindu astrology (Jyotisha), helping you understand your cosmic purpose and navigate life 
+                    with greater awareness.
+                </p>
+                <p class="about-text">
+                    <strong>100% Free:</strong> All features are completely free to use with no hidden charges.
+                </p>
+                <p class="about-text">
+                    <strong>Privacy First:</strong> Your data is never stored or shared. All calculations happen locally on your device.
+                </p>
+            </div>
+
+            <div style="text-align: center; padding: var(--spacing-xl) 0 var(--spacing-xl) 0;">
+                <p style="color: var(--text-secondary); font-size: calc(0.85em * var(--scale));">
+                    🙏 May wisdom guide your path 🙏
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <a href="index-app.html" class="nav-item active">
+            <div class="nav-icon">🏠</div>
+            <div class="nav-label">Home</div>
+        </a>
+        <a href="panchangam-app.html" class="nav-item">
+            <div class="nav-icon">📅</div>
+            <div class="nav-label">Panchangam</div>
+        </a>
+        <a href="horoscope-app.html" class="nav-item">
+            <div class="nav-icon">☀️</div>
+            <div class="nav-label">Horoscope</div>
+        </a>
+        <a href="kundali-app.html" class="nav-item">
+            <div class="nav-icon">📊</div>
+            <div class="nav-label">Kundali</div>
+        </a>
+        <a href="more-app.html" class="nav-item">
+            <div class="nav-icon">⭐</div>
+            <div class="nav-label">More</div>
+        </a>
+    </div>
+
+    <script src="app-controls.js"></script>
+    <script src="panchangam-free-api-FIXED.js"></script>
+</body>
+</html>
