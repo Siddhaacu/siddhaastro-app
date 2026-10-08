@@ -71,3 +71,16 @@ a[href="books.html"] h1,a[href="books.html"] h2,a[href="Books.html"] h1,a[href="
 html[lang="te"] body{font-family:"Potti Sreeramulu",Manrope,system-ui,sans-serif}
 html[lang="te"] .sloka h2,html[lang="te"] .sloka-text,html[lang="te"] .sankalpam-text{font-family:"Potti Sreeramulu",serif}
 .sloka h2,.sloka-text{font-family:Manrope,system-ui,sans-serif}
+
+
+/* Potti Sreeramulu globally — use the same font in English and Telugu modes */
+html body,
+html body button,
+html body input,
+html body select,
+html body textarea,
+html body .sloka h2,
+html body .sloka-text,
+html body .sankalpam-text{
+  font-family:"Potti Sreeramulu",Manrope,system-ui,sans-serif;
+}
