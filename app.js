@@ -27,7 +27,7 @@ Object.assign(dict,{
   "Rajarajeshwari Peetham":"రాజరాజేశ్వరి పీఠం",
   "Mission and Vision":"లక్ష్యం మరియు దృష్టికోణం",
   "About Guruji Video":"గురూజీ గురించి వీడియో",
-  ,"Dr. D. Vijayanandanatha (Guruji)":"డా. డి. విజయానందనాథ (గురూజీ)",
+  "Dr. D. Vijayanandanatha (Guruji)":"డా. డి. విజయానందనాథ (గురూజీ)",
   "Dr. D. Vijayanandanatha, also known as Guruji, is a":"డా. డి. విజయానందనాథ, గురూజీగా ప్రసిద్ధి చెందిన వారు,",
   "Spiritual Contributions":"ఆధ్యాత్మిక సేవలు",
   "Rajarajeshwari Peetham":"రాజరాజేశ్వరి పీఠం",
