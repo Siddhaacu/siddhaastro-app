@@ -51,3 +51,9 @@
 .lang-btn,[data-lang]{display:none!important}
 .book-back,.script-back{display:none!important}
 img[src$="12.png"],img[src*="/12.png"],img[src*="\\12.png"]{display:none!important}
+
+/* Global scripture-page cleanup: legacy controls are replaced by the app navigation. */
+img[src$="12.png"],img[src*="/12.png"],img[src*="\\12.png"]{display:none!important}
+a[href^="zb"][href$="e.html"],a[href^="zb"][href$="s.html"],[data-script-language]{display:none!important}
+div:has(>a[href^="zb"][href$="e.html"]),div:has(>a[href^="zb"][href$="s.html"]){display:none!important}
+.book-back,.script-back,[data-back],button[onclick*="history.back"],a[onclick*="history.back"],a[href="javascript:history.back()"]{display:none!important}
