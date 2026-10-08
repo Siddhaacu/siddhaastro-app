@@ -91,7 +91,7 @@ function applyLanguage(){
 function sync(){r.style.setProperty("--scale",s);document.querySelectorAll("[data-font-size]").forEach(e=>e.textContent=Math.round(s*100)+"%");applyLanguage();}
 function renderLegacyShell(){
   const file=location.pathname.split("/").pop()||"";
-  if(!/^(zb.*|dm\\d+)\\.html$/i.test(file))return;
+  if(!/^(zb.*|dm\d+)\.html$/i.test(file))return;
   document.body.classList.add("siddha-legacy-page");
   let app=document.querySelector(".app");
   if(!app){
@@ -110,8 +110,37 @@ function renderLegacyShell(){
   }
   document.querySelectorAll('a').forEach(a=>{
     const href=a.getAttribute("href")||"",t=(a.textContent||"").trim().toLowerCase();
-    if(/^zb.*[esh]\\.html(?:#.*)?$/i.test(href)||/^(telugu|english|samskritam|sanskrit|తెలుగు|ఇంగ్లీష్|సంస్కృతం|సంస్కృత)$/.test(t))a.remove();
+    if(/^zb.*[esh]\.html(?:#.*)?$/i.test(href)||/^(telugu|english|samskritam|sanskrit|తెలుగు|ఇంగ్లీష్|సంస్కృతం|సంస్కృత)$/.test(t))a.remove();
   });}
+function cleanupLegacyLanguageLinks(){
+  if(!document.body)return;
+  document.querySelectorAll('#header,#footer').forEach(el=>el.remove());
+  document.querySelectorAll('a').forEach(a=>{
+    const href=a.getAttribute('href')||'',t=(a.textContent||'').trim().toLowerCase();
+    if(/^zb.*[esh]\.html(?:#.*)?$/i.test(href)||/^(telugu|english|samskritam|sanskrit|తెలుగు|ఇంగ్లీష్|సంస్కృతం|సంస్కృత)$/.test(t))a.remove();
+  });
+}
+function ensureLegacyHeader(){
+  const file=location.pathname.split('/').pop()||'';
+  if(!/^(zb.*|dm\d+)\.html$/i.test(file))return;
+  let app=document.querySelector('.legacy-app');
+  if(!app){
+    app=document.createElement('div');
+    app.className='app legacy-app';
+    while(document.body.firstChild)app.appendChild(document.body.firstChild);
+    document.body.appendChild(app);
+  }
+  document.querySelectorAll('#header,#footer').forEach(el=>el.remove());
+  let header=app.querySelector('.legacy-header');
+  if(!header){
+    header=document.createElement('header');
+    header.className='header legacy-header';
+    header.innerHTML='<div class="header-inner"><a class="brand" href="index.html"><img src="logo.png" alt="Siddha Astro logo"><span><span class="brand-name">Siddha Astro</span><span class="brand-tag">Vedic wisdom, simply presented</span></span></a><div class="page-title"><strong>Vedic Scriptures</strong><span>Spiritual Reading</span></div></div>';
+    app.insertBefore(header,app.firstChild);
+  }
+  header.style.display='block';
+  cleanupLegacyLanguageLinks();
+}
 function renderControls(){
   renderLegacyShell();
   let controls=document.querySelector(".global-controls");
@@ -227,8 +256,8 @@ document.addEventListener("DOMContentLoaded",()=>{
     const t=(el.textContent||"").trim().toLowerCase();
     if(t==="back"||t==="← back"||t==="go back")el.remove();
   });
-  renderLegacyShell();renderNav();renderControls();sync();
-  languageObserver=new MutationObserver(()=>{if(!translating&&lang==="te")applyLanguage()});
+  renderLegacyShell();renderNav();renderControls();ensureLegacyHeader();cleanupLegacyLanguageLinks();
+  languageObserver=new MutationObserver(()=>{if(!translating&&lang==="te")applyLanguage();ensureLegacyHeader();cleanupLegacyLanguageLinks()});
   languageObserver.observe(document.body,{childList:true,subtree:true});
   document.querySelectorAll("[data-theme]").forEach(b=>b.onclick=toggleTheme);
 });})();;
