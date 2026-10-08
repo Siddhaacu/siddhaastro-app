@@ -1,3 +1,4 @@
+/* Potti Sreeramulu font v20261008 */
 @font-face{font-family:"Potti Sreeramulu";src:url("/assets/fonts/PottiSreeramulu.otf") format("opentype");font-weight:400;font-style:normal;font-display:swap}
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Noto+Serif+Devanagari:wght@500;600;700&display=swap');
 :root{--bg:#f5f7f3;--surface:#fff;--surface-2:#eef3ee;--text:#26332f;--muted:#68766f;--accent:#4f7567;--accent-dark:#36594d;--accent-soft:#e5efe9;--gold:#a27a2a;--border:#dfe7e1;--shadow:rgba(38,51,47,.08);--danger:#b65353;--radius:20px;--scale:1}
