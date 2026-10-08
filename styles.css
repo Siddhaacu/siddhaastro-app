@@ -117,3 +117,98 @@ html body .sankalpam-text{
 @media(min-width:701px){
   .dark .app{box-shadow:0 0 0 1px rgba(255,255,255,.04),0 0 50px rgba(0,0,0,.35)}
 }
+
+
+/* Dark-theme visibility pass — keep every shared component readable in dark mode. */
+html{color-scheme:light}
+html.dark{color-scheme:dark}
+
+.dark .hero{
+  background:linear-gradient(135deg,#17241f 0%,#1b211b 100%);
+  border-color:var(--border);
+  color:var(--text);
+  box-shadow:0 14px 40px rgba(0,0,0,.28);
+}
+.dark .hero h1,
+.dark .hero p,
+.dark .hero .eyebrow{
+  color:var(--text);
+}
+.dark .hero .eyebrow{color:var(--gold)}
+.dark .hero p{color:var(--muted)}
+
+.dark .card,
+.dark .feature,
+.dark .content-card{
+  color:var(--text);
+}
+.dark .section-head h2,
+.dark .section-head p,
+.dark .feature h3,
+.dark .content-card h1,
+.dark .content-card h2,
+.dark .content-card h3,
+.dark .content-card h4,
+.dark .content-card h5{
+  color:var(--text);
+}
+.dark .content-card p{color:var(--muted)}
+.dark .content-card .section-tag,
+.dark .content-card center>h3,
+.dark .content-card center>h5{color:var(--accent-dark)}
+.dark .content-card .book-item a{color:var(--accent-dark)}
+
+.dark .btn-secondary,
+.dark .link{
+  color:var(--accent-dark);
+  background:var(--accent-soft);
+  border-color:var(--border);
+}
+.dark .sloka{
+  color:var(--text);
+  background:linear-gradient(145deg,#1b201a,#17251f);
+  border-color:rgba(210,173,97,.30);
+}
+.dark .sloka h2,
+.dark .sloka-text{color:var(--text)}
+.dark .sloka-note{color:var(--muted);border-color:var(--border)}
+
+.dark .nav a{color:var(--muted)}
+.dark .nav a.active{color:var(--accent-dark);background:var(--accent-soft)}
+
+.dark .message.error{background:#351f20;color:#f2c1c1;border-color:#694043}
+.dark .message.info{background:var(--accent-soft);color:var(--accent-dark);border-color:var(--border)}
+
+.dark .fc-amavasya{background:#30322f;color:#eef4f0}
+.dark .fc-pournami{background:#3b3422;color:#f1d891}
+.dark .fc-ekadashi{background:#20372d;color:#bfe2d1}
+.dark .fc-chaturthi{background:#3a2726;color:#efc1bd}
+.dark .fc-festival{background:var(--surface-2);color:var(--accent-dark)}
+
+.dark .calendar-day,
+.dark .monthly-festival-row,
+.dark .monthly-book-link{
+  color:var(--text);
+}
+.dark .calendar-tithi,
+.dark .monthly-festival-name{color:var(--text)}
+.dark .calendar-nakshatra,
+.dark .monthly-festivals p,
+.dark .monthly-festival-empty,
+.dark .monthly-book-link small{color:var(--muted)}
+.dark .calendar-weekday,
+.dark .calendar-attribution{color:var(--muted)}
+
+.dark .icon-btn,
+.dark .font-btn,
+.dark .lang-btn,
+.dark .month-calendar-nav button{
+  background:var(--surface);
+  color:var(--text);
+  border-color:var(--border);
+}
+.dark .font-size{color:var(--muted)}
+
+.dark input::placeholder,
+.dark textarea::placeholder{color:#91a39a}
+.dark select option{background:var(--surface);color:var(--text)}
