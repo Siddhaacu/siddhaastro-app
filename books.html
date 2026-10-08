@@ -4,49 +4,75 @@
 .content-card .section-tag{margin:0 0 10px;color:var(--accent-dark);font-size:1.5rem}
 .content-card p{color:var(--muted)}
 .content-card center>h3,.content-card center>h5{color:var(--accent-dark);margin:24px 0 12px}
-/* Theme-aware devotional image treatment */
-/* Theme-aware circular devotional image treatment */
+/* Premium circular devotional image treatment */
 .content-card .chakra-frame{
-  width:min(100%,280px);
+  position:relative;
+  isolation:isolate;
+  width:min(100%,272px);
   aspect-ratio:1;
-  margin:0 auto 20px;
-  padding:12px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  margin:4px auto 24px;
+  padding:9px;
+  display:grid;
+  place-items:center;
   box-sizing:border-box;
-  overflow:hidden;
+  overflow:visible;
   background:
-    radial-gradient(circle at 50% 50%,var(--image-glow-soft) 0%,transparent 68%),
+    radial-gradient(circle at 50% 42%,var(--image-glow-soft) 0%,transparent 62%),
     var(--surface);
-  border:2px solid var(--image-ring-strong);
+  border:1px solid var(--image-ring-strong);
   border-radius:50%;
   box-shadow:
+    0 0 0 3px var(--surface),
     0 0 0 5px var(--image-ring),
-    0 0 22px var(--image-glow),
-    0 0 44px var(--image-glow-soft),
-    0 14px 34px var(--shadow);
-  transition:box-shadow .25s ease,border-color .25s ease,transform .25s ease;
+    0 0 24px var(--image-glow),
+    0 0 52px var(--image-glow-soft),
+    0 16px 34px var(--shadow);
+  transition:transform .25s ease,box-shadow .25s ease;
+}
+.content-card .chakra-frame::before{
+  content:"";
+  position:absolute;
+  inset:4px;
+  border:1px solid var(--image-ring);
+  border-radius:50%;
+  pointer-events:none;
+  z-index:2;
+}
+.content-card .chakra-frame::after{
+  content:"";
+  position:absolute;
+  inset:-8px;
+  border-radius:50%;
+  background:radial-gradient(circle,var(--image-glow-soft) 0%,transparent 66%);
+  filter:blur(4px);
+  opacity:.8;
+  z-index:-1;
+  pointer-events:none;
 }
 .content-card .chakra-frame:hover{
-  transform:translateY(-1px);
+  transform:translateY(-2px) scale(1.01);
   box-shadow:
+    0 0 0 3px var(--surface),
     0 0 0 5px var(--image-ring),
     0 0 30px var(--image-glow-strong),
-    0 0 56px var(--image-glow-soft),
-    0 18px 40px var(--shadow);
+    0 0 64px var(--image-glow-soft),
+    0 20px 42px var(--shadow);
 }
 .content-card .chakra-frame img{
   display:block;
   width:100%;
   height:100%;
+  min-width:0;
+  min-height:0;
   max-height:none;
   aspect-ratio:1;
-  object-fit:contain;
+  object-fit:cover;
+  object-position:center;
   border-radius:50%;
-  border:0;
-  background:transparent;
-  box-shadow:none;
+  border:2px solid var(--image-border);
+  background:var(--surface-2);
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.12);
+  overflow:hidden;
 }
 /* Every devotional image on Books follows the same rounded, glowing treatment. */
 .content-card > img,
