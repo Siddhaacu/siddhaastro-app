@@ -268,10 +268,9 @@ async function syncNotificationPreferences(){
   }catch(error){console.warn("Notification preferences sync failed",error)}
 }
 
-document.addEventListener("DOMContentLoaded",()=>{
+function bootSiddhaApp(){
+  if(!document.body)return;
   document.querySelectorAll("[data-notifications]").forEach(b=>b.onclick=enableNotifications);
-  // Keep every page consistent: remove legacy reader controls and image assets,
-  // but preserve the global language/font/theme controls.
   document.querySelectorAll('.book-back,.script-back,img[src$="12.png"],img[src*="/12.png"],img[src*="\\\\12.png"],[data-script-language]').forEach(el=>el.remove());
   document.querySelectorAll("a,button").forEach(el=>{
     const t=(el.textContent||"").trim().toLowerCase();
@@ -281,4 +280,7 @@ document.addEventListener("DOMContentLoaded",()=>{
   languageObserver=new MutationObserver(()=>{if(!translating&&lang==="te")applyLanguage();ensureGlobalControls();ensureLegacyHeader();cleanupLegacyLanguageLinks()});
   languageObserver.observe(document.body,{childList:true,subtree:true});
   document.querySelectorAll("[data-theme]").forEach(b=>b.onclick=toggleTheme);
-});})();
+  setTimeout(ensureGlobalControls,50);
+  setTimeout(ensureGlobalControls,500);
+}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",bootSiddhaApp,{once:true});else bootSiddhaApp();;})();
