@@ -141,6 +141,27 @@ function ensureLegacyHeader(){
   header.style.cssText='display:block!important;visibility:visible!important;position:relative;z-index:30;';
   cleanupLegacyLanguageLinks();
 }
+function ensureGlobalControls(){
+  if(!document.body)return;
+  let controls=document.querySelector(".global-controls");
+  if(!controls){
+    controls=document.createElement("div");
+    controls.className="controls global-controls";
+    const header=document.querySelector(".header");
+    if(header)header.insertAdjacentElement("afterend",controls);
+    else document.body.insertBefore(controls,document.body.firstChild);
+  }
+  controls.style.display="flex";
+  controls.style.visibility="visible";
+  controls.style.opacity="1";
+  controls.style.position="relative";
+  controls.style.zIndex="20";
+  controls.innerHTML='<button class="lang-btn" type="button" data-control-lang>తెలుగు</button><button class="font-btn" type="button" data-font="down" aria-label="Decrease font size" title="Decrease font size">A−</button><span class="font-size" data-font-size>100%</span><button class="font-btn" type="button" data-font="up" aria-label="Increase font size" title="Increase font size">A+</button><button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Switch to dark theme" title="Dark theme">☾</button>';
+  controls.querySelector("[data-control-lang]").onclick=()=>setLanguage(lang==="en"?"te":"en");
+  controls.querySelector("[data-font=down]").onclick=()=>changeFont(-.04);
+  controls.querySelector("[data-font=up]").onclick=()=>changeFont(.04);
+  controls.querySelector("[data-theme-toggle]").onclick=toggleTheme;
+}
 function renderControls(){
   renderLegacyShell();
   let controls=document.querySelector(".global-controls");
@@ -256,8 +277,8 @@ document.addEventListener("DOMContentLoaded",()=>{
     const t=(el.textContent||"").trim().toLowerCase();
     if(t==="back"||t==="← back"||t==="go back")el.remove();
   });
-  renderLegacyShell();renderNav();renderControls();ensureLegacyHeader();cleanupLegacyLanguageLinks();
-  languageObserver=new MutationObserver(()=>{if(!translating&&lang==="te")applyLanguage();ensureLegacyHeader();cleanupLegacyLanguageLinks()});
+  renderLegacyShell();renderNav();renderControls();ensureGlobalControls();ensureLegacyHeader();cleanupLegacyLanguageLinks();
+  languageObserver=new MutationObserver(()=>{if(!translating&&lang==="te")applyLanguage();ensureGlobalControls();ensureLegacyHeader();cleanupLegacyLanguageLinks()});
   languageObserver.observe(document.body,{childList:true,subtree:true});
   document.querySelectorAll("[data-theme]").forEach(b=>b.onclick=toggleTheme);
-});})();;
+});})();
