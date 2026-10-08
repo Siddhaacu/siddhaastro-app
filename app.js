@@ -89,9 +89,12 @@ function applyLanguage(){
   if(languageObserver)languageObserver.observe(document.body,{childList:true,subtree:true});
 }
 function sync(){r.style.setProperty("--scale",s);document.querySelectorAll("[data-font-size]").forEach(e=>e.textContent=Math.round(s*100)+"%");applyLanguage();}
+function isLegacyScripturePage(){
+  const file=(location.pathname.split("/").pop()||"").toLowerCase();
+  return /^(?:zb[^/]*|dm\d+)\.html$/i.test(file);
+}
 function renderLegacyShell(){
-  const file=location.pathname.split("/").pop()||"";
-  if(!/(?:^|\/)(?:zb[^/]*|dm\d+)\.html$/i.test(location.pathname))return;
+  if(!isLegacyScripturePage())return;
   document.body.classList.add("siddha-legacy-page");
   let app=document.querySelector(".app");
   if(!app){
@@ -121,8 +124,7 @@ function cleanupLegacyLanguageLinks(){
   });
 }
 function ensureLegacyHeader(){
-  const file=location.pathname.split('/').pop()||'';
-  if(!/(?:^|\\/)(?:zb[^/]*|dm\\d+)\\.html$/i.test(location.pathname))return;
+  if(!isLegacyScripturePage())return;
   let app=document.querySelector('.legacy-app');
   if(!app){
     app=document.createElement('div');
@@ -140,6 +142,7 @@ function ensureLegacyHeader(){
   }
   header.style.cssText='display:block!important;visibility:visible!important;position:relative;z-index:30;';
   cleanupLegacyLanguageLinks();
+  ensureGlobalControls();
 }
 function ensureGlobalControls(){
   if(!document.body)return;
@@ -155,7 +158,10 @@ function ensureGlobalControls(){
   controls.style.visibility="visible";
   controls.style.opacity="1";
   controls.style.position="relative";
-  controls.style.zIndex="20";
+  controls.style.zIndex="50";
+  controls.style.minHeight="36px";
+  controls.style.width="100%";
+  controls.style.boxSizing="border-box";
   controls.innerHTML='<button class="lang-btn" type="button" data-control-lang>తెలుగు</button><button class="font-btn" type="button" data-font="down" aria-label="Decrease font size" title="Decrease font size">A−</button><span class="font-size" data-font-size>100%</span><button class="font-btn" type="button" data-font="up" aria-label="Increase font size" title="Increase font size">A+</button><button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Switch to dark theme" title="Dark theme">☾</button>';
   controls.querySelector("[data-control-lang]").onclick=()=>setLanguage(lang==="en"?"te":"en");
   controls.querySelector("[data-font=down]").onclick=()=>changeFont(-.04);
