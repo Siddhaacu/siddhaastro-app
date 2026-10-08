@@ -16,6 +16,35 @@
 .horo-result h2{margin:5px 0}.horo-result p{color:#68766f}
 .horo-tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.horo-tile{background:#eef3ee;border-radius:14px;padding:14px}.horo-tile b{display:block;color:#68766f;font-size:.72rem;text-transform:uppercase}.horo-tile span{display:block;margin-top:5px}
 @media(max-width:600px){.horo-grid{grid-template-columns:repeat(3,1fr)}.horo-tiles{grid-template-columns:1fr}.horo-hero{padding:20px}.horoscope-page{padding-left:14px;padding-right:14px}}
+
+/* Dark theme override for horoscope page */
+.horo-hero,
+.horo-result,
+.horo-rashi{
+  background:var(--surface);
+  border-color:var(--border);
+  color:var(--text);
+}
+.horo-rashi{color:var(--accent-dark)}
+.horo-rashi.active{background:var(--accent-soft);border-color:var(--accent)}
+.horo-result p{color:var(--muted)}
+.horo-tile{
+  background:var(--surface-2);
+  color:var(--text);
+  border:1px solid var(--border);
+}
+.horo-tile b{color:var(--muted)}
+.horo-hero > div[style],
+.horo-result > div[style]{
+  color:var(--gold)!important;
+}
+.horo-hero p[style]{color:var(--muted)!important}
+.dark .horo-hero,
+.dark .horo-result,
+.dark .horo-rashi{
+  box-shadow:0 10px 30px rgba(0,0,0,.22);
+}
+.dark .horo-rashi:hover{background:var(--accent-soft)}
 </style>
 <link rel="icon" type="image/png" href="/logo.png"><link rel="shortcut icon" type="image/png" href="/logo.png"><link rel="apple-touch-icon" href="/logo.png"></head>
 <body>
