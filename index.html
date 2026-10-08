@@ -25,6 +25,25 @@ function getAyana(date){
  const m=Number(String(date).slice(5,7)),d=Number(String(date).slice(8,10));
  return (m>1&&m<7)||(m===1&&d>=15)||(m===7&&d<17)?"ఉత్తరాయణే":"దక్షిణాయనే";
 }
+function transliterateSankalpa(text){
+ const independent={"అ":"a","ఆ":"ā","ఇ":"i","ఈ":"ī","ఉ":"u","ఊ":"ū","ఋ":"ṛ","ౠ":"ṝ","ఎ":"e","ఏ":"ē","ఐ":"ai","ఒ":"o","ఓ":"ō","ఔ":"au"};
+ const consonants={"క":"k","ఖ":"kh","గ":"g","ఘ":"gh","ఙ":"ṅ","చ":"c","ఛ":"ch","జ":"j","ఝ":"jh","ఞ":"ñ","ట":"ṭ","ఠ":"ṭh","డ":"ḍ","ఢ":"ḍh","ణ":"ṇ","త":"t","థ":"th","ద":"d","ధ":"dh","న":"n","ప":"p","ఫ":"ph","బ":"b","భ":"bh","మ":"m","య":"y","ర":"r","ఱ":"r","ల":"l","ళ":"ḷ","వ":"v","శ":"ś","ష":"ṣ","స":"s","హ":"h"};
+ const marks={"ా":"ā","ి":"i","ీ":"ī","ు":"u","ూ":"ū","ృ":"ṛ","ౄ":"ṝ","ె":"e","ే":"ē","ై":"ai","ొ":"o","ో":"ō","ౌ":"au","ం":"ṃ","ః":"ḥ","ఁ":"m̐","్":""};
+ let out="";
+ for(let i=0;i<text.length;i++){
+  const ch=text[i];
+  if(independent[ch]){out+=independent[ch];continue}
+  if(consonants[ch]){
+   let syl=consonants[ch],next=text[i+1];
+   if(next==="్"){out+=syl;i++;continue}
+   if(next&&marks[next]!==undefined){out+=syl+marks[next];i++;continue}
+   out+=syl+"a";continue
+  }
+  if(marks[ch]!==undefined){out+=marks[ch];continue}
+  out+=ch;
+ }
+ return out.replace(/a(?=[,.;:!?\s\n])/g,"");
+}
 function renderSankalpam(p){
  const el=document.getElementById("sankalpamText");
  const title=document.querySelector("[data-sank-title]");
@@ -38,28 +57,9 @@ function renderSankalpam(p){
  const paksha=getPaksha(p.thithi);
  const tithi=getTithiName(p.thithi);
  const vara=VARA_SANSKRIT[p.vara]||p.vara||"—";
- const nak=SiddhaPanchangam.translateValue("nakshatra",p.nakshatra)||p.nakshatra||"—";
- const yoga=SiddhaPanchangam.translateValue("yoga",p.yoga)||p.yoga||"—";
- const karana=SiddhaPanchangam.translateValue("karana",p.karana)||p.karana||"—";
  const ayana=getAyana(p.date||today);
- if(isEnglish){
-  if(title)title.textContent="Sankalpa";
-  if(dateLabel)dateLabel.textContent="Based on today's Panchangam";
-  const masaEn=String(p.masa||"—").replace(/^Adhika\\s+/i,"Adhika ");
-  const samvatsaraEn=String(p.samvathsara||"—");
-  const rutuEn=RUTU_BY_MASA[masaKey]||"—";
-  const pakshaEn=/Krishna|Bahula|Krsna/i.test(String(p.thithi||""))?"Krishna":"Shukla";
-  const tithiRaw=String(p.thithi||"—").replace(/^(Shukla|Krishna|Bahula|Sukla|Suddha)\\s+/i,"").trim();
-  const tithiEn=tithiRaw||"—";
-  const varaEn={Sunday:"Bhanuvasare",Monday:"Induvasare",Tuesday:"Bhaumavasare",Wednesday:"Saumyavasare",Thursday:"Guruvasare",Friday:"Bhrguvasare",Saturday:"Sthiravasare"}[p.vara]||p.vara||"—";
-  const nakEn=String(p.nakshatra||"—");
-  const yogaEn=String(p.yoga||"—");
-  const karanaEn=String(p.karana||"—");
-  const ayanaEn=getAyana(date).includes("ఉత్తర")?"Uttarayane":"Dakshinayane";
-  el.textContent="Mamopatta, samasta duritakshaya-dvara, Sri Parameshwara prityartham, shubhe, shobhane muhurte, Sri Mahavishnorajnaya, pravartamanasya, adya Brahmanah, dvitiya parardhe, Shveta-Varaha Kalpe, Vaivasvata Manvantare, Kali Yuge, prathama pade, Jambu Dvipe, Bharata Varshe, Bharata Khande, Meroh dakshina digbhage, Srisailasya vayuvya pradeshe, Krishna-Godavaryor madhya deshe, svagruhe, samasta devata-brahmana, Hari-Hara-Guru-charana sannidhau, asmin vartamana vyavaharika Chandramana, "+samvatsaraEn+" samvatsare, "+ayanaEn+" "+rutuEn+" rtau, "+masaEn+" mase, "+pakshaEn+" pakshe, "+tithiEn+" tithau, "+varaEn+", shubha nakshatra, shubha yoga, shubha karana, evam-guna-visheshana-vishishtayam, shubha tithau, Sriman, ______ gotrah, ______ namadheyah, ______ gotrasya, ______ namadheyo'ham.";
- }else{
-  if(title)title.textContent="సంకల్పం";
-  if(dateLabel)dateLabel.textContent="ఈ రోజు పంచాంగం ఆధారంగా";
-  el.textContent="మమోపాత్త, సమస్త దురితక్షయద్వారా, శ్రీ పరమేశ్వర ప్రీత్యర్థం, శుభే, శోభనే ముహూర్తే, శ్రీ మహావిష్ణోరాజ్ఞయా, ప్రవర్తమానస్య, అద్య బ్రహ్మణః, ద్వితీయ పరార్థే, శ్వేతవరాహ కల్పే, వైవశ్వత మన్వంతరే, కలియుగే, ప్రథమ పాదే, జంబూ ద్వీపే, భరత వర్షే, భరత ఖండే, మేరోః దక్షిణ దిగ్భాగే, శ్రీశైలస్య వాయువ్య ప్రదేశే, కృష్ణా గోదావర్యోర్మధ్య దేశే, స్వగృహే, సమస్త దేవతా బ్రాహ్మణ, హరిహర గురుచరణ సన్నిధౌ, అస్మిన్ వర్తమాన వ్యావహారిక చాంద్రమాన, "+samvatsara+" సంవత్సరే, "+ayana+" "+rutu+" ఋతౌ, "+masa+" మాసే, "+paksha+" పక్షే, "+tithi+" తిథౌ, "+vara+", శుభ నక్షత్ర, శుభ యోగ, శుభ కరణ, ఏవంగుణ విశేషణ విశిష్ఠాయాం, శుభ తిథౌ, శ్రీమాన్, ______ గోత్రః, ______ నామధేయః, ______ గోత్రస్య, ______ నామధేయోఽహం.";
- }
+ const teluguText="మమోపాత్త, సమస్త దురితక్షయద్వారా, శ్రీ పరమేశ్వర ప్రీత్యర్థం, శుభే, శోభనే ముహూర్తే, శ్రీ మహావిష్ణోరాజ్ఞయా, ప్రవర్తమానస్య, అద్య బ్రహ్మణః, ద్వితీయ పరార్థే, శ్వేతవరాహ కల్పే, వైవశ్వత మన్వంతరే, కలియుగే, ప్రథమ పాదే, జంబూ ద్వీపే, భరత వర్షే, భరత ఖండే, మేరోః దక్షిణ దిగ్భాగే, శ్రీశైలస్య వాయువ్య ప్రదేశే, కృష్ణా గోదావర్యోర్మధ్య దేశే, స్వగృహే, సమస్త దేవతా బ్రాహ్మణ, హరిహర గురుచరణ సన్నిధౌ, అస్మిన్ వర్తమాన వ్యావహారిక చాంద్రమాన, "+samvatsara+" సంవత్సరే, "+ayana+" "+rutu+" ఋతౌ, "+masa+" మాసే, "+paksha+" పక్షే, "+tithi+" తిథౌ, "+vara+", శుభ నక్షత్ర, శుభ యోగ, శుభ కరణ, ఏవంగుణ విశేషణ విశిష్ఠాయాం, శుభ తిథౌ, శ్రీమాన్, ______ గోత్రః, ______ నామధేయః, ______ గోత్రస్య, ______ నామధేయోఽహం.";
+ if(title)title.textContent=isEnglish?"Sankalpa":"సంకల్పం";
+ if(dateLabel)dateLabel.textContent=isEnglish?"Based on today's Panchangam":"ఈ రోజు పంచాంగం ఆధారంగా";
+ el.textContent=isEnglish?transliterateSankalpa(teluguText):teluguText;
 }try{lastP=await SiddhaPanchangam.fetchPanchangam(today,"hyderabad");render()}catch(e){status.className="message error";status.textContent=e.message}document.addEventListener("languagechange",render)})</script><!-- Panchangam sync marker • restored engine • cache bust • 2026-10-07 16:13 IST --></body></html>
