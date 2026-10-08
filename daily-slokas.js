@@ -110,5 +110,46 @@ const VISHNU_SAHASRANAMA = [
 ];
 function getIndiaDateKey(){return new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Kolkata',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date())}
 function getTodayVishnuSloka(){const [y,m,d]=getIndiaDateKey().split('-').map(Number);const today=Date.UTC(y,m-1,d);const epoch=Date.UTC(2026,0,1);const index=Math.floor((today-epoch)/86400000)%VISHNU_SAHASRANAMA.length;return {number:index+1,text:VISHNU_SAHASRANAMA[(index+VISHNU_SAHASRANAMA.length)%VISHNU_SAHASRANAMA.length]}}
-function renderDailySloka(){const s=getTodayVishnuSloka();const n=document.getElementById('slokaNumber'),t=document.getElementById('slokaTelugu');if(!n||!t)return;n.textContent='Sloka '+s.number+' of 107';t.textContent=s.text}
-document.addEventListener('DOMContentLoaded',()=>{renderDailySloka();const now=new Date(),next=new Date(now);next.setHours(24,0,0,0);setTimeout(()=>{renderDailySloka();setInterval(renderDailySloka,86400000)},next-now)});
+const TELUGU_TO_ROMAN={
+"అ":"a","ఆ":"aa","ఇ":"i","ఈ":"ee","ఉ":"u","ఊ":"oo","ఋ":"ru","ౠ":"ruu","ఎ":"e","ఏ":"ae","ఐ":"ai","ఒ":"o","ఓ":"oo","ఔ":"au",
+"క":"k","ఖ":"kh","గ":"g","ఘ":"gh","ఙ":"ng","చ":"ch","ఛ":"chh","జ":"j","ఝ":"jh","ఞ":"ny","ట":"t","ఠ":"th","డ":"d","ఢ":"dh","ణ":"n",
+"త":"t","థ":"th","ద":"d","ధ":"dh","న":"n","ప":"p","ఫ":"ph","బ":"b","భ":"bh","మ":"m","య":"y","ర":"r","ఱ":"r","ల":"l","ళ":"l","వ":"v","శ":"sh","ష":"sh","స":"s","హ":"h","క్ష":"ksh","ఱ":"r",
+"ా":"aa","ి":"i","ీ":"ee","ు":"u","ూ":"oo","ృ":"ru","ౄ":"ruu","ె":"e","ే":"ae","ై":"ai","ొ":"o","ో":"oo","ౌ":"au","్":"","ం":"m","ః":"h","ఁ":"m","ఽ":"'","ౕ":"'","ౖ":"ai",
+"౦":"0","౧":"1","౨":"2","౩":"3","౪":"4","౫":"5","౬":"6","౭":"7","౮":"8","౯":"9"
+};
+function transliterateTelugu(text){
+ let out="", pending="";
+ for(let i=0;i<text.length;i++){
+  const ch=text[i], next=text[i+1];
+  if(ch==="\n"){out+="\n";continue}
+  if(ch==="\u200c"||ch==="\u200d")continue;
+  if(ch==="\u0c4d"){continue}
+  if(TELUGU_TO_ROMAN[ch]!==undefined){
+   const isConsonant=/^[క-హఱ]$/.test(ch);
+   if(isConsonant){
+    let syl=TELUGU_TO_ROMAN[ch];
+    if(next==="్"){out+=syl;i++;continue}
+    out+=syl+"a";
+   }else out+=TELUGU_TO_ROMAN[ch];
+   continue;
+  }
+  out+=ch;
+ }
+ return out.replace(/a([aaeeiioouu])/g,"$1").replace(/([kgcjtdnpbmyrlvsh])a([,.;:!?\s\n])/g,"$1$2").replace(/aa/g,"ā").replace(/ee/g,"ī").replace(/oo/g,"ū");
+}
+function renderDailySloka(){
+ const s=getTodayVishnuSloka();
+ const n=document.getElementById('slokaNumber'),t=document.getElementById('slokaTelugu'),title=document.querySelector('.sloka h2'),note=document.querySelector('.sloka-note');
+ if(!n||!t)return;
+ const english=window.SiddhaApp?.getLanguage?.()!=="te";
+ n.textContent=(english?'Sloka ':'శ్లోకం ')+s.number+(english?' of 107':' / 107');
+ if(title)title.textContent=english?'Sri Vishnu Sahasranamam':'శ్రీ విష్ణు సహస్రనామమ్';
+ t.textContent=english?transliterateTelugu(s.text):s.text;
+ if(note)note.textContent=english?'A new sloka is selected automatically every day using India time.':'భారత కాలమానం ప్రకారం ప్రతిరోజూ ఒక కొత్త శ్లోకం స్వయంచాలకంగా ఎంపిక అవుతుంది.';
+}
+document.addEventListener('DOMContentLoaded',()=>{
+ renderDailySloka();
+ document.addEventListener('languagechange',renderDailySloka);
+ const now=new Date(),next=new Date(now);next.setHours(24,0,0,0);
+ setTimeout(()=>{renderDailySloka();setInterval(renderDailySloka,86400000)},next-now)
+});
