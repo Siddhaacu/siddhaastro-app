@@ -4,8 +4,71 @@
 .content-card .section-tag{margin:0 0 10px;color:var(--accent-dark);font-size:1.5rem}
 .content-card p{color:var(--muted)}
 .content-card center>h3,.content-card center>h5{color:var(--accent-dark);margin:24px 0 12px}
-.content-card .chakra-frame{width:min(100%,240px);margin:0 auto 14px;padding:10px;background:var(--surface-2);border:1px solid var(--border);border-radius:18px}
-.content-card .chakra-frame img{display:block;width:100%;height:auto;max-height:180px;object-fit:contain;border-radius:12px}
+/* Theme-aware devotional image treatment */
+.content-card .chakra-frame{
+  width:min(100%,260px);
+  margin:0 auto 18px;
+  padding:14px;
+  background:
+    radial-gradient(circle at 50% 42%,var(--image-glow-soft),transparent 68%),
+    linear-gradient(145deg,var(--surface-2),var(--surface));
+  border:1px solid var(--image-border);
+  border-radius:24px;
+  box-shadow:
+    0 0 0 1px var(--image-ring),
+    0 0 22px var(--image-glow),
+    0 12px 30px var(--shadow);
+  transition:box-shadow .25s ease,border-color .25s ease,background .25s ease,transform .25s ease;
+}
+.content-card .chakra-frame:hover{
+  transform:translateY(-1px);
+  box-shadow:
+    0 0 0 1px var(--image-ring),
+    0 0 30px var(--image-glow-strong),
+    0 16px 36px var(--shadow);
+}
+.content-card .chakra-frame img{
+  display:block;
+  width:100%;
+  height:auto;
+  max-height:210px;
+  object-fit:contain;
+  border-radius:18px;
+  border:1px solid var(--image-border);
+  background:var(--surface);
+  box-shadow:
+    0 0 16px var(--image-glow-soft),
+    0 6px 18px var(--shadow);
+  transition:box-shadow .25s ease,border-color .25s ease;
+}
+.content-card .chakra-frame img:hover{
+  box-shadow:
+    0 0 22px var(--image-glow),
+    0 8px 22px var(--shadow);
+}
+/* Every devotional image on Books follows the same rounded, glowing treatment. */
+.content-card > img,
+.content-card img:not(.logo),
+.content-card picture img{
+  border-radius:18px;
+  border:1px solid var(--image-border);
+  background:var(--surface);
+  box-shadow:0 0 18px var(--image-glow-soft),0 8px 24px var(--shadow);
+}
+:root{
+  --image-border:rgba(79,117,103,.28);
+  --image-ring:rgba(162,122,42,.16);
+  --image-glow:rgba(79,117,103,.22);
+  --image-glow-strong:rgba(79,117,103,.34);
+  --image-glow-soft:rgba(162,122,42,.10);
+}
+.dark{
+  --image-border:rgba(131,181,164,.34);
+  --image-ring:rgba(210,173,97,.22);
+  --image-glow:rgba(131,181,164,.28);
+  --image-glow-strong:rgba(131,181,164,.42);
+  --image-glow-soft:rgba(210,173,97,.14);
+}
 .content-card .feature-grid{margin:12px 0 26px}
 .content-card .feature-card{background:var(--surface-2);border:1px solid var(--border);border-radius:16px;padding:15px;transition:transform .18s ease,box-shadow .18s ease}
 .content-card .feature-card:hover{transform:translateY(-2px);box-shadow:0 10px 24px var(--shadow)}
