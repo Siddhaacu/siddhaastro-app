@@ -91,7 +91,7 @@ function applyLanguage(){
 function sync(){r.style.setProperty("--scale",s);document.querySelectorAll("[data-font-size]").forEach(e=>e.textContent=Math.round(s*100)+"%");applyLanguage();}
 function renderLegacyShell(){
   const file=location.pathname.split("/").pop()||"";
-  if(!/^(zb.*|dm\d+)\.html$/i.test(file))return;
+  if(!/(?:^|\\/)(?:zb[^/]*|dm\\d+)\\.html$/i.test(location.pathname))return;
   document.body.classList.add("siddha-legacy-page");
   let app=document.querySelector(".app");
   if(!app){
@@ -122,7 +122,7 @@ function cleanupLegacyLanguageLinks(){
 }
 function ensureLegacyHeader(){
   const file=location.pathname.split('/').pop()||'';
-  if(!/^(zb.*|dm\d+)\.html$/i.test(file))return;
+  if(!/(?:^|\\/)(?:zb[^/]*|dm\\d+)\\.html$/i.test(location.pathname))return;
   let app=document.querySelector('.legacy-app');
   if(!app){
     app=document.createElement('div');
@@ -138,7 +138,7 @@ function ensureLegacyHeader(){
     header.innerHTML='<div class="header-inner"><a class="brand" href="index.html"><img src="logo.png" alt="Siddha Astro logo"><span><span class="brand-name">Siddha Astro</span><span class="brand-tag">Vedic wisdom, simply presented</span></span></a><div class="page-title"><strong>Vedic Scriptures</strong><span>Spiritual Reading</span></div></div>';
     app.insertBefore(header,app.firstChild);
   }
-  header.style.display='block';
+  header.style.cssText='display:block!important;visibility:visible!important;position:relative;z-index:30;';
   cleanupLegacyLanguageLinks();
 }
 function renderControls(){
