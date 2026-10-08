@@ -45,7 +45,18 @@ function renderSankalpam(p){
  if(isEnglish){
   if(title)title.textContent="Sankalpa";
   if(dateLabel)dateLabel.textContent="Based on today's Panchangam";
-  el.textContent="For the removal of all accumulated difficulties and for the pleasure of Sri Parameshwara, at this auspicious and sacred moment, by the command of Sri Maha Vishnu, in the present period of the second half of Brahma's life, in Shveta-Varaha Kalpa, in Vaivasvata Manvantara, in Kali Yuga, in the first quarter, in Jambu Dvipa, in Bharata Varsha, in Bharata Khanda, to the south of Mount Meru, in the north-western region of Sri Shaila, in the land between the Krishna and Godavari rivers, in my own home, in the presence of all deities, Brahmins, and the holy feet of Hari, Hara and Guru, in the present lunar calendar, in the "+samvatsara+" year, during "+ayana+" "+rutu+" season, in the "+masa+" month, during the "+paksha+" fortnight, on "+tithi+" Tithi, on "+vara+", under an auspicious Nakshatra, Yoga and Karana, with these auspicious attributes, on this sacred day, I, ______ of ______ Gotra, named ______, of ______ Gotra and named ______, undertake this Sankalpa.";
+  const masaEn=String(p.masa||"—").replace(/^Adhika\\s+/i,"Adhika ");
+  const samvatsaraEn=String(p.samvathsara||"—");
+  const rutuEn=RUTU_BY_MASA[masaKey]||"—";
+  const pakshaEn=/Krishna|Bahula|Krsna/i.test(String(p.thithi||""))?"Krishna":"Shukla";
+  const tithiRaw=String(p.thithi||"—").replace(/^(Shukla|Krishna|Bahula|Sukla|Suddha)\\s+/i,"").trim();
+  const tithiEn=tithiRaw||"—";
+  const varaEn={Sunday:"Bhanuvasare",Monday:"Induvasare",Tuesday:"Bhaumavasare",Wednesday:"Saumyavasare",Thursday:"Guruvasare",Friday:"Bhrguvasare",Saturday:"Sthiravasare"}[p.vara]||p.vara||"—";
+  const nakEn=String(p.nakshatra||"—");
+  const yogaEn=String(p.yoga||"—");
+  const karanaEn=String(p.karana||"—");
+  const ayanaEn=getAyana(date).includes("ఉత్తర")?"Uttarayane":"Dakshinayane";
+  el.textContent="Mamopatta, samasta duritakshaya-dvara, Sri Parameshwara prityartham, shubhe, shobhane muhurte, Sri Mahavishnorajnaya, pravartamanasya, adya Brahmanah, dvitiya parardhe, Shveta-Varaha Kalpe, Vaivasvata Manvantare, Kali Yuge, prathama pade, Jambu Dvipe, Bharata Varshe, Bharata Khande, Meroh dakshina digbhage, Srisailasya vayuvya pradeshe, Krishna-Godavaryor madhya deshe, svagruhe, samasta devata-brahmana, Hari-Hara-Guru-charana sannidhau, asmin vartamana vyavaharika Chandramana, "+samvatsaraEn+" samvatsare, "+ayanaEn+" "+rutuEn+" rtau, "+masaEn+" mase, "+pakshaEn+" pakshe, "+tithiEn+" tithau, "+varaEn+", shubha nakshatra, shubha yoga, shubha karana, evam-guna-visheshana-vishishtayam, shubha tithau, Sriman, ______ gotrah, ______ namadheyah, ______ gotrasya, ______ namadheyo'ham.";
  }else{
   if(title)title.textContent="సంకల్పం";
   if(dateLabel)dateLabel.textContent="ఈ రోజు పంచాంగం ఆధారంగా";
