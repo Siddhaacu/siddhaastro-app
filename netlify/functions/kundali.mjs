@@ -37,6 +37,24 @@ const cleanKey = value => String(value || "")
   .toLowerCase()
   .replace(/[^a-z0-9]/g, "");
 
+function timezoneOffsetHours(timeZone, year, month, day, hours, minutes, seconds) {
+  if (!timeZone || typeof timeZone !== "string") return null;
+  try {
+    const utc = new Date(Date.UTC(year, month - 1, day, hours, minutes, seconds));
+    const parts = new Intl.DateTimeFormat("en-US", {
+      timeZone,
+      hourCycle: "h23",
+      year: "numeric", month: "2-digit", day: "2-digit",
+      hour: "2-digit", minute: "2-digit", second: "2-digit"
+    }).formatToParts(utc);
+    const values = Object.fromEntries(parts.filter(p => p.type !== "literal").map(p => [p.type, p.value]));
+    const localAsUtc = Date.UTC(Number(values.year), Number(values.month) - 1, Number(values.day), Number(values.hour), Number(values.minute), Number(values.second));
+    return (localAsUtc - utc.getTime()) / 3600000;
+  } catch {
+    return null;
+  }
+}
+
 function resolveLocation(city, latitude, longitude) {
   if (Number.isFinite(Number(latitude)) && Number.isFinite(Number(longitude))) {
     return {
@@ -61,7 +79,7 @@ function parseBirth(body) {
 
   const location = resolveLocation(body.birthCity, body.latitude, body.longitude);
   if (!location) {
-    throw new Error("Birth city is not in the supported city list. Please provide latitude and longitude.");
+    throw new Error("Please select a valid birth place from the worldwide search results.");
   }
 
   return {
@@ -73,7 +91,7 @@ function parseBirth(body) {
     seconds: Number.isFinite(seconds) ? seconds : 0,
     latitude: location.lat,
     longitude: location.lon,
-    timezone: Number(body.timezone ?? 5.5),
+    timezone: timezoneOffsetHours(body.timezoneName, year, month, day, hours, minutes, Number.isFinite(seconds) ? seconds : 0) ?? (Number.isFinite(Number(body.timezone)) ? Number(body.timezone) : Number(body.timezoneOffset ?? 5.5)),
     settings: {
       ayanamsha: "lahiri",
       observation_point: "topocentric",
