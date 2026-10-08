@@ -283,7 +283,7 @@ function bootSiddhaApp(){
     if(t==="back"||t==="← back"||t==="go back")el.remove();
   });
   renderLegacyShell();renderNav();renderControls();ensureGlobalControls();ensureLegacyHeader();cleanupLegacyLanguageLinks();
-  languageObserver=new MutationObserver(()=>{if(!translating&&lang==="te")applyLanguage();ensureGlobalControls();ensureLegacyHeader();cleanupLegacyLanguageLinks()});
+  languageObserver=new MutationObserver(()=>{if(!translating&&lang==="te")applyLanguage();});
   languageObserver.observe(document.body,{childList:true,subtree:true});
   document.querySelectorAll("[data-theme]").forEach(b=>b.onclick=toggleTheme);
   setTimeout(ensureGlobalControls,50);
