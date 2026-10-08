@@ -26,7 +26,19 @@ Object.assign(dict,{
   "Spiritual Contributions":"ఆధ్యాత్మిక సేవలు",
   "Rajarajeshwari Peetham":"రాజరాజేశ్వరి పీఠం",
   "Mission and Vision":"లక్ష్యం మరియు దృష్టికోణం",
-  "About Guruji Video":"గురూజీ గురించి వీడియో"
+  "About Guruji Video":"గురూజీ గురించి వీడియో",
+  ,"Dr. D. Vijayanandanatha (Guruji)":"డా. డి. విజయానందనాథ (గురూజీ)",
+  "Dr. D. Vijayanandanatha, also known as Guruji, is a":"డా. డి. విజయానందనాథ, గురూజీగా ప్రసిద్ధి చెందిన వారు,",
+  "Spiritual Contributions":"ఆధ్యాత్మిక సేవలు",
+  "Rajarajeshwari Peetham":"రాజరాజేశ్వరి పీఠం",
+  "Mission and Vision":"లక్ష్యం మరియు దృష్టికోణం",
+  "Under the auspices of Rajarajeshwari Peetham,":"రాజరాజేశ్వరి పీఠం ఆధ్వర్యంలో,",
+  "Guruji has served humanity for over a Many decades.":"గురూజీ అనేక దశాబ్దాలుగా మానవ సేవ చేస్తున్నారు.",
+  "The Peetham offers free consultations addressing various":"పీఠం వివిధ జీవన సమస్యలకు ఉచిత సంప్రదింపులను అందిస్తుంది.",
+  "Guruji’s work is driven by the mission to share the wisdom of":"గురూజీ సేవల ప్రధాన లక్ష్యం భారతీయ జ్యోతిష్యం మరియు ఆధ్యాత్మిక జ్ఞానాన్ని పంచడం.",
+  "for the benefit of humanity.":"మానవాళి శ్రేయస్సు కోసం.",
+  "About Guruji":"గురూజీ గురించి"
+
 });
 Object.assign(dict,{
   "Daily Guidance":"దైనందిన మార్గదర్శకం","Daily Rashi guidance":"దైనందిన రాశి మార్గదర్శకం","Horoscope":"రాశిఫలం",
