@@ -170,4 +170,4 @@ document.addEventListener("DOMContentLoaded",()=>{
   languageObserver=new MutationObserver(()=>{if(!translating&&lang==="te")applyLanguage()});
   languageObserver.observe(document.body,{childList:true,subtree:true});
   document.querySelectorAll("[data-theme]").forEach(b=>b.onclick=toggleTheme);
-}})();;
+}});})();;
