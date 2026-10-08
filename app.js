@@ -91,7 +91,7 @@ function applyLanguage(){
 function sync(){r.style.setProperty("--scale",s);document.querySelectorAll("[data-font-size]").forEach(e=>e.textContent=Math.round(s*100)+"%");applyLanguage();}
 function renderLegacyShell(){
   const file=location.pathname.split("/").pop()||"";
-  if(!/^(zb|dm)\\d.*\\.html$/i.test(file))return;
+  if(!/^(zb.*|dm\\d+)\\.html$/i.test(file))return;
   document.body.classList.add("siddha-legacy-page");
   let app=document.querySelector(".app");
   if(!app){
@@ -100,7 +100,8 @@ function renderLegacyShell(){
     while(document.body.firstChild)app.appendChild(document.body.firstChild);
     document.body.appendChild(app);
   }
-  let header=document.querySelector(".header");
+  document.querySelectorAll("#header,#footer").forEach(el=>el.remove());
+  let header=document.querySelector(".legacy-header");
   if(!header){
     header=document.createElement("header");
     header.className="header legacy-header";
