@@ -212,3 +212,54 @@ html.dark{color-scheme:dark}
 .dark input::placeholder,
 .dark textarea::placeholder{color:#91a39a}
 .dark select option{background:var(--surface);color:var(--text)}
+
+
+/* Shared Vedic Scripture reader shell */
+.siddha-legacy-page{
+  background:linear-gradient(180deg,#f8faf7 0%,var(--bg) 100%);
+  color:var(--text);
+}
+.siddha-legacy-page .legacy-app{
+  color:var(--text);
+}
+.siddha-legacy-page .wrapper{
+  width:100%;
+  max-width:1080px;
+  margin:0 auto;
+  padding:18px 16px 30px;
+}
+.siddha-legacy-page .text,
+.siddha-legacy-page section,
+.siddha-legacy-page .feature-card{
+  color:var(--text);
+  font-family:"Potti Sreeramulu",Manrope,system-ui,sans-serif;
+}
+.siddha-legacy-page a{color:var(--accent-dark)}
+.siddha-legacy-page .stotramtitle,
+.siddha-legacy-page h1,
+.siddha-legacy-page h2,
+.siddha-legacy-page h3,
+.siddha-legacy-page h4,
+.siddha-legacy-page h5{color:var(--text)}
+.siddha-legacy-page .feature-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:20px;
+  box-shadow:0 10px 30px var(--shadow);
+  padding:20px;
+}
+.siddha-legacy-page img{
+  max-width:100%;
+}
+.siddha-legacy-page .header-inner{
+  max-width:none;
+}
+.dark .siddha-legacy-page{
+  background:var(--bg);
+}
+.dark .siddha-legacy-page .feature-card{
+  background:var(--surface);
+  border-color:var(--border);
+}
+.dark .siddha-legacy-page a{color:var(--accent-dark)}
+
