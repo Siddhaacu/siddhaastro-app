@@ -91,7 +91,7 @@ function applyLanguage(){
 function sync(){r.style.setProperty("--scale",s);document.querySelectorAll("[data-font-size]").forEach(e=>e.textContent=Math.round(s*100)+"%");applyLanguage();}
 function renderLegacyShell(){
   const file=location.pathname.split("/").pop()||"";
-  if(!/(?:^|\\/)(?:zb[^/]*|dm\\d+)\\.html$/i.test(location.pathname))return;
+  if(!/(?:^|\/)(?:zb[^/]*|dm\d+)\.html$/i.test(location.pathname))return;
   document.body.classList.add("siddha-legacy-page");
   let app=document.querySelector(".app");
   if(!app){
