@@ -48,7 +48,6 @@
 @media(max-width:480px){.monthly-book-list{grid-template-columns:1fr}.monthly-book-link{padding:9px 10px}.monthly-book-link strong{font-size:.7rem}}
 
 /* Clean global navigation and reader UI */
-.lang-btn,[data-lang]{display:none!important}
 .book-back,.script-back{display:none!important}
 img[src$="12.png"],img[src*="/12.png"],img[src*="\\12.png"]{display:none!important}
 
@@ -59,5 +58,9 @@ div:has(>a[href^="zb"][href$="e.html"]),div:has(>a[href^="zb"][href$="s.html"]){
 .book-back,.script-back,[data-back],button[onclick*="history.back"],a[onclick*="history.back"],a[href="javascript:history.back()"]{display:none!important}
 
 /* Legacy scripture cleanup: remove old language switchers and Back controls. */
-a[href$="e.html"],a[href$="s.html"],a[href$="e.htm"],a[href$="s.htm"]{display:none!important}
 a[href="books.html"] h1,a[href="books.html"] h2,a[href="Books.html"] h1,a[href="Books.html"] h2,a[href="zb57.html"] h1,a[href="zb57.html"] h2{display:none!important}
+
+/* App-wide controls: language, font size and theme. */
+.global-controls{margin:10px auto 0;padding:0 20px;display:flex;justify-content:flex-end;align-items:center;gap:7px;max-width:1080px}
+.global-controls .lang-btn{min-width:72px}.global-controls .font-btn,.global-controls .icon-btn{min-width:38px;height:36px}.global-controls .font-size{min-width:42px}
+@media(max-width:480px){.global-controls{padding:0 14px;gap:5px}.global-controls .lang-btn{min-width:66px;padding:0 8px}.global-controls .font-btn,.global-controls .icon-btn{min-width:36px;height:36px}}
