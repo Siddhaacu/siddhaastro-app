@@ -57,3 +57,7 @@ img[src$="12.png"],img[src*="/12.png"],img[src*="\\12.png"]{display:none!importa
 a[href^="zb"][href$="e.html"],a[href^="zb"][href$="s.html"],[data-script-language]{display:none!important}
 div:has(>a[href^="zb"][href$="e.html"]),div:has(>a[href^="zb"][href$="s.html"]){display:none!important}
 .book-back,.script-back,[data-back],button[onclick*="history.back"],a[onclick*="history.back"],a[href="javascript:history.back()"]{display:none!important}
+
+/* Legacy scripture cleanup: remove old language switchers and Back controls. */
+a[href$="e.html"],a[href$="s.html"],a[href$="e.htm"],a[href$="s.htm"]{display:none!important}
+a[href="books.html"] h1,a[href="books.html"] h2,a[href="Books.html"] h1,a[href="Books.html"] h2,a[href="zb57.html"] h1,a[href="zb57.html"] h2{display:none!important}
