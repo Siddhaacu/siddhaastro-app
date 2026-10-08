@@ -89,7 +89,31 @@ function applyLanguage(){
   if(languageObserver)languageObserver.observe(document.body,{childList:true,subtree:true});
 }
 function sync(){r.style.setProperty("--scale",s);document.querySelectorAll("[data-font-size]").forEach(e=>e.textContent=Math.round(s*100)+"%");applyLanguage();}
+function renderLegacyShell(){
+  const file=location.pathname.split("/").pop()||"";
+  if(!/^(zb|dm)\\d.*\\.html$/i.test(file))return;
+  document.body.classList.add("siddha-legacy-page");
+  let app=document.querySelector(".app");
+  if(!app){
+    app=document.createElement("div");
+    app.className="app legacy-app";
+    while(document.body.firstChild)app.appendChild(document.body.firstChild);
+    document.body.appendChild(app);
+  }
+  let header=document.querySelector(".header");
+  if(!header){
+    header=document.createElement("header");
+    header.className="header legacy-header";
+    header.innerHTML='<div class="header-inner"><a class="brand" href="index.html"><img src="logo.png" alt="Siddha Astro"><span><span class="brand-name">Siddha Astro</span><span class="brand-tag">Vedic wisdom, simply presented</span></span></a><div class="page-title"><strong>Vedic Scriptures</strong><span>Spiritual Reading</span></div></div>';
+    app.insertBefore(header,app.firstChild);
+  }
+  document.querySelectorAll('a[href]').forEach(a=>{
+    const href=a.getAttribute("href")||"",t=(a.textContent||"").trim().toLowerCase();
+    if(/^zb.*[esh]\\.html(?:#.*)?$/i.test(href)||/^(telugu|english|samskritam|sanskrit)$/.test(t))a.remove();
+  });
+}
 function renderControls(){
+  renderLegacyShell();
   let controls=document.querySelector(".global-controls");
   if(!controls){
     controls=document.createElement("div");
@@ -203,7 +227,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     const t=(el.textContent||"").trim().toLowerCase();
     if(t==="back"||t==="← back"||t==="go back")el.remove();
   });
-  renderNav();renderControls();sync();
+  renderLegacyShell();renderNav();renderControls();sync();
   languageObserver=new MutationObserver(()=>{if(!translating&&lang==="te")applyLanguage()});
   languageObserver.observe(document.body,{childList:true,subtree:true});
   document.querySelectorAll("[data-theme]").forEach(b=>b.onclick=toggleTheme);
