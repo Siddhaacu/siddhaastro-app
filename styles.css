@@ -84,3 +84,36 @@ html body .sloka-text,
 html body .sankalpam-text{
   font-family:"Potti Sreeramulu",Manrope,system-ui,sans-serif;
 }
+
+
+/* Desktop app-shell mode — keep the same compact mobile-app model on larger screens */
+@media(min-width:701px){
+  html,body{min-height:100%;background:#e8ece9}
+  body{display:flex;justify-content:center;align-items:stretch}
+  .app{
+    width:100%;
+    max-width:480px;
+    min-height:100vh;
+    margin:0 auto;
+    background:var(--bg);
+    box-shadow:0 0 0 1px rgba(38,51,47,.06),0 0 50px rgba(38,51,47,.12);
+    position:relative;
+  }
+  .header-inner,.controls,.global-controls,.main{
+    max-width:none;
+    width:100%;
+  }
+  .header-inner{padding:15px 16px}
+  .controls,.global-controls{padding-left:16px;padding-right:16px}
+  .main{padding:16px 16px 30px}
+  .hero{padding:22px 20px;border-radius:22px}
+  .card{padding:18px;border-radius:18px}
+  .feature-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .nav{
+    width:min(450px,calc(100% - 20px));
+  }
+}
+.dark body{background:#080d0b}
+@media(min-width:701px){
+  .dark .app{box-shadow:0 0 0 1px rgba(255,255,255,.04),0 0 50px rgba(0,0,0,.35)}
+}
