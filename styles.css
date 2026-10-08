@@ -1,3 +1,4 @@
+@font-face{font-family:"Potti Sreeramulu";src:url("/assets/fonts/PottiSreeramulu.otf") format("opentype");font-weight:400;font-style:normal;font-display:swap}
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Noto+Serif+Devanagari:wght@500;600;700&display=swap');
 :root{--bg:#f5f7f3;--surface:#fff;--surface-2:#eef3ee;--text:#26332f;--muted:#68766f;--accent:#4f7567;--accent-dark:#36594d;--accent-soft:#e5efe9;--gold:#a27a2a;--border:#dfe7e1;--shadow:rgba(38,51,47,.08);--danger:#b65353;--radius:20px;--scale:1}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:linear-gradient(180deg,#f8faf7 0%,var(--bg) 100%);color:var(--text);font-family:Manrope,system-ui,sans-serif;font-size:calc(16px * var(--scale));line-height:1.55}a{color:inherit}button,input,select{font:inherit}button{cursor:pointer}.app{min-height:100vh;padding-bottom:100px}
@@ -64,3 +65,8 @@ a[href="books.html"] h1,a[href="books.html"] h2,a[href="Books.html"] h1,a[href="
 .global-controls{margin:10px auto 0;padding:0 20px;display:flex;justify-content:flex-end;align-items:center;gap:7px;max-width:1080px}
 .global-controls .lang-btn{min-width:72px}.global-controls .font-btn,.global-controls .icon-btn{min-width:38px;height:36px}.global-controls .font-size{min-width:42px}
 @media(max-width:480px){.global-controls{padding:0 14px;gap:5px}.global-controls .lang-btn{min-width:66px;padding:0 8px}.global-controls .font-btn,.global-controls .icon-btn{min-width:36px;height:36px}}
+
+/* Potti Sreeramulu for Telugu mode — bundled locally for iOS, Android and desktop */
+html[lang="te"] body{font-family:"Potti Sreeramulu",Manrope,system-ui,sans-serif}
+html[lang="te"] .sloka h2,html[lang="te"] .sloka-text,html[lang="te"] .sankalpam-text{font-family:"Potti Sreeramulu",serif}
+.sloka h2,.sloka-text{font-family:Manrope,system-ui,sans-serif}
