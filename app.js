@@ -108,11 +108,10 @@ function renderLegacyShell(){
     header.innerHTML='<div class="header-inner"><a class="brand" href="index.html"><img src="logo.png" alt="Siddha Astro"><span><span class="brand-name">Siddha Astro</span><span class="brand-tag">Vedic wisdom, simply presented</span></span></a><div class="page-title"><strong>Vedic Scriptures</strong><span>Spiritual Reading</span></div></div>';
     app.insertBefore(header,app.firstChild);
   }
-  document.querySelectorAll('a[href]').forEach(a=>{
+  document.querySelectorAll('a').forEach(a=>{
     const href=a.getAttribute("href")||"",t=(a.textContent||"").trim().toLowerCase();
-    if(/^zb.*[esh]\\.html(?:#.*)?$/i.test(href)||/^(telugu|english|samskritam|sanskrit)$/.test(t))a.remove();
-  });
-}
+    if(/^zb.*[esh]\\.html(?:#.*)?$/i.test(href)||/^(telugu|english|samskritam|sanskrit|తెలుగు|ఇంగ్లీష్|సంస్కృతం|సంస్కృత)$/.test(t))a.remove();
+  });}
 function renderControls(){
   renderLegacyShell();
   let controls=document.querySelector(".global-controls");
