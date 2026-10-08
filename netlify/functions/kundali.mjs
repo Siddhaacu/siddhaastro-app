@@ -61,7 +61,7 @@ function parseBirth(body) {
 
   const location = resolveLocation(body.birthCity, body.latitude, body.longitude);
   if (!location) {
-    throw new Error("Birth city is not in the supported city list. Please provide latitude and longitude.");
+    throw new Error("Please select a valid birth place from the worldwide search results.");
   }
 
   return {
@@ -73,7 +73,7 @@ function parseBirth(body) {
     seconds: Number.isFinite(seconds) ? seconds : 0,
     latitude: location.lat,
     longitude: location.lon,
-    timezone: Number(body.timezone ?? 5.5),
+    timezone: Number.isFinite(Number(body.timezone)) ? Number(body.timezone) : Number(body.timezoneOffset ?? 5.5),
     settings: {
       ayanamsha: "lahiri",
       observation_point: "topocentric",
