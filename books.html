@@ -122,6 +122,28 @@
 .content-card .search-box{position:sticky;top:74px;z-index:5;margin:12px 0 24px;display:flex;align-items:center}
 .content-card .search-box input{background:var(--surface);box-shadow:0 8px 20px var(--shadow)}
 .content-card br{line-height:1}
+
+/* Search suggestions and expandable scripture categories */
+.content-card .search-box{gap:10px}
+.content-card .search-box input{width:100%;min-width:0;border:1px solid var(--border);border-radius:14px;padding:13px 15px;color:var(--text);background:var(--surface)}
+.book-search-results{display:none;position:relative;margin:-14px 0 24px;background:var(--surface);border:1px solid var(--border);border-radius:16px;box-shadow:0 12px 28px var(--shadow);overflow:hidden}
+.book-search-results.is-open{display:block}
+.book-search-results a{display:block;padding:12px 15px;color:var(--text);text-decoration:none;border-bottom:1px solid var(--border)}
+.book-search-results a:last-child{border-bottom:0}
+.book-search-results a:hover,.book-search-results a:focus{background:var(--surface-2)}
+.book-search-results small{display:block;color:var(--muted);font-size:.82rem;margin-top:3px}
+.book-search-empty{padding:14px;color:var(--muted)}
+.content-card .book-category{margin:18px 0 12px;border:1px solid var(--border);border-radius:16px;background:var(--surface);overflow:hidden;box-shadow:0 5px 18px var(--shadow)}
+.content-card .book-category>summary{list-style:none;cursor:pointer;padding:15px 17px;display:flex;align-items:center;justify-content:space-between;gap:12px;color:var(--text);font-weight:700}
+.content-card .book-category>summary::-webkit-details-marker{display:none}
+.content-card .book-category>summary:after{content:"＋";color:var(--gold);font-size:1.2rem}
+.content-card .book-category[open]>summary:after{content:"−"}
+.content-card .book-category>summary:hover{background:var(--surface-2)}
+.content-card .book-category .feature-grid{padding:0 12px 12px;margin:0}
+.content-card .book-category .chakra-frame{width:min(100%,190px);margin:8px auto 18px}
+.content-card .book-category .feature-card{height:100%}
+@media(max-width:480px){.content-card{padding:15px}.content-card .book-category>summary{padding:13px 14px}}
+
 </style><link rel="icon" type="image/png" href="/logo.png"><link rel="shortcut icon" type="image/png" href="/logo.png"><link rel="apple-touch-icon" href="/logo.png"></head><body><div class="app"><header class="header"><div class="header-inner"><a class="brand" href="index.html"><img src="logo.png" alt="Siddha Astro"><span><span class="brand-name">Siddha Astro</span><span class="brand-tag">Vedic wisdom, simply presented</span></span></a><div class="page-title"><strong>Vedic Scriptures</strong><span>Traditional prayers, stotras, suktas, puja vidhanam and sacred texts.</span></div></div></header><div class="controls global-controls" data-global-controls style="display:flex!important;visibility:visible!important;opacity:1!important;">
 <button class="lang-btn" type="button" data-control-lang>తెలుగు</button>
 <button class="font-btn" type="button" data-font="down" aria-label="Decrease font size" title="Decrease font size">A−</button>
@@ -149,24 +171,84 @@
 </div>
 
 <script>
-function searchBooks() {
+(function(){
+ function initBookSearch(){
+ const input=document.getElementById("bookSearch");
+ if(!input)return;
+ const content=input.closest(".content-card");
+ const results=document.createElement("div");
+ results.className="book-search-results";
+ results.id="bookSearchResults";
+ results.setAttribute("role","listbox");
+ input.setAttribute("autocomplete","off");
+ input.setAttribute("aria-controls",results.id);
+ input.setAttribute("aria-expanded","false");
+ input.parentElement.insertAdjacentElement("afterend",results);
 
-    let input = document.getElementById("bookSearch");
-    let filter = input.value.toLowerCase();
-
-    let items = document.getElementsByClassName("book-item");
-
-    for (let i = 0; i < items.length; i++) {
-
-        let text = items[i].textContent || items[i].innerText;
-
-        if (text.toLowerCase().indexOf(filter) > -1) {
-            items[i].style.display = "";
-        } else {
-            items[i].style.display = "none";
-        }
-    }
-}
+ // Turn each section heading into a tappable card while preserving its content.
+ const headings=[...content.querySelectorAll("center > h3, center > h5")];
+ headings.forEach((heading,index)=>{
+   const imageCenter=heading.parentElement.nextElementSibling;
+   let imageFrame=null;
+   if(imageCenter&&imageCenter.matches("center")&&imageCenter.querySelector(".chakra-frame"))imageFrame=imageCenter;
+   const wrapper=document.createElement("details");
+   wrapper.className="book-category";
+   wrapper.open=index===0;
+   const summary=document.createElement("summary");
+   summary.textContent=heading.textContent.trim();
+   wrapper.appendChild(summary);
+   let node=heading.parentElement;
+   // The headings are wrapped in <center>; move that heading and its following section content.
+   const headingParent=heading.parentElement;
+   headingParent.replaceWith(wrapper);
+   node=wrapper.nextElementSibling;
+   while(node && !(node.matches("center") && node.querySelector("h3,h5"))){
+     const next=node.nextElementSibling;
+     wrapper.appendChild(node);
+     node=next;
+   }
+ });
+ const allItems=[...content.querySelectorAll(".book-item a")].map(a=>({
+   title:a.textContent.trim(),url:a.getAttribute("href")||"#",el:a.closest(".book-item"),category:a.closest(".book-category")?.querySelector("summary")?.textContent||"Vedic Scriptures"
+ }));
+ function norm(v){return v.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^\p{L}\p{N}\s-]/gu," ").replace(/\s+/g," ").trim()}
+ function score(item,q){
+   const title=norm(item.title),query=norm(q);
+   if(!query)return 0;
+   if(title===query)return 100;
+   if(title.startsWith(query))return 80;
+   if(title.includes(query))return 60;
+   const words=query.split(" ");
+   const hits=words.filter(w=>w&&title.includes(w)).length;
+   return hits?Math.round(35*hits/words.length):0;
+ }
+ function searchBooks(){
+   const q=input.value.trim();
+   const query=norm(q);
+   content.querySelectorAll(".book-item").forEach(el=>el.style.display=query?"none":"");
+   content.querySelectorAll(".book-category").forEach(el=>{if(!query)el.open=el.dataset.initialOpen==="true";});
+   results.replaceChildren();
+   if(!query){results.classList.remove("is-open");input.setAttribute("aria-expanded","false");return}
+   const matches=allItems.map(item=>({...item,rank:score(item,q)})).filter(x=>x.rank>0).sort((a,b)=>b.rank-a.rank||a.title.localeCompare(b.title)).slice(0,12);
+   if(!matches.length){
+     const empty=document.createElement("div");empty.className="book-search-empty";empty.textContent="No matching scriptures found. Try a Telugu or Roman title.";results.appendChild(empty);
+   }else matches.forEach(item=>{
+     const link=document.createElement("a");link.href=item.url;link.setAttribute("role","option");
+     const title=document.createElement("span");title.textContent=item.title;
+     const category=document.createElement("small");category.textContent=item.category;
+     link.append(title,category);results.appendChild(link);
+   });
+   results.classList.add("is-open");input.setAttribute("aria-expanded","true");
+ }
+ content.querySelectorAll(".book-category").forEach((el,i)=>el.dataset.initialOpen=el.open?"true":"false");
+ input.addEventListener("input",searchBooks);
+ input.addEventListener("focus",()=>{if(input.value.trim())searchBooks()});
+ document.addEventListener("click",e=>{if(!e.target.closest(".search-box")&&!e.target.closest("#"+results.id)){results.classList.remove("is-open");input.setAttribute("aria-expanded","false")}});
+ input.addEventListener("keydown",e=>{if(e.key==="Escape"){input.value="";searchBooks();results.classList.remove("is-open")}});
+ window.searchBooks=searchBooks;
+ }
+ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",initBookSearch,{once:true});else initBookSearch();
+})();
 </script>
 
 <br><br>
@@ -822,4 +904,4 @@ function searchBooks() {
         </div>
 </div>
 </div></body>
-</section></main><nav class="nav"><a href="index.html">⌂<span>Home</span></a><a href="panchangam.html">◫<span>Panchangam</span></a><a href="horoscope.html">✦<span>Horoscope</span></a><a href="kundali.html">◈<span>Kundali</span></a><a href="more.html" class="active">•••<span>More</span></a></nav></div><script src="app.js?v=20261008-7"></script></body></html>
+</section></main><nav class="nav"><a href="index.html">⌂<span>Home</span></a><a href="panchangam.html">◫<span>Panchangam</span></a><a href="horoscope.html">✦<span>Horoscope</span></a><a href="kundali.html">◈<span>Kundali</span></a><a href="more.html" class="active">•••<span>More</span></a></nav></div><script src="app.js?v=20261009-books-preview-2"></script></body></html>
