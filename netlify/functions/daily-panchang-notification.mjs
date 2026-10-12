@@ -15,18 +15,58 @@ const CITIES={
 
 const NAKSHATRAS=["Ashwini","Bharani","Krittika","Rohini","Mrigashira","Ardra","Punarvasu","Pushya","Ashlesha","Magha","Purva Phalguni","Uttara Phalguni","Hasta","Chitra","Swati","Vishakha","Anuradha","Jyeshtha","Mula","Purva Ashadha","Uttara Ashadha","Shravana","Dhanishtha","Shatabhisha","Purva Bhadrapada","Uttara Bhadrapada","Revati"];
 const RASHIS=["Aries","Taurus","Gemini","Cancer","Leo","Virgo","Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"];
+const RASHI_ALIASES=[
+  ["Aries","Mesha","మేష","ಮೇಷ"],["Taurus","Vrishabha","వృషభ"],["Gemini","Mithuna","మిథున"],
+  ["Cancer","Karkataka","కర్కాటక"],["Leo","Simha","సింహ"],["Virgo","Kanya","కన్య"],
+  ["Libra","Tula","తుల"],["Scorpio","Vrischika","వృశ్చిక"],["Sagittarius","Dhanu","ధనుస్సు"],
+  ["Capricorn","Makara","మకర"],["Aquarius","Kumbha","కుంభ"],["Pisces","Meena","మీనం"]
+];
+const HOROSCOPE_KEYS=["Mesha","Vrishabha","Mithuna","Karkataka","Simha","Kanya","Tula","Vrischika","Dhanu","Makara","Kumbha","Meena"];
+const RASHI_TE=["మేషం","వృషభం","మిథునం","కర్కాటకం","సింహం","కన్య","తుల","వృశ్చికం","ధనుస్సు","మకరం","కుంభం","మీనం"];
 const TARA_NAMES=["Janma","Sampat","Vipat","Kshema","Pratyari","Sadhana","Naidhana","Mitra","Parama Mitra"];
 const TARA_TE=["జన్మ","సంపత్","విపత్","క్షేమ","ప్రత్యరి","సాధన","నైధన","మిత్ర","పరమ మిత్ర"];
 const TARA_VERDICT=["Mixed","Favourable","Caution","Favourable","Caution","Favourable","Avoid","Favourable","Favourable"];
 function indexByName(value,list){const v=String(value||"").toLowerCase();return list.findIndex(x=>v.includes(x.toLowerCase()));}
+function rashiIndex(value){
+  const v=String(value||"").trim().toLowerCase();
+  return RASHI_ALIASES.findIndex(names=>names.some(name=>v.includes(name.toLowerCase())));
+}
 function personalStrength(record,p){
   const bi=indexByName(record.nakshatra,NAKSHATRAS),ci=indexByName(p.nakshatra,NAKSHATRAS);
-  const br=indexByName(record.rashi,RASHIS),cr=indexByName(p.rashi,RASHIS);
+  const br=rashiIndex(record.rashi),cr=rashiIndex(p.rashi);
   if(bi<0&&br<0)return null;
   let taraText="",chandraText="";
-  if(bi>=0&&ci>=0){const n=((ci-bi+27)%27)%9||9;taraText=(record.language==="te"?TARA_TE[n-1]:TARA_NAMES[n-1])+" • "+(record.language==="te"?(TARA_VERDICT[n-1]==="Favourable"?"అనుకూలం":TARA_VERDICT[n-1]==="Caution"?"జాగ్రత్త":TARA_VERDICT[n-1]==="Avoid"?"వర్జించాలి":"మిశ్రమం"):TARA_VERDICT[n-1]);}
-  if(br>=0&&cr>=0){const pos=(cr-br+12)%12+1;const strong=[1,3,6,7,10,11].includes(pos);chandraText=strong?(record.language==="te"?"అనుకూలం":"Favourable"):(record.language==="te"?"జాగ్రత్త":"Caution");}
+  if(bi>=0&&ci>=0){
+    const n=((ci-bi+27)%27)%9+1;
+    taraText=(record.language==="te"?TARA_TE[n-1]:TARA_NAMES[n-1])+" • "+(record.language==="te"?(TARA_VERDICT[n-1]==="Favourable"?"అనుకూలం":TARA_VERDICT[n-1]==="Caution"?"జాగ్రత్త":TARA_VERDICT[n-1]==="Avoid"?"వర్జించాలి":"మిశ్రమం"):TARA_VERDICT[n-1]);
+  }
+  if(br>=0&&cr>=0){
+    const pos=(cr-br+12)%12+1;
+    const strong=[1,3,6,7,10,11].includes(pos);
+    chandraText=strong?(record.language==="te"?"అనుకూలం":"Favourable"):(record.language==="te"?"జాగ్రత్త":"Caution");
+  }
   return {taraText,chandraText};
+}
+function horoscopeForRecord(record,data){
+  const index=rashiIndex(record.rashi);
+  const selected=index>=0?index:0;
+  const key=HOROSCOPE_KEYS[selected];
+  const item=data?.horoscopes?.[key];
+  const daily=item?.daily;
+  const text=typeof daily==="string"?daily:daily?.[record.language==="te"?"te":"en"];
+  if(!text)return null;
+  return {key,label:record.language==="te"?RASHI_TE[selected]:RASHIS[selected],text};
+}
+async function getDailyHoroscope(date){
+  try{
+    const store=getStore("siddha-astro-horoscope",{consistency:"strong"});
+    let data=await store.get(date,{type:"json"});
+    if(!data)data=await store.get("latest",{type:"json"});
+    return data?.date===date&&data?.horoscopes?data:null;
+  }catch(error){
+    console.warn("Daily horoscope data unavailable for notification",error);
+    return null;
+  }
 }
 
 function indiaToday(){
@@ -101,6 +141,7 @@ export default async ()=>{
   const store=getStore(STORE_NAME,{consistency:"strong"});
   const {blobs}=await store.list();
   const date=indiaToday();
+  const horoscopeData=await getDailyHoroscope(date);
   let sent=0,removed=0,failed=0;
 
   for(const blob of blobs){
@@ -110,18 +151,20 @@ export default async ()=>{
     try{
       const p=await getPanchang(record.city||"hyderabad",date);
       const values=record.language==="te"?telugu(p):p;
-      const body=[
+      const strength=personalStrength(record,p);
+      const horoscope=horoscopeData?horoscopeForRecord(record,horoscopeData):null;
+      const bodyLines=[
         "📅 "+date,
-        "🌙 Tithi: "+values.tithi,
-        "⭐ Nakshatram: "+values.nakshatra,
-        "♈ Rashi: "+values.rashi,
-        "☀️ Sunrise: "+p.sunrise,
-        "🌇 Sunset: "+p.sunset,
-        ...(personalStrength(record,p)?[
-          "✦ "+(record.language==="te"?"తారాబలం":"Tarabalam")+": "+personalStrength(record,p).taraText,
-          "☾ "+(record.language==="te"?"చంద్రబలం":"Chandrabalam")+": "+personalStrength(record,p).chandraText
-        ]:[])
-      ].join("\n");
+        "🌙 "+(record.language==="te"?"తిథి":"Tithi")+": "+values.tithi,
+        "⭐ "+(record.language==="te"?"నక్షత్రం":"Nakshatram")+": "+values.nakshatra,
+        "♈ "+(record.language==="te"?"రాశి":"Rashi")+": "+values.rashi,
+        "☀️ "+(record.language==="te"?"సూర్యోదయం":"Sunrise")+": "+p.sunrise,
+        "🌇 "+(record.language==="te"?"సూర్యాస్తమయం":"Sunset")+": "+p.sunset
+      ];
+      if(strength?.taraText)bodyLines.push("✦ "+(record.language==="te"?"తారాబలం":"Tarabalam")+": "+strength.taraText);
+      if(strength?.chandraText)bodyLines.push("☾ "+(record.language==="te"?"చంద్రబలం":"Chandrabalam")+": "+strength.chandraText);
+      if(horoscope?.text)bodyLines.push("🔮 "+(record.language==="te"?"దైనందిన రాశిఫలం":"Daily Horoscope")+" ("+horoscope.label+"): "+horoscope.text);
+      const body=bodyLines.join("\n");
 
       await webpush.sendNotification(record.subscription,JSON.stringify({
         title:"🔔 Siddha Astro — Today's Panchangam",
