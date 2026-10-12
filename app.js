@@ -88,7 +88,33 @@ function applyLanguage(){
   translating=false;
   if(languageObserver)languageObserver.observe(document.body,{childList:true,subtree:true});
 }
-function sync(){r.style.setProperty("--scale",s);document.querySelectorAll("[data-font-size]").forEach(e=>e.textContent=Math.round(s*100)+"%");applyLanguage();}
+function isScriptureContentPage(){
+  const file=(location.pathname.split("/").pop()||"").toLowerCase();
+  return file==="books.html" || /^(?:zb[^/]*|dm\\d+)\\.html$/i.test(file);
+}
+function scaleScriptureText(){
+  if(!isScriptureContentPage())return;
+  const excluded='header, .header, .global-controls, .controls, nav, .nav, footer, .footer, button, input, select, textarea, script, style, svg';
+  const elements=Array.from(document.body.querySelectorAll("*")).filter(el=>
+    !el.closest(excluded) &&
+    Array.from(el.childNodes).some(node=>node.nodeType===Node.TEXT_NODE && node.nodeValue.trim())
+  );
+  const sizes=elements.map(el=>{
+    if(!el.dataset.scriptureBaseFontSize){
+      el.dataset.scriptureBaseFontSize=getComputedStyle(el).fontSize;
+    }
+    return parseFloat(el.dataset.scriptureBaseFontSize)||16;
+  });
+  elements.forEach((el,i)=>{
+    el.style.fontSize=(sizes[i]*s)+"px";
+  });
+}
+function sync(){
+  r.style.setProperty("--scale",isScriptureContentPage()?"1":s);
+  document.querySelectorAll("[data-font-size]").forEach(e=>e.textContent=Math.round(s*100)+"%");
+  scaleScriptureText();
+  applyLanguage();
+}
 function isLegacyScripturePage(){
   const file=(location.pathname.split("/").pop()||"").toLowerCase();
   return /^(?:zb[^/]*|dm\d+)\.html$/i.test(file);
