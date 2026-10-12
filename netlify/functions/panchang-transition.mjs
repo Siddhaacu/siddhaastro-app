@@ -7,7 +7,7 @@ export default async (req) => {
   const lng = Number(url.searchParams.get("lng"));
   const tz = Number(url.searchParams.get("tz"));
 
-  if (!/^\\d{4}-\\d{2}-\\d{2}$/.test(date) ||
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date) ||
       !Number.isFinite(lat) || lat < -90 || lat > 90 ||
       !Number.isFinite(lng) || lng < -180 || lng > 180 ||
       !Number.isFinite(tz) || tz < -12 || tz > 14) {
