@@ -153,9 +153,8 @@ function transitionLabel(start,end){
   return start?fmt(start)+" – "+fmt(end):fmt(end);
 }
 async function fetchTransitionTimings(dateStr,city){
-  // Shastra Panchangam publishes exact transition times for its supported city slugs.
-  // The former Netlify-function URL was not present in this repository, which left
-  // both timing cards blank even when the main Panchangam loaded successfully.
+  // The transition endpoint supports the published city slugs. Arbitrary GPS
+  // coordinates are not supported by this source, so state that limitation clearly.
   if(!city?.slug){
     return {
       tithiTiming:"Exact timing unavailable for this custom location",
@@ -163,15 +162,12 @@ async function fetchTransitionTimings(dateStr,city){
     };
   }
   try{
-    const url=TRANSITION_API+"/"+encodeURIComponent(city.slug)+"/"+encodeURIComponent(dateStr)+".json";
-    const r=await fetch(url,{headers:{Accept:"application/json"},cache:"no-store"});
+    const r=await fetch("/.netlify/functions/panchang-transition?date="+encodeURIComponent(dateStr)+"&city="+encodeURIComponent(city.slug),{headers:{Accept:"application/json"},cache:"no-store"});
     if(!r.ok)throw new Error("HTTP "+r.status);
-    const payload=await r.json();
-    const tithiEnd=findTransition(payload,"tithi");
-    const nakshatraEnd=findTransition(payload,"nakshatra");
+    const data=await r.json();
     return {
-      tithiTiming:tithiEnd?"Until "+transitionLabel(null,tithiEnd):"Exact timing unavailable",
-      nakshatraTiming:nakshatraEnd?"Until "+transitionLabel(null,nakshatraEnd):"Exact timing unavailable"
+      tithiTiming:data.tithiTiming||"Exact timing unavailable",
+      nakshatraTiming:data.nakshatraTiming||"Exact timing unavailable"
     };
   }catch(e){
     console.warn("Transition timing source unavailable",e);
