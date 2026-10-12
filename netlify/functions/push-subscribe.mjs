@@ -1,7 +1,7 @@
 import {getStore} from "@netlify/blobs";
 import {createHash} from "node:crypto";
 
-const STORE_NAME="siddha-astro-push";
+const STORE_NAME=Netlify.env.get("CONTEXT")==="production"?"siddha-astro-push":"siddha-astro-push-preview";
 const store=()=>getStore(STORE_NAME,{consistency:"strong"});
 
 function keyFor(endpoint){
