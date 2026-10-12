@@ -47,16 +47,16 @@ document.addEventListener("DOMContentLoaded",()=>{
  }
  try{
    const saved=JSON.parse(localStorage.getItem("siddha-panchang-location")||"null");
-   if(saved&&Number.isFinite(saved.lat)&&Number.isFinite(saved.lng)&&saved.timezone){
+   if(saved&&Number.isFinite(saved.lat)&&Number.isFinite(saved.lng)&&saved.timezone&&localStorage.getItem("siddha-panchang-city")==="__custom__"){
      selectedLocation=saved;window.SiddhaPanchangam.selectedLocation=saved;
      const opt=document.createElement("option");opt.value="__custom__";opt.textContent=saved.name||"Selected location";c.appendChild(opt);
-     if(localStorage.getItem("siddha-panchang-city")==="__custom__"){c.value="__custom__";d.value=dateForZone(saved.timezone)}
-   }
+     c.value="__custom__";d.value=dateForZone(saved.timezone);
+   }else{selectedLocation=null;window.SiddhaPanchangam.selectedLocation=null;}
  }catch(e){localStorage.removeItem("siddha-panchang-location")}
  g.addEventListener("click",event=>{const button=event.target.closest("[data-info-toggle]");if(!button)return;const panel=g.querySelector('[data-info-text="'+button.dataset.infoToggle+'"]');if(!panel)return;const opening=button.getAttribute("aria-expanded")!=="true";panel.hidden=!opening;button.setAttribute("aria-expanded",String(opening))});
  function render(){
    if(!lastP)return;
-   const te=language(),cityTe={Hyderabad:"హైదరాబాద్",Bengaluru:"బెంగళూరు",Chennai:"చెన్నై",Mumbai:"ముంబై",Delhi:"ఢిల్లీ",Rajahmundry:"రాజమండ్రి"}[lastP.city]||lastP.city;
+   const te=language()==="te",cityTe={Hyderabad:"హైదరాబాద్",Bengaluru:"బెంగళూరు",Chennai:"చెన్నై",Mumbai:"ముంబై",Delhi:"ఢిల్లీ",Rajahmundry:"రాజమండ్రి"}[lastP.city]||lastP.city;
    title.textContent=te?cityTe+" పంచాంగం":lastP.city+" Panchangam";meta.textContent=lastP.date+" • "+lastP.ayanamsa;
    const info={yoga:{en:"Yoga is one of the 27 combinations formed from the Sun’s and Moon’s positions in the sky. In traditional Panchangam, it is used to describe the day’s astrological quality.",te:"సూర్యుడు, చంద్రుని స్థానాల ఆధారంగా ఏర్పడే 27 యోగాలలో ఒకటి. సంప్రదాయ పంచాంగంలో ఇది ఆ రోజు జ్యోతిష్య స్వభావాన్ని సూచిస్తుంది."},karana:{en:"Karana is half of a Tithi, based on the angular distance between the Sun and Moon. Two Karanas make one Tithi, and Karana is traditionally considered when choosing a suitable time for activities.",te:"కరణం అనేది తిథిలో సగ భాగం. సూర్యుడు, చంద్రుని మధ్య కోణ దూరం ఆధారంగా ఇది నిర్ణయించబడుతుంది. ఒక తిథిలో రెండు కరణాలు ఉంటాయి; శుభకార్యాలకు సమయం ఎంచుకునేటప్పుడు సంప్రదాయంగా దీనిని పరిగణిస్తారు."}};
    g.innerHTML=Object.entries(labels).map(([k,v])=>{const hasInfo=k==="yoga"||k==="karana",infoLabel=te?"వివరణ":"About "+v;return '<div class="tile"><div class="tile-label-row"><span class="tile-label">'+v+'</span>'+(hasInfo?'<button class="panchang-info" type="button" data-info-toggle="'+k+'" aria-label="'+infoLabel+'" title="'+infoLabel+'" aria-expanded="false">i</button>':"")+'</div><div class="tile-value">'+((k==="tithiTiming"||k==="nakshatraTiming"?(lastP[k]||"—"):SiddhaPanchangam.translateValue(k,lastP[k])||"—"))+'</div>'+(hasInfo?'<div class="panchang-info-text" data-info-text="'+k+'" hidden>'+info[k][te]+'</div>':"")+'</div>'}).join("");
