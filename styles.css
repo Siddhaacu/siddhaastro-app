@@ -323,3 +323,12 @@ html.dark{color-scheme:dark}
   .siddha-legacy-page .feature-card{padding:14px 15px;border-radius:16px;line-height:1.78}
   .siddha-legacy-page section h1{margin-bottom:15px;font-size:1.3rem}
 }
+
+
+/* Small contextual info buttons for Yoga and Karana Panchangam cards */
+.tile-label-row{display:flex;align-items:center;justify-content:center;gap:6px;min-height:20px}
+.tile-label-row .tile-label{margin:0}
+.panchang-info{display:inline-grid;place-items:center;flex:0 0 18px;width:18px;height:18px;padding:0;border:1px solid var(--accent);border-radius:50%;background:transparent;color:var(--accent-dark);font:800 .68rem/1 Manrope,system-ui,sans-serif;cursor:pointer}
+.panchang-info:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.panchang-info[aria-expanded="true"]{background:var(--accent);color:var(--surface)}
+.panchang-info-text{margin-top:10px;padding:9px 10px;border:1px solid var(--border);border-radius:10px;background:var(--surface);color:var(--muted);font-size:.72rem;line-height:1.55;text-align:left}
