@@ -1,7 +1,7 @@
 import webpush from "web-push";
 import {getStore} from "@netlify/blobs";
 
-const STORE_NAME="siddha-astro-push";
+const STORE_NAME=Netlify.env.get("CONTEXT")==="production"?"siddha-astro-push":"siddha-astro-push-preview";
 const PANCHANG_API="https://nityapanchangam.com/api/panchangam.php";
 const ENRICH_API="https://jagannatha-hora-359167915530.europe-west1.run.app/panchang";
 const CITIES={
