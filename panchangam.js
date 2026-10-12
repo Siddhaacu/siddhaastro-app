@@ -153,16 +153,14 @@ function transitionLabel(start,end){
   return start?fmt(start)+" – "+fmt(end):fmt(end);
 }
 async function fetchTransitionTimings(dateStr,city){
-  // The transition endpoint supports the published city slugs. Arbitrary GPS
-  // coordinates are not supported by this source, so state that limitation clearly.
-  if(!city?.slug){
-    return {
-      tithiTiming:"Exact timing unavailable for this custom location",
-      nakshatraTiming:"Exact timing unavailable for this custom location"
-    };
-  }
   try{
-    const r=await fetch("/.netlify/functions/panchang-transition?date="+encodeURIComponent(dateStr)+"&city="+encodeURIComponent(city.slug),{headers:{Accept:"application/json"},cache:"no-store"});
+    const params=new URLSearchParams({
+      date:dateStr,
+      lat:String(city?.lat??CITIES[DEFAULT_CITY].lat),
+      lng:String(city?.lng??CITIES[DEFAULT_CITY].lng),
+      tz:String(timezoneOffsetForDate(dateStr,city?.timezone))
+    });
+    const r=await fetch("/.netlify/functions/panchang-transition?"+params.toString(),{headers:{Accept:"application/json"},cache:"no-store"});
     if(!r.ok)throw new Error("HTTP "+r.status);
     const data=await r.json();
     return {
