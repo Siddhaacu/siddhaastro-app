@@ -61,8 +61,38 @@ Object.assign(dict,{
   "Decrease font size":"అక్షర పరిమాణం తగ్గించండి","Increase font size":"అక్షర పరిమాణం పెంచండి",
   "Dark theme":"డార్క్ థీమ్","Light theme":"లైట్ థీమ్"
 });const reverse={};Object.keys(dict).forEach(k=>reverse[dict[k]]=k);
+const scriptureOriginalText=new WeakMap();
+const teluguRomanMap={
+ "అ":"a","ఆ":"ā","ఇ":"i","ఈ":"ī","ఉ":"u","ఊ":"ū","ఋ":"ṛ","ౠ":"ṝ","ఎ":"e","ఏ":"ē","ఐ":"ai","ఒ":"o","ఓ":"ō","ఔ":"au",
+ "క":"k","ఖ":"kh","గ":"g","ఘ":"gh","ఙ":"ṅ","చ":"c","ఛ":"ch","జ":"j","ఝ":"jh","ఞ":"ñ","ట":"ṭ","ఠ":"ṭh","డ":"ḍ","ఢ":"ḍh","ణ":"ṇ",
+ "త":"t","థ":"th","ద":"d","ధ":"dh","న":"n","ప":"p","ఫ":"ph","బ":"b","భ":"bh","మ":"m","య":"y","ర":"r","ఱ":"ṟ","ల":"l","ళ":"ḷ","వ":"v","శ":"ś","ష":"ṣ","స":"s","హ":"h",
+ "ా":"ā","ి":"i","ీ":"ī","ు":"u","ూ":"ū","ృ":"ṛ","ౄ":"ṝ","ె":"e","ే":"ē","ై":"ai","ొ":"o","ో":"ō","ౌ":"au","్":"","ం":"ṃ","ః":"ḥ","ఁ":"m","ఽ":"'","ౕ":"'",
+ "౦":"0","౧":"1","౨":"2","౩":"3","౪":"4","౫":"5","౬":"6","౭":"7","౮":"8","౯":"9"
+};
+function transliterateScriptureText(value){
+ let out="";
+ const chars=[...value];
+ for(let i=0;i<chars.length;i++){
+  const ch=chars[i],next=chars[i+1];
+  if(ch==="\u200c"||ch==="\u200d")continue;
+  if(/[క-హఱ]/.test(ch)){
+   out+=teluguRomanMap[ch]||ch;
+   if(next==="్"){i++;continue}
+   if(next&&Object.prototype.hasOwnProperty.call(teluguRomanMap,next)&&/[ాిీుూృౄెేైొోౌ]/.test(next))continue;
+   out+="a";continue;
+  }
+  out+=Object.prototype.hasOwnProperty.call(teluguRomanMap,ch)?teluguRomanMap[ch]:ch;
+ }
+ return out.replace(/\s+/g," ").replace(/\s+([।॥,.;!?])/g,"$1");
+}
 function translateNode(n){
   if(n.nodeType!==3)return;
+  if(isLegacyScripturePage()){
+    if(!scriptureOriginalText.has(n))scriptureOriginalText.set(n,n.nodeValue);
+    const original=scriptureOriginalText.get(n);
+    n.nodeValue=lang==="en"?transliterateScriptureText(original):original;
+    return;
+  }
   const raw=n.nodeValue,trim=raw.trim();
   if(!trim)return;
   const target=lang==="te"?dict[trim]:reverse[trim];
