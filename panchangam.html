@@ -5,4 +5,107 @@
 <span class="font-size" data-font-size>100%</span>
 <button class="font-btn" type="button" data-font="up" aria-label="Increase font size" title="Increase font size">A+</button>
 <button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Switch to dark theme" title="Dark theme">☾</button>
-</div><main class="main"><section class="hero"><div class="eyebrow">Dynamic Panchangam</div><h1>Panchangam</h1><p>Accurate daily Panchangam for the selected date and city.</p></section><section class="card"><div class="form-grid"><div class="field"><label for="pdate">Date</label><input id="pdate" type="date"></div><div class="field"><label for="pcity">City</label><select id="pcity"></select></div></div><div class="actions" style="margin-top:14px"><button class="btn btn-primary" id="loadP">Load Panchangam</button><button class="btn btn-secondary" id="todayP">Today</button></div><div id="pstatus" class="message info" style="margin-top:14px">Loading Panchangam…</div></section><section class="card" id="panchangamDaily"><div class="section-head"><div><h2 id="pTitle">Panchangam</h2><p id="pMeta">—</p></div></div><div class="panchang-grid" id="pgrid"></div></section><section class="card" id="monthlyCalendar"><div class="section-head month-calendar-head"><div class="month-calendar-title"><h2 data-month-title>Monthly Panchangam</h2><p data-calendar-note>Tithi-based observances and festivals</p></div><div class="month-calendar-nav"><button type="button" data-prev-month aria-label="Previous month">‹</button><button type="button" data-this-month aria-label="Current month">Today</button><button type="button" data-next-month aria-label="Next month">›</button></div></div><div class="calendar-grid" data-calendar-grid></div><div class="calendar-status" data-calendar-status></div><div class="monthly-festivals"><div class="section-head"><div><h3 data-festival-title>Festivals &amp; Vratas</h3><p data-festival-subtitle>Important observances for this month</p></div></div><div class="monthly-festival-list" data-festival-list></div></div><div class="monthly-book-links"><div class="section-head"><div><h3 data-month-books-title>Pooja &amp; Vrata Books</h3><p data-month-books-subtitle>Puja, Vrata and Parayana books related to this month's observances</p></div><a class="link" href="books.html">All Books</a></div><div class="monthly-book-list" data-month-books-list></div></div></section></main><nav class="nav" aria-label="Primary navigation"><a href="index.html"><svg viewBox="0 0 24 24"><path d="M3 10.8 12 3l9 7.8"/><path d="M5.5 9.8V21h13V9.8M9.5 21v-6.5h5V21"/></svg><span>Home</span></a><a href="panchangam.html" class="active"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="16" rx="2.5"/><path d="M7.5 3v4M16.5 3v4M3.5 9.5h17"/></svg><span>Panchangam</span></a><a href="horoscope.html"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2"/></svg><span>Horoscope</span></a><a href="kundali.html"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5v17M3.5 12h17M6 6l12 12M18 6 6 18"/></svg><span>Kundali</span></a><a href="more.html"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg><span>More</span></a></nav></div><script src="app.js?v=20261008-7"></script><script src="panchangam.js?v=20261007-1"></script><script src="monthly-calendar.js?v=20261007-16"></script><script>document.addEventListener("DOMContentLoaded",()=>{const d=document.getElementById("pdate"),c=document.getElementById("pcity"),s=document.getElementById("pstatus"),g=document.getElementById("pgrid"),title=document.getElementById("pTitle"),meta=document.getElementById("pMeta"),labels={vara:"Vara",thithi:"Tithi",nakshatra:"Nakshatra",rashi:"Rashi",samvathsara:"Samvathsara",masa:"Masa",yoga:"Yoga",karana:"Karana",sunrise:"Sunrise",sunset:"Sunset",rahuKalam:"Rahu Kalam",yamagandam:"Yamagandam",abhijit:"Abhijit Muhurtham",gulikaKalam:"Gulika Kalam",durmuhurtham:"Durmuhurtham",varjyam:"Varjyam",tithiTiming:"Tithi Timing",nakshatraTiming:"Nakshatra Timing"};Object.entries(SiddhaPanchangam.cities).forEach(([k,v])=>c.insertAdjacentHTML("beforeend",`<option value="${k}">${v.name}</option>`));d.value=SiddhaPanchangam.indiaToday();c.value=localStorage.getItem("siddha-panchang-city")||"hyderabad";let lastP=null;g.addEventListener("click",event=>{const button=event.target.closest("[data-info-toggle]");if(!button)return;const panel=g.querySelector(`[data-info-text="${button.dataset.infoToggle}"]`);if(!panel)return;const opening=button.getAttribute("aria-expanded")!=="true";panel.hidden=!opening;button.setAttribute("aria-expanded",String(opening))});function render(){if(!lastP)return;const te=SiddhaApp.getLanguage()==="te";const cityTe={Hyderabad:"హైదరాబాద్",Bengaluru:"బెంగళూరు",Chennai:"చెన్నై",Mumbai:"ముంబై",Delhi:"ఢిల్లీ",Rajahmundry:"రాజమండ్రి"}[lastP.city]||lastP.city;title.textContent=te?cityTe+" పంచాంగం":lastP.city+" Panchangam";meta.textContent=lastP.date+" • "+lastP.ayanamsa;const info={yoga:{en:"Yoga is one of the 27 combinations formed from the Sun’s and Moon’s positions in the sky. In traditional Panchangam, it is used to describe the day’s astrological quality.",te:"సూర్యుడు, చంద్రుని స్థానాల ఆధారంగా ఏర్పడే 27 యోగాలలో ఒకటి. సంప్రదాయ పంచాంగంలో ఇది ఆ రోజు జ్యోతిష్య స్వభావాన్ని సూచిస్తుంది."},karana:{en:"Karana is half of a Tithi, based on the angular distance between the Sun and Moon. Two Karanas make one Tithi, and Karana is traditionally considered when choosing a suitable time for activities.",te:"కరణం అనేది తిథిలో సగ భాగం. సూర్యుడు, చంద్రుని మధ్య కోణ దూరం ఆధారంగా ఇది నిర్ణయించబడుతుంది. ఒక తిథిలో రెండు కరణాలు ఉంటాయి; శుభకార్యాలకు సమయం ఎంచుకునేటప్పుడు సంప్రదాయంగా దీనిని పరిగణిస్తారు."}};g.innerHTML=Object.entries(labels).map(([k,v])=>{const hasInfo=k==="yoga"||k==="karana";const infoLabel=te?"వివరణ":"About "+v;return `<div class="tile"><div class="tile-label-row"><span class="tile-label">${v}</span>${hasInfo?`<button class="panchang-info" type="button" data-info-toggle="${k}" aria-label="${infoLabel}" title="${infoLabel}" aria-expanded="false">i</button>`:""}</div><div class="tile-value">${(k==="tithiTiming"||k==="nakshatraTiming"?(lastP[k]||"—"):SiddhaPanchangam.translateValue(k,lastP[k])||"—")}</div>${hasInfo?`<div class="panchang-info-text" data-info-text="${k}" hidden>${info[k][te?"te":"en"]}</div>`:""}</div>`}).join("")}async function load(){localStorage.setItem("siddha-panchang-city",c.value);s.className="message info";s.textContent="Loading Panchangam…";try{lastP=await SiddhaPanchangam.fetchPanchangam(d.value,c.value);render();s.textContent="Panchangam updated successfully."}catch(e){s.className="message error";s.textContent=e.message;g.innerHTML=""}}document.getElementById("loadP").onclick=load;document.getElementById("todayP").onclick=()=>{d.value=SiddhaPanchangam.indiaToday();load()};document.addEventListener("languagechange",render);load()})</script></body></html>
+</div><main class="main"><section class="hero"><div class="eyebrow">Dynamic Panchangam</div><h1>Panchangam</h1><p>Accurate daily Panchangam for the selected date and city.</p></section><section class="card"><div class="form-grid"><div class="field"><label for="pdate">Date</label><input id="pdate" type="date"></div><div class="field"><label for="pcity">City</label><select id="pcity"></select></div></div><div class="actions" style="margin-top:14px"><button class="btn btn-primary" id="loadP">Load Panchangam</button><button class="btn btn-secondary" id="todayP">Today</button></div><div class="location-tools" aria-label="Location options"><div class="actions location-actions"><button class="btn btn-secondary" type="button" id="useCurrentLocation">📍 Use Current Location</button></div><div class="location-search"><label for="citySearch" id="citySearchLabel">Search any city worldwide</label><div class="location-search-row"><input id="citySearch" type="search" placeholder="City, country (e.g. London, UK)" autocomplete="off"><button class="btn btn-secondary" type="button" id="searchCity">Search</button></div><select id="cityResults" aria-label="Search results" hidden><option value="">Choose a city</option></select></div><p id="locationStatus" class="location-status" role="status" aria-live="polite"></p></div><div id="pstatus" class="message info" style="margin-top:14px">Loading Panchangam…</div></section><section class="card" id="panchangamDaily"><div class="section-head"><div><h2 id="pTitle">Panchangam</h2><p id="pMeta">—</p></div></div><div class="panchang-grid" id="pgrid"></div></section><section class="card" id="monthlyCalendar"><div class="section-head month-calendar-head"><div class="month-calendar-title"><h2 data-month-title>Monthly Panchangam</h2><p data-calendar-note>Tithi-based observances and festivals</p></div><div class="month-calendar-nav"><button type="button" data-prev-month aria-label="Previous month">‹</button><button type="button" data-this-month aria-label="Current month">Today</button><button type="button" data-next-month aria-label="Next month">›</button></div></div><div class="calendar-grid" data-calendar-grid></div><div class="calendar-status" data-calendar-status></div><div class="monthly-festivals"><div class="section-head"><div><h3 data-festival-title>Festivals &amp; Vratas</h3><p data-festival-subtitle>Important observances for this month</p></div></div><div class="monthly-festival-list" data-festival-list></div></div><div class="monthly-book-links"><div class="section-head"><div><h3 data-month-books-title>Pooja &amp; Vrata Books</h3><p data-month-books-subtitle>Puja, Vrata and Parayana books related to this month's observances</p></div><a class="link" href="books.html">All Books</a></div><div class="monthly-book-list" data-month-books-list></div></div></section></main><nav class="nav" aria-label="Primary navigation"><a href="index.html"><svg viewBox="0 0 24 24"><path d="M3 10.8 12 3l9 7.8"/><path d="M5.5 9.8V21h13V9.8M9.5 21v-6.5h5V21"/></svg><span>Home</span></a><a href="panchangam.html" class="active"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="16" rx="2.5"/><path d="M7.5 3v4M16.5 3v4M3.5 9.5h17"/></svg><span>Panchangam</span></a><a href="horoscope.html"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2"/></svg><span>Horoscope</span></a><a href="kundali.html"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5v17M3.5 12h17M6 6l12 12M18 6 6 18"/></svg><span>Kundali</span></a><a href="more.html"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg><span>More</span></a></nav></div><script src="app.js?v=20261008-7"></script><script src="panchangam.js?v=20261007-1"></script><script src="monthly-calendar.js?v=20261007-16"></script><script>
+document.addEventListener("DOMContentLoaded",()=>{
+ const d=document.getElementById("pdate"),c=document.getElementById("pcity"),s=document.getElementById("pstatus"),g=document.getElementById("pgrid"),title=document.getElementById("pTitle"),meta=document.getElementById("pMeta");
+ const currentBtn=document.getElementById("useCurrentLocation"),searchInput=document.getElementById("citySearch"),searchBtn=document.getElementById("searchCity"),results=document.getElementById("cityResults"),locationStatus=document.getElementById("locationStatus");
+ const labels={vara:"Vara",thithi:"Tithi",nakshatra:"Nakshatra",rashi:"Rashi",samvathsara:"Samvathsara",masa:"Masa",yoga:"Yoga",karana:"Karana",sunrise:"Sunrise",sunset:"Sunset",rahuKalam:"Rahu Kalam",yamagandam:"Yamagandam",abhijit:"Abhijit Muhurtham",gulikaKalam:"Gulika Kalam",durmuhurtham:"Durmuhurtham",varjyam:"Varjyam",tithiTiming:"Tithi Timing",nakshatraTiming:"Nakshatra Timing"};
+ Object.entries(SiddhaPanchangam.cities).forEach(([k,v])=>c.insertAdjacentHTML("beforeend",'<option value="'+k+'">'+v.name+'</option>'));
+ d.value=SiddhaPanchangam.indiaToday();c.value=localStorage.getItem("siddha-panchang-city")||"hyderabad";
+ let lastP=null,selectedLocation=null,searchResults=[];
+ function dateForZone(zone){try{return new Intl.DateTimeFormat("en-CA",{timeZone:zone,year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date())}catch(e){return SiddhaPanchangam.indiaToday()}}
+ function language(){return SiddhaApp.getLanguage()==="te"?"te":"en"}
+ function setLocationStatus(en,te){locationStatus.textContent=language()==="te"?te:en}
+ function updateLocationLanguage(){
+   const te=language()==="te";
+   currentBtn.textContent=te?"📍 ప్రస్తుత స్థానాన్ని ఉపయోగించండి":"📍 Use Current Location";
+   document.getElementById("citySearchLabel").textContent=te?"ప్రపంచవ్యాప్తంగా నగరాన్ని వెతకండి":"Search any city worldwide";
+   searchInput.placeholder=te?"నగరం, దేశం (ఉదా: London, UK)":"City, country (e.g. London, UK)";
+   searchBtn.textContent=te?"వెతకండి":"Search";
+   results.setAttribute("aria-label",te?"నగర శోధన ఫలితాలు":"City search results");
+   if(results.options.length)results.options[0].textContent=te?"నగరాన్ని ఎంచుకోండి":"Choose a city";
+ }
+ function setSelectedLocation(loc){
+   selectedLocation=loc;
+   window.SiddhaPanchangam.selectedLocation=loc;
+   localStorage.setItem("siddha-panchang-location",JSON.stringify(loc));
+   let opt=c.querySelector('option[value="__custom__"]');
+   if(!opt){opt=document.createElement("option");opt.value="__custom__";c.appendChild(opt)}
+   opt.textContent=loc.name;c.value="__custom__";
+   d.value=dateForZone(loc.timezone);
+   localStorage.setItem("siddha-panchang-city","__custom__");
+   setLocationStatus("Selected: "+loc.name+". Panchangam will use this location.","ఎంచుకున్న స్థానం: "+loc.name+". ఈ స్థానం ఆధారంగా పంచాంగం చూపబడుతుంది.");
+   load();
+   document.dispatchEvent(new Event("locationchange"));
+ }
+ function clearCustomLocation(){
+   selectedLocation=null;window.SiddhaPanchangam.selectedLocation=null;
+   localStorage.removeItem("siddha-panchang-location");
+   const opt=c.querySelector('option[value="__custom__"]');if(opt)opt.remove();
+   localStorage.setItem("siddha-panchang-city",c.value);
+   locationStatus.textContent="";
+ }
+ try{
+   const saved=JSON.parse(localStorage.getItem("siddha-panchang-location")||"null");
+   if(saved&&Number.isFinite(saved.lat)&&Number.isFinite(saved.lng)&&saved.timezone){
+     selectedLocation=saved;window.SiddhaPanchangam.selectedLocation=saved;
+     const opt=document.createElement("option");opt.value="__custom__";opt.textContent=saved.name||"Selected location";c.appendChild(opt);
+     if(localStorage.getItem("siddha-panchang-city")==="__custom__"){c.value="__custom__";d.value=dateForZone(saved.timezone)}
+   }
+ }catch(e){localStorage.removeItem("siddha-panchang-location")}
+ g.addEventListener("click",event=>{const button=event.target.closest("[data-info-toggle]");if(!button)return;const panel=g.querySelector('[data-info-text="'+button.dataset.infoToggle+'"]');if(!panel)return;const opening=button.getAttribute("aria-expanded")!=="true";panel.hidden=!opening;button.setAttribute("aria-expanded",String(opening))});
+ function render(){
+   if(!lastP)return;
+   const te=language(),cityTe={Hyderabad:"హైదరాబాద్",Bengaluru:"బెంగళూరు",Chennai:"చెన్నై",Mumbai:"ముంబై",Delhi:"ఢిల్లీ",Rajahmundry:"రాజమండ్రి"}[lastP.city]||lastP.city;
+   title.textContent=te?cityTe+" పంచాంగం":lastP.city+" Panchangam";meta.textContent=lastP.date+" • "+lastP.ayanamsa;
+   const info={yoga:{en:"Yoga is one of the 27 combinations formed from the Sun’s and Moon’s positions in the sky. In traditional Panchangam, it is used to describe the day’s astrological quality.",te:"సూర్యుడు, చంద్రుని స్థానాల ఆధారంగా ఏర్పడే 27 యోగాలలో ఒకటి. సంప్రదాయ పంచాంగంలో ఇది ఆ రోజు జ్యోతిష్య స్వభావాన్ని సూచిస్తుంది."},karana:{en:"Karana is half of a Tithi, based on the angular distance between the Sun and Moon. Two Karanas make one Tithi, and Karana is traditionally considered when choosing a suitable time for activities.",te:"కరణం అనేది తిథిలో సగ భాగం. సూర్యుడు, చంద్రుని మధ్య కోణ దూరం ఆధారంగా ఇది నిర్ణయించబడుతుంది. ఒక తిథిలో రెండు కరణాలు ఉంటాయి; శుభకార్యాలకు సమయం ఎంచుకునేటప్పుడు సంప్రదాయంగా దీనిని పరిగణిస్తారు."}};
+   g.innerHTML=Object.entries(labels).map(([k,v])=>{const hasInfo=k==="yoga"||k==="karana",infoLabel=te?"వివరణ":"About "+v;return '<div class="tile"><div class="tile-label-row"><span class="tile-label">'+v+'</span>'+(hasInfo?'<button class="panchang-info" type="button" data-info-toggle="'+k+'" aria-label="'+infoLabel+'" title="'+infoLabel+'" aria-expanded="false">i</button>':"")+'</div><div class="tile-value">'+((k==="tithiTiming"||k==="nakshatraTiming"?(lastP[k]||"—"):SiddhaPanchangam.translateValue(k,lastP[k])||"—"))+'</div>'+(hasInfo?'<div class="panchang-info-text" data-info-text="'+k+'" hidden>'+info[k][te]+'</div>':"")+'</div>'}).join("");
+ }
+ async function load(){
+   localStorage.setItem("siddha-panchang-city",c.value);s.className="message info";s.textContent=language()==="te"?"పంచాంగం లోడ్ అవుతోంది…":"Loading Panchangam…";
+   try{const loc=c.value==="__custom__"?selectedLocation:null;if(c.value==="__custom__"&&!loc)throw new Error("Please select a location again.");lastP=await SiddhaPanchangam.fetchPanchangam(d.value,loc||c.value);render();s.textContent=language()==="te"?"పంచాంగం విజయవంతంగా నవీకరించబడింది.":"Panchangam updated successfully."}
+   catch(e){s.className="message error";s.textContent=e.message;g.innerHTML=""}
+ }
+ currentBtn.addEventListener("click",()=>{
+   if(!navigator.geolocation){setLocationStatus("Location is not supported by this browser. Search for a city instead.","ఈ బ్రౌజర్‌లో స్థానం గుర్తింపు అందుబాటులో లేదు. నగరాన్ని వెతకండి.");return}
+   currentBtn.disabled=true;setLocationStatus("Waiting for your location permission…","మీ స్థానం అనుమతి కోసం వేచి ఉంది…");
+   navigator.geolocation.getCurrentPosition(pos=>{
+     currentBtn.disabled=false;
+     const zone=Intl.DateTimeFormat().resolvedOptions().timeZone||"UTC";
+     setSelectedLocation({name:language()==="te"?"ప్రస్తుత స్థానం":"Current location",lat:pos.coords.latitude,lng:pos.coords.longitude,timezone:zone,slug:null,customLocation:true});
+   },err=>{
+     currentBtn.disabled=false;
+     const msg=err.code===1?"Location permission was denied. You can search for a city instead.":err.code===2?"Your location could not be determined. Try city search instead.":"Location request timed out. Please try again.";
+     const te=err.code===1?"స్థాన అనుమతి నిరాకరించబడింది. బదులుగా నగరాన్ని వెతకండి.":err.code===2?"మీ స్థానాన్ని గుర్తించలేకపోయాం. నగరాన్ని వెతకండి.":"స్థాన అభ్యర్థన సమయం ముగిసింది. మళ్లీ ప్రయత్నించండి.";
+     setLocationStatus(msg,te);
+   },{enableHighAccuracy:false,timeout:12000,maximumAge:300000});
+ });
+ async function searchCity(){
+   const query=searchInput.value.trim();if(query.length<2){setLocationStatus("Enter at least two letters for a city search.","నగరాన్ని వెతకడానికి కనీసం రెండు అక్షరాలు నమోదు చేయండి.");return}
+   searchBtn.disabled=true;setLocationStatus("Searching worldwide cities…","ప్రపంచవ్యాప్తంగా నగరాలను వెతుకుతోంది…");
+   try{
+     const url="https://geocoding-api.open-meteo.com/v1/search?name="+encodeURIComponent(query)+"&count=8&language=en&format=json";
+     const response=await fetch(url,{headers:{Accept:"application/json"}});if(!response.ok)throw new Error("City search unavailable");
+     const data=await response.json();searchResults=(data.results||[]).filter(x=>Number.isFinite(x.latitude)&&Number.isFinite(x.longitude));
+     results.innerHTML='<option value="">'+(language()==="te"?"నగరాన్ని ఎంచుకోండి":"Choose a city")+'</option>';
+     searchResults.forEach((x,i)=>{const option=document.createElement("option");option.value=String(i);option.textContent=[x.name,x.admin1,x.country].filter(Boolean).join(", ");results.appendChild(option)});
+     results.hidden=!searchResults.length;
+     if(!searchResults.length)setLocationStatus("No matching cities found. Try a nearby larger city.","నగరాలు కనబడలేదు. సమీపంలోని పెద్ద నగరాన్ని ప్రయత్నించండి.");
+     else setLocationStatus("Choose a result to use that city for Panchangam.","పంచాంగం కోసం నగర ఫలితాన్ని ఎంచుకోండి.");
+   }catch(e){setLocationStatus("City search failed. Check your connection and try again.","నగర శోధన విఫలమైంది. ఇంటర్నెట్‌ను తనిఖీ చేసి మళ్లీ ప్రయత్నించండి.")}
+   finally{searchBtn.disabled=false}
+ }
+ searchBtn.addEventListener("click",searchCity);
+ searchInput.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();searchCity()}});
+ results.addEventListener("change",()=>{
+   const item=searchResults[Number(results.value)];if(!item)return;
+   const zone=item.timezone||"UTC";
+   setSelectedLocation({name:[item.name,item.admin1,item.country].filter(Boolean).join(", "),lat:item.latitude,lng:item.longitude,timezone:zone,slug:null,customLocation:true});
+ });
+ c.addEventListener("change",()=>{if(c.value!=="__custom__")clearCustomLocation();load();document.dispatchEvent(new Event("locationchange"))});
+ document.getElementById("loadP").onclick=load;
+ document.getElementById("todayP").onclick=()=>{d.value=selectedLocation?dateForZone(selectedLocation.timezone):SiddhaPanchangam.indiaToday();load()};
+ document.addEventListener("languagechange",()=>{render();updateLocationLanguage()});
+ updateLocationLanguage();load();
+});
+</script></body></html>
