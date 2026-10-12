@@ -1,8 +1,8 @@
 /* Potti Sreeramulu font v20261008 */
 @font-face{font-family:"Potti Sreeramulu";src:url("/assets/fonts/PottiSreeramulu.otf") format("opentype");font-weight:400;font-style:normal;font-display:swap}
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Noto+Serif+Devanagari:wght@500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+Telugu:wght@400;500;600;700&family=Noto+Serif+Devanagari:wght@500;600;700&display=swap');
 :root{--bg:#f5f7f3;--surface:#fff;--surface-2:#eef3ee;--text:#26332f;--muted:#68766f;--accent:#4f7567;--accent-dark:#36594d;--accent-soft:#e5efe9;--gold:#a27a2a;--border:#dfe7e1;--shadow:rgba(38,51,47,.08);--danger:#b65353;--radius:20px;--scale:1}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:linear-gradient(180deg,#f8faf7 0%,var(--bg) 100%);color:var(--text);font-family:Manrope,system-ui,sans-serif;font-size:calc(16px * var(--scale));line-height:1.55}a{color:inherit}button,input,select{font:inherit}button{cursor:pointer}.app{min-height:100vh;padding-bottom:100px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:linear-gradient(180deg,#f8faf7 0%,var(--bg) 100%);color:var(--text);font-family:Manrope,system-ui,sans-serif;font-size:calc(17px * var(--scale));line-height:1.6}a{color:inherit}button,input,select{font:inherit}button{cursor:pointer}.app{min-height:100vh;padding-bottom:100px}
 .header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.9);backdrop-filter:blur(18px);border-bottom:1px solid var(--border)}.header-inner{max-width:1080px;margin:auto;padding:15px 20px;display:flex;align-items:center;gap:13px}.brand{display:flex;align-items:center;gap:11px;text-decoration:none}.brand img{width:42px;height:42px;object-fit:contain;border-radius:12px}.brand-name{font-size:1.15rem;font-weight:800;letter-spacing:-.03em}.brand-tag{font-size:.7rem;color:var(--muted)}.page-title{margin-left:auto;text-align:right}.page-title strong{display:block;font-size:.95rem}.page-title span{font-size:.68rem;color:var(--muted)}
 .controls{max-width:1080px;margin:14px auto 0;padding:0 20px;display:flex;justify-content:flex-end;gap:8px}.icon-btn,.font-btn{border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:12px;min-width:38px;height:38px}.font-size{font-size:.75rem;color:var(--muted);min-width:46px;text-align:center;align-self:center}.main{max-width:1080px;margin:auto;padding:18px 20px 30px}
 .hero{background:linear-gradient(135deg,#edf5ef,#fffdf7);border:1px solid var(--border);border-radius:28px;padding:28px 24px;margin-bottom:18px;box-shadow:0 14px 40px var(--shadow)}.eyebrow{font-size:.68rem;font-weight:800;letter-spacing:.14em;color:var(--gold);text-transform:uppercase}.hero h1{margin:5px 0 7px;font-size:clamp(1.7rem,5vw,2.45rem);letter-spacing:-.045em}.hero p{margin:0;color:var(--muted);max-width:650px}
@@ -68,12 +68,13 @@ a[href="books.html"] h1,a[href="books.html"] h2,a[href="Books.html"] h1,a[href="
 @media(max-width:480px){.global-controls{padding:0 14px;gap:5px}.global-controls .lang-btn{min-width:66px;padding:0 8px}.global-controls .font-btn,.global-controls .icon-btn{min-width:36px;height:36px}}
 
 /* Potti Sreeramulu for Telugu mode — bundled locally for iOS, Android and desktop */
-html[lang="te"] body{font-family:"Potti Sreeramulu",Manrope,system-ui,sans-serif}
-html[lang="te"] .sloka h2,html[lang="te"] .sloka-text,html[lang="te"] .sankalpam-text{font-family:"Potti Sreeramulu",serif}
+html[lang="te"] body{font-family:"Noto Sans Telugu","Manrope","Nirmala UI",system-ui,sans-serif}
+html[lang="te"] .sloka h2,html[lang="te"] .sloka-text,html[lang="te"] .sankalpam-text{font-family:"Noto Sans Telugu","Manrope","Nirmala UI",system-ui,sans-serif}
 .sloka h2,.sloka-text{font-family:Manrope,system-ui,sans-serif}
 
 
 /* Potti Sreeramulu globally — use the same font in English and Telugu modes */
+/* Readable bilingual typography: Manrope for Latin text and Noto Sans Telugu for Telugu glyphs. */
 html body,
 html body button,
 html body input,
@@ -82,8 +83,16 @@ html body textarea,
 html body .sloka h2,
 html body .sloka-text,
 html body .sankalpam-text{
-  font-family:"Potti Sreeramulu",Manrope,system-ui,sans-serif;
+  font-family:"Manrope","Noto Sans Telugu","Nirmala UI",system-ui,sans-serif;
 }
+/* Keep supporting text comfortably readable without disrupting the compact app layout. */
+.tile-label,.field label,.message,.section-head p,.feature p,.sloka-note,.nav a,.footer{
+  font-size:max(.78rem, .78em);
+}
+.sloka h2,.sloka-text,.sankalpam-text{
+  font-family:"Noto Sans Telugu","Manrope","Nirmala UI",system-ui,sans-serif;
+}
+button,input,select,textarea{line-height:1.5}
 
 
 /* Desktop app-shell mode — keep the same compact mobile-app model on larger screens */
