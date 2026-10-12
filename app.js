@@ -88,7 +88,33 @@ function applyLanguage(){
   translating=false;
   if(languageObserver)languageObserver.observe(document.body,{childList:true,subtree:true});
 }
-function sync(){r.style.setProperty("--scale",s);document.querySelectorAll("[data-font-size]").forEach(e=>e.textContent=Math.round(s*100)+"%");applyLanguage();}
+function isScriptureContentPage(){
+  const file=(location.pathname.split("/").pop()||"").toLowerCase();
+  return file==="books.html" || /^(?:zb[^/]*|dm\d+)\.html$/i.test(file);
+}
+function scaleScriptureText(){
+  if(!isScriptureContentPage())return;
+  const excluded='header, .header, .global-controls, .controls, nav, .nav, footer, .footer, button, input, select, textarea, script, style, svg';
+  const elements=Array.from(document.body.querySelectorAll("*")).filter(el=>
+    !el.closest(excluded) &&
+    Array.from(el.childNodes).some(node=>node.nodeType===Node.TEXT_NODE && node.nodeValue.trim())
+  );
+  const sizes=elements.map(el=>{
+    if(!el.dataset.scriptureBaseFontSize){
+      el.dataset.scriptureBaseFontSize=getComputedStyle(el).fontSize;
+    }
+    return parseFloat(el.dataset.scriptureBaseFontSize)||16;
+  });
+  elements.forEach((el,i)=>{
+    el.style.fontSize=(sizes[i]*s)+"px";
+  });
+}
+function sync(){
+  r.style.setProperty("--scale",isScriptureContentPage()?"1":s);
+  document.querySelectorAll("[data-font-size]").forEach(e=>e.textContent=Math.round(s*100)+"%");
+  scaleScriptureText();
+  applyLanguage();
+}
 function isLegacyScripturePage(){
   const file=(location.pathname.split("/").pop()||"").toLowerCase();
   return /^(?:zb[^/]*|dm\d+)\.html$/i.test(file);
@@ -164,8 +190,8 @@ function ensureGlobalControls(){
   controls.style.boxSizing="border-box";
   controls.innerHTML='<button class="lang-btn" type="button" data-control-lang>తెలుగు</button><button class="font-btn" type="button" data-font="down" aria-label="Decrease font size" title="Decrease font size">A−</button><span class="font-size" data-font-size>100%</span><button class="font-btn" type="button" data-font="up" aria-label="Increase font size" title="Increase font size">A+</button><button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Switch to dark theme" title="Dark theme">☾</button>';
   controls.querySelector("[data-control-lang]").onclick=()=>setLanguage(lang==="en"?"te":"en");
-  controls.querySelector("[data-font=down]").onclick=()=>changeFont(-.04);
-  controls.querySelector("[data-font=up]").onclick=()=>changeFont(.04);
+  controls.querySelector("[data-font=down]").onclick=()=>changeFont(-.1);
+  controls.querySelector("[data-font=up]").onclick=()=>changeFont(.1);
   controls.querySelector("[data-theme-toggle]").onclick=toggleTheme;
 }
 function renderControls(){
@@ -180,8 +206,8 @@ function renderControls(){
   }
   controls.innerHTML='<button class="lang-btn" type="button" data-control-lang>తెలుగు</button><button class="font-btn" type="button" data-font="down" aria-label="Decrease font size" title="Decrease font size">A−</button><span class="font-size" data-font-size>100%</span><button class="font-btn" type="button" data-font="up" aria-label="Increase font size" title="Increase font size">A+</button><button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Switch to dark theme" title="Dark theme">☾</button>';
   controls.querySelector("[data-control-lang]").onclick=()=>setLanguage(lang==="en"?"te":"en");
-  controls.querySelector("[data-font=down]").onclick=()=>changeFont(-.04);
-  controls.querySelector("[data-font=up]").onclick=()=>changeFont(.04);
+  controls.querySelector("[data-font=down]").onclick=()=>changeFont(-.1);
+  controls.querySelector("[data-font=up]").onclick=()=>changeFont(.1);
   controls.querySelector("[data-theme-toggle]").onclick=toggleTheme;
 }
 function setLanguage(v){
@@ -196,7 +222,7 @@ function toggleTheme(){
   renderControls();document.dispatchEvent(new CustomEvent("themechange"));
 }
 function changeFont(d){
-  s=Math.min(1.18,Math.max(.9,s+d));
+  s=Math.min(1.5,Math.max(.75,s+d));
   localStorage.setItem("siddha-scale",s);
   sync();
 }
