@@ -51,9 +51,41 @@ export default async (req) => {
 };
 
 function minutesToTime(value) {
-  if (typeof value !== "number" || !Number.isFinite(value)) return null;
-  let minutes = Math.round(value) % 1440;
-  if (minutes < 0) minutes += 1440;
+  if (value == null) return null;
+  if (typeof value === "object") {
+    return minutesToTime(value.minutes ?? value.end_local ?? value.endLocal ?? value.end ?? value.time);
+  }
+
+  let minutes;
+  if (typeof value === "number" && Number.isFinite(value)) {
+    minutes = Math.round(value) % 1440;
+    if (minutes < 0) minutes += 1440;
+  } else {
+    const raw = String(value).trim();
+    if (!raw) return null;
+
+    // Accept ISO timestamps returned by some versions of the day API.
+    const iso = raw.match(/T(\\d{2}):(\\d{2})/);
+    if (iso) {
+      minutes = Number(iso[1]) * 60 + Number(iso[2]);
+    } else if (/^\\d+(?:\\.\\d+)?$/.test(raw)) {
+      minutes = Math.round(Number(raw)) % 1440;
+      if (minutes < 0) minutes += 1440;
+    } else {
+      const time = raw.match(/(\\d{1,2}):(\\d{2})(?::\\d{2})?\\s*(am|pm)?/i);
+      if (!time) return null;
+      let hour = Number(time[1]);
+      const minute = Number(time[2]);
+      if (time[3]) {
+        const period = time[3].toLowerCase();
+        if (period === "pm" && hour < 12) hour += 12;
+        if (period === "am" && hour === 12) hour = 0;
+      }
+      if (hour > 23 || minute > 59) return null;
+      minutes = hour * 60 + minute;
+    }
+  }
+
   let h = Math.floor(minutes / 60);
   const m = minutes % 60;
   const ap = h >= 12 ? "PM" : "AM";
