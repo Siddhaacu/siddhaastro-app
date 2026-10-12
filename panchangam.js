@@ -153,22 +153,44 @@ function transitionLabel(start,end){
   return start?fmt(start)+" – "+fmt(end):fmt(end);
 }
 async function fetchTransitionTimings(dateStr,city){
-  if(!city?.slug)return {};
   try{
-    const r=await fetch("/.netlify/functions/panchang-transition?date="+encodeURIComponent(dateStr)+"&city="+encodeURIComponent(city.slug),{headers:{Accept:"application/json"}});
+    const params=new URLSearchParams({
+      date:dateStr,
+      lat:String(city?.lat??CITIES[DEFAULT_CITY].lat),
+      lng:String(city?.lng??CITIES[DEFAULT_CITY].lng),
+      tz:String(timezoneOffsetForDate(dateStr,city?.timezone))
+    });
+    const r=await fetch("/.netlify/functions/panchang-transition?"+params.toString(),{headers:{Accept:"application/json"},cache:"no-store"});
     if(!r.ok)throw new Error("HTTP "+r.status);
-    return await r.json();
+    const data=await r.json();
+    return {
+      tithiTiming:data.tithiTiming||"Exact timing unavailable",
+      nakshatraTiming:data.nakshatraTiming||"Exact timing unavailable"
+    };
   }catch(e){
     console.warn("Transition timing source unavailable",e);
-    return {};
+    return {
+      tithiTiming:"Exact timing unavailable",
+      nakshatraTiming:"Exact timing unavailable"
+    };
   }
 }
 
+function timezoneOffsetForDate(dateStr,timeZone){
+  const zone=timeZone||Intl.DateTimeFormat().resolvedOptions().timeZone||"UTC";
+  try{
+    const instant=new Date(dateStr+"T12:00:00Z");
+    const parts=new Intl.DateTimeFormat("en-CA",{timeZone:zone,year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",second:"2-digit",hourCycle:"h23"}).formatToParts(instant);
+    const values=Object.fromEntries(parts.map(p=>[p.type,p.value]));
+    const localAsUtc=Date.UTC(Number(values.year),Number(values.month)-1,Number(values.day),Number(values.hour),Number(values.minute),Number(values.second));
+    return (localAsUtc-instant.getTime())/3600000;
+  }catch(e){return 5.5;}
+}
 async function enrichCalendarIdentity(base,dateStr,c){
   const controller=new AbortController();
   const timer=setTimeout(()=>controller.abort(),5000);
   try{
-    const r=await fetch(ENRICH_API,{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify({date:dateStr,latitude:c.lat,longitude:c.lng,timezone:5.5,ayanamsa_mode:"LAHIRI"}),signal:controller.signal});
+    const r=await fetch(ENRICH_API,{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify({date:dateStr,latitude:c.lat,longitude:c.lng,timezone:timezoneOffsetForDate(dateStr,c.timezone),ayanamsa_mode:"LAHIRI"}),signal:controller.signal});
     if(!r.ok)throw new Error(`HTTP ${r.status}`);
     const j=await r.json();
     const p=j?.panchang;
@@ -197,7 +219,9 @@ async function fetchPanchangam(date=indiaToday(),city=DEFAULT_CITY){
     :new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Kolkata"}).format(date);
 
   try{
-    const q=new URLSearchParams({date:dateStr,city:c.slug||"hyderabad"});
+    const q=new URLSearchParams({date:dateStr});
+    if(c.customLocation||!c.slug){q.set("lat",String(c.lat));q.set("lng",String(c.lng));}
+    else q.set("city",c.slug);
     const d=await fetchJson(`${PANCHANG_API}?${q}`);
     if(d?.date){
       const base=await enrichCalendarIdentity(normalizePrimary(d,c),dateStr,c);
@@ -211,6 +235,7 @@ async function fetchPanchangam(date=indiaToday(),city=DEFAULT_CITY){
     console.warn("Primary Panchang source unavailable",e);
   }
 
+  if(!(c.customLocation||!c.slug)){
   try{
     const q=new URLSearchParams({date:dateStr,city:c.slug||"hyderabad"});
     const d=await fetchJson(`${FALLBACK_API}?${q}`);
@@ -225,8 +250,11 @@ async function fetchPanchangam(date=indiaToday(),city=DEFAULT_CITY){
   }catch(e){
     console.warn("Fallback Panchang source unavailable",e);
   }
+  }
 
-  throw new Error("Unable to load Panchangam data right now. Please try again.");
+  throw new Error((c.customLocation||!c.slug)
+    ?"Worldwide Panchangam data is temporarily unavailable for this location. Please retry or choose another city."
+    :"Unable to load Panchangam data right now. Please try again.");
 }
 
 const TELUGU_VALUES={

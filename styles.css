@@ -332,3 +332,16 @@ html.dark{color-scheme:dark}
 .panchang-info:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 .panchang-info[aria-expanded="true"]{background:var(--accent);color:var(--surface)}
 .panchang-info-text{margin-top:10px;padding:9px 10px;border:1px solid var(--border);border-radius:10px;background:var(--surface);color:var(--muted);font-size:.72rem;line-height:1.55;text-align:left}
+
+/* Panchangam location selection — opt-in geolocation and worldwide city search */
+.location-tools{margin-top:14px;padding-top:14px;border-top:1px solid var(--border);display:grid;gap:12px}
+.location-actions{margin:0}
+.location-search label{display:block;margin-bottom:6px;font-size:.76rem;font-weight:800;color:var(--muted)}
+.location-search-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center}
+.location-search-row .btn{padding:10px 13px}
+.location-search input{min-width:0}
+.location-tools select{margin-top:8px}
+.location-status{margin:0;color:var(--muted);font-size:.72rem;line-height:1.5}
+.location-status:empty{display:none}
+.location-tools button:disabled{opacity:.65;cursor:wait}
+@media(max-width:380px){.location-search-row{grid-template-columns:1fr}.location-search-row .btn{width:100%}}

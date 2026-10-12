@@ -361,33 +361,42 @@
     return "fc-festival";
   }
   async function loadMonth(year,month,city){
-    const key=year+"-"+String(month+1).padStart(2,"0")+"-"+city;
+    let customLocation=null;
+    if(city==="__custom__"){
+      try{customLocation=JSON.parse(localStorage.getItem("siddha-panchang-location")||"null")}catch(e){}
+      if(!customLocation||!Number.isFinite(customLocation.lat)||!Number.isFinite(customLocation.lng))throw new Error("Selected location is unavailable");
+    }
+    const key=year+"-"+String(month+1).padStart(2,"0")+"-"+(customLocation?(customLocation.lat+","+customLocation.lng):city);
     if(cached.has(key))return cached.get(key);
-    const sourceCity=CITY_ALIAS[city]||"hyderabad";
+    const sourceCity=customLocation?"__custom__":(CITY_ALIAS[city]||"hyderabad");
     const from=year+"-"+String(month+1).padStart(2,"0")+"-01";
     const days=daysInMonth(year,month);
-
     let rows=[];
-    // Shastra covers the current historical window; Nitya Panchangam supports
-    // future dates through 2100 and also gives Sun longitude for Sankranti detection.
-    if(year>2027){
-      const dates=Array.from({length:days},(_,i)=>year+"-"+String(month+1).padStart(2,"0")+"-"+String(i+1).padStart(2,"0"));
+    const dates=Array.from({length:days},(_,i)=>year+"-"+String(month+1).padStart(2,"0")+"-"+String(i+1).padStart(2,"0"));
+    if(customLocation){
+      // Coordinate-based requests keep monthly Tithi/Nakshatra and sunrise/sunset aligned with the selected place.
+      const results=await Promise.allSettled(dates.map(date=>{
+        const q=new URLSearchParams({date:date,lat:String(customLocation.lat),lng:String(customLocation.lng)});
+        return fetch("https://nityapanchangam.com/api/panchangam.php?"+q.toString(),{headers:{Accept:"application/json"},cache:"no-store"})
+          .then(r=>{if(!r.ok)throw new Error("Nitya HTTP "+r.status);return r.json()})
+          .then(p=>({date:p.date||date,tithi:p.tithi?.name||"",nakshatra:p.nakshatra?.name||"",sunrise:p.sun?.sunrise,sunset:p.sun?.sunset,sunLongitude:p.sun_longitude}));
+      }));
+      rows=results.filter(x=>x.status==="fulfilled"&&x.value).map(x=>x.value);
+      if(!rows.length)throw new Error("Worldwide monthly Panchang data unavailable");
+    }else if(year>2027){
       const results=await Promise.allSettled(dates.map(date=>
-        fetch("https://nityapanchangam.com/api/panchangam.php?date="+date+"&city=hyderabad",{headers:{Accept:"application/json"},cache:"no-store"})
+        fetch("https://nityapanchangam.com/api/panchangam.php?date="+date+"&city="+encodeURIComponent(sourceCity),{headers:{Accept:"application/json"},cache:"no-store"})
           .then(r=>{if(!r.ok)throw new Error("Nitya HTTP "+r.status);return r.json()})
           .then(p=>({date:p.date,tithi:p.tithi?.name||"",nakshatra:p.nakshatra?.name||"",sunrise:p.sun?.sunrise,sunset:p.sun?.sunset,sunLongitude:p.sun_longitude}))
       ));
       rows=results.filter(x=>x.status==="fulfilled"&&x.value).map(x=>x.value);
       if(!rows.length)throw new Error("Future Panchang data unavailable");
     }else{
-      // Prefer the range endpoint. If an older/browser cache/network path rejects it,
-      // fall back to the documented single-day endpoint so every month remains navigable.
       try{
         const r=await fetch(API+"/range/"+sourceCity+".json?from="+from+"&days="+days,{headers:{Accept:"application/json"},cache:"no-store"});
         if(!r.ok)throw new Error("Range HTTP "+r.status);
         rows=normalizeRows(await r.json());
       }catch(rangeError){
-        const dates=Array.from({length:days},(_,i)=>year+"-"+String(month+1).padStart(2,"0")+"-"+String(i+1).padStart(2,"0"));
         const results=await Promise.allSettled(dates.map(date=>
           fetch(API+"/day/"+sourceCity+"/"+date+".json",{headers:{Accept:"application/json"},cache:"no-store"})
             .then(r=>{if(!r.ok)throw new Error("Day HTTP "+r.status);return r.json()})
@@ -397,21 +406,6 @@
         if(!rows.length)throw rangeError;
       }
     }
-    try{
-      const r=await fetch(API+"/range/"+sourceCity+".json?from="+from+"&days="+days,{headers:{Accept:"application/json"},cache:"no-store"});
-      if(!r.ok)throw new Error("Range HTTP "+r.status);
-      rows=normalizeRows(await r.json());
-    }catch(rangeError){
-      const dates=Array.from({length:days},(_,i)=>year+"-"+String(month+1).padStart(2,"0")+"-"+String(i+1).padStart(2,"0"));
-      const results=await Promise.allSettled(dates.map(date=>
-        fetch(API+"/day/"+sourceCity+"/"+date+".json",{headers:{Accept:"application/json"},cache:"no-store"})
-          .then(r=>{if(!r.ok)throw new Error("Day HTTP "+r.status);return r.json()})
-          .then(payload=>normalizeRows(payload)[0])
-      ));
-      rows=results.filter(x=>x.status==="fulfilled"&&x.value).map(x=>x.value);
-      if(!rows.length)throw rangeError;
-    }
-
     let festivalMap=knownFestivalMapForMonth(year,month);
     try{
       const fr=await fetch(API+"/festivals.json",{headers:{Accept:"application/json"},cache:"no-store"});
@@ -455,7 +449,7 @@
       const byDate=Object.fromEntries(rows.map(r=>[r.date,r]));
       renderFestivalList(root,y,m,festivalMap,rows,te);
       renderRelatedBooks(root,festivalMap,rows,te);
-      const today=indiaTodayDate();
+      const custom=window.SiddhaPanchangam?.selectedLocation;const today=custom?new Intl.DateTimeFormat("en-CA",{timeZone:custom.timezone||"UTC",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date()):indiaTodayDate();
       for(let d=1;d<=daysInMonth(y,m);d++){
         const date=y+"-"+String(m+1).padStart(2,"0")+"-"+String(d).padStart(2,"0");
         const row=byDate[date]||{date};
@@ -497,6 +491,7 @@
     root.querySelector("[data-this-month]").onclick=()=>{const d=new Date();monthCursor=new Date(d.getFullYear(),d.getMonth(),1);render()};
     document.addEventListener("languagechange",render);
     document.getElementById("pcity")?.addEventListener("change",render);
+    document.addEventListener("locationchange",render);
     document.getElementById("loadP")?.addEventListener("click",()=>setTimeout(render,250));
     render();
   }
