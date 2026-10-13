@@ -1,5 +1,6 @@
 import webpush from "web-push";
 import {getStore} from "@netlify/blobs";
+import {getPanchangam,Observer} from "@ishubhamx/panchangam-js";
 
 const STORE_NAME=Netlify.env.get("CONTEXT")==="production"?"siddha-astro-push":"siddha-astro-push-preview";
 const PANCHANG_API="https://nityapanchangam.com/api/panchangam.php";
@@ -91,6 +92,20 @@ async function getPanchang(cityKey,date){
     sunset:d.sun?.sunset||d.sunset||"—"
   };
 
+  // Calculate the exact tithi and nakshatra transition ranges for this
+  // subscriber's city and local date, using the same offline engine as the UI.
+  try{
+    const localNoonAsUtc=Date.parse(date+"T12:00:00Z")-5.5*60*60*1000;
+    const observer=new Observer(c.lat,c.lng,0);
+    const timing=getPanchangam(new Date(localNoonAsUtc),observer,{timezoneOffset:330});
+    base.tithiTiming=formatRange(timing?.tithiStartTime,timing?.tithiEndTime,5.5);
+    base.nakshatraTiming=formatRange(timing?.nakshatraStartTime,timing?.nakshatraEndTime,5.5);
+  }catch(error){
+    console.warn("Panchang transition timing unavailable",error);
+    base.tithiTiming="";
+    base.nakshatraTiming="";
+  }
+
   try{
     const enrich=await fetch(ENRICH_API,{
       method:"POST",
@@ -111,6 +126,24 @@ async function getPanchang(cityKey,date){
   }
 
   return base;
+}
+
+function formatRange(start,end,offsetHours){
+  const startLabel=formatTime(start,offsetHours);
+  const endLabel=formatTime(end,offsetHours);
+  if(!endLabel)return "";
+  return startLabel?startLabel+" – "+endLabel:endLabel;
+}
+function formatTime(value,offsetHours){
+  if(!value)return "";
+  const date=value instanceof Date?value:new Date(value);
+  if(!Number.isFinite(date.getTime()))return "";
+  const shifted=new Date(date.getTime()+offsetHours*60*60*1000);
+  let hour=shifted.getUTCHours();
+  const minute=shifted.getUTCMinutes();
+  const period=hour>=12?"PM":"AM";
+  hour=hour%12||12;
+  return hour+":"+String(minute).padStart(2,"0")+" "+period;
 }
 
 function telugu(data){
@@ -161,6 +194,8 @@ export default async ()=>{
         "☀️ "+(record.language==="te"?"సూర్యోదయం":"Sunrise")+": "+p.sunrise,
         "🌇 "+(record.language==="te"?"సూర్యాస్తమయం":"Sunset")+": "+p.sunset
       ];
+      if(p.tithiTiming)bodyLines.push("⏱️ "+(record.language==="te"?"తిథి సమయాలు":"Tithi timings")+": "+p.tithiTiming);
+      if(p.nakshatraTiming)bodyLines.push("🕰️ "+(record.language==="te"?"నక్షత్ర సమయాలు":"Nakshatra timings")+": "+p.nakshatraTiming);
       if(strength?.taraText)bodyLines.push("✦ "+(record.language==="te"?"తారాబలం":"Tarabalam")+": "+strength.taraText);
       if(strength?.chandraText)bodyLines.push("☾ "+(record.language==="te"?"చంద్రబలం":"Chandrabalam")+": "+strength.chandraText);
       if(horoscope?.text)bodyLines.push("🔮 "+(record.language==="te"?"దైనందిన రాశిఫలం":"Daily Horoscope")+" ("+horoscope.label+"): "+horoscope.text);
