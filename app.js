@@ -197,7 +197,7 @@ function toggleTheme(){
   renderControls();document.dispatchEvent(new CustomEvent("themechange"));
 }
 function changeFont(d){
-  s=Math.min(1.18,Math.max(.9,s+d));
+  s=Math.min(2.6,Math.max(.9,s+d));
   localStorage.setItem("siddha-scale",s);
   sync();
 }
