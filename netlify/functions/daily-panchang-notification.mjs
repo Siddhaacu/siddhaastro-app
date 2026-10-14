@@ -233,4 +233,4 @@ export default async ()=>{
   });
 };
 
-export const config={schedule:"15 6 * * *"}; // 11:45 AM IST (06:15 UTC)
+export const config={schedule:"30 6 * * *"}; // 12:00 PM IST (06:30 UTC)
