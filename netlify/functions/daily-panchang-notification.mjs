@@ -85,9 +85,10 @@ async function getPanchang(cityKey,date){
   const base={
     date,
     city:c.name,
+    vara:d.vara?.name||d.vara||"—",
     tithi:d.tithi?.name||"—",
     nakshatra:d.nakshatra?.name||"—",
-    rashi:d.rashi?.name||"—",
+    rashi:d.rashi?.name||d.rashi||"—",
     sunrise:d.sun?.sunrise||d.sunrise||"—",
     sunset:d.sun?.sunset||d.sunset||"—"
   };
@@ -146,6 +147,11 @@ function formatTime(value,offsetHours){
   return hour+":"+String(minute).padStart(2,"0")+" "+period;
 }
 
+function teluguVara(value){
+  const names={Sunday:"ఆదివారం",Monday:"సోమవారం",Tuesday:"మంగళవారం",Wednesday:"బుధవారం",Thursday:"గురువారం",Friday:"శుక్రవారం",Saturday:"శనివారం"};
+  return names[String(value||"").trim()]||value||"—";
+}
+
 function telugu(data){
   const t={
     Pratipada:"పాడ్యమి",Dvitiiya:"విదియ",Dvitiya:"విదియ",Tritiya:"తదియ",
@@ -186,19 +192,20 @@ export default async ()=>{
       const values=record.language==="te"?telugu(p):p;
       const strength=personalStrength(record,p);
       const horoscope=horoscopeData?horoscopeForRecord(record,horoscopeData):null;
+      // Put the personalized items first: mobile notification previews often
+      // show only the first few lines until the notification is expanded.
       const bodyLines=[
-        "📅 "+date,
-        "🌙 "+(record.language==="te"?"తిథి":"Tithi")+": "+values.tithi,
-        "⭐ "+(record.language==="te"?"నక్షత్రం":"Nakshatram")+": "+values.nakshatra,
-        "♈ "+(record.language==="te"?"రాశి":"Rashi")+": "+values.rashi,
-        "☀️ "+(record.language==="te"?"సూర్యోదయం":"Sunrise")+": "+p.sunrise,
-        "🌇 "+(record.language==="te"?"సూర్యాస్తమయం":"Sunset")+": "+p.sunset
+        "📅 "+date
       ];
-      if(p.tithiTiming)bodyLines.push("⏱️ "+(record.language==="te"?"తిథి సమయాలు":"Tithi timings")+": "+p.tithiTiming);
-      if(p.nakshatraTiming)bodyLines.push("🕰️ "+(record.language==="te"?"నక్షత్ర సమయాలు":"Nakshatra timings")+": "+p.nakshatraTiming);
       if(strength?.taraText)bodyLines.push("✦ "+(record.language==="te"?"తారాబలం":"Tarabalam")+": "+strength.taraText);
       if(strength?.chandraText)bodyLines.push("☾ "+(record.language==="te"?"చంద్రబలం":"Chandrabalam")+": "+strength.chandraText);
+      bodyLines.push("🌙 "+(record.language==="te"?"తిథి":"Tithi")+": "+values.tithi+(p.tithiTiming?" • "+(record.language==="te"?"సమయం":"Timing")+": "+p.tithiTiming:""));
+      bodyLines.push("⭐ "+(record.language==="te"?"నక్షత్రం":"Nakshatram")+": "+values.nakshatra+(p.nakshatraTiming?" • "+(record.language==="te"?"సమయం":"Timing")+": "+p.nakshatraTiming:""));
+      bodyLines.push("📆 "+(record.language==="te"?"వారం":"Vara")+": "+(record.language==="te"?teluguVara(p.vara):p.vara));
+      bodyLines.push("♈ "+(record.language==="te"?"రాశి":"Rashi")+": "+values.rashi);
       if(horoscope?.text)bodyLines.push("🔮 "+(record.language==="te"?"దైనందిన రాశిఫలం":"Daily Horoscope")+" ("+horoscope.label+"): "+horoscope.text);
+      bodyLines.push("☀️ "+(record.language==="te"?"సూర్యోదయం":"Sunrise")+": "+p.sunrise);
+      bodyLines.push("🌇 "+(record.language==="te"?"సూర్యాస్తమయం":"Sunset")+": "+p.sunset);
       const body=bodyLines.join("\n");
 
       await webpush.sendNotification(record.subscription,JSON.stringify({
