@@ -18,6 +18,9 @@ self.addEventListener("push",event=>{
     badge:data.badge||"/logo.png",
     tag:"daily-panchangam",
     renotify:true,
+    requireInteraction:true,
+    vibrate:[200,100,200],
+    actions:[{action:"open-panchangam",title:"View Panchangam"}],
     data:{url:data.url||"/panchangam.html"}
   };
   event.waitUntil(self.registration.showNotification(title,options));
