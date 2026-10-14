@@ -188,6 +188,7 @@ function setLanguage(v){
   lang=v==="te"?"te":"en";
   localStorage.setItem("siddha-language",lang);
   renderNav();renderControls();applyLanguage();
+  syncNotificationPreferences();
   document.dispatchEvent(new CustomEvent("languagechange"));
 }
 function toggleTheme(){
@@ -283,6 +284,10 @@ function bootSiddhaApp(){
     if(t==="back"||t==="← back"||t==="go back")el.remove();
   });
   renderLegacyShell();renderNav();renderControls();ensureGlobalControls();ensureLegacyHeader();cleanupLegacyLanguageLinks();
+  // Refresh the saved language, city, Janma Nakshatra and Janma Rashi on
+  // the server whenever the user opens the app, without re-subscribing.
+  syncNotificationPreferences();
+  window.addEventListener("storage",syncNotificationPreferences);
   languageObserver=new MutationObserver(()=>{if(!translating&&lang==="te")applyLanguage();});
   languageObserver.observe(document.body,{childList:true,subtree:true});
   document.querySelectorAll("[data-theme]").forEach(b=>b.onclick=toggleTheme);
