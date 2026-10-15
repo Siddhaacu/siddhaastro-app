@@ -167,10 +167,46 @@ export default async function handler(request) {
       settings: birth.settings
     };
 
-    const [chart, dasha] = await Promise.all([
+    const now = new Date();
+    const localParts = new Intl.DateTimeFormat("en-GB", {
+      timeZone: body.timezoneName || "UTC",
+      hourCycle: "h23",
+      year: "numeric", month: "2-digit", day: "2-digit",
+      hour: "2-digit", minute: "2-digit", second: "2-digit"
+    }).formatToParts(now);
+    const local = Object.fromEntries(localParts.filter(p => p.type !== "literal").map(p => [p.type, p.value]));
+    const transitPayload = {
+      ...apiPayload,
+      year: Number(local.year), month: Number(local.month), date: Number(local.day),
+      hours: Number(local.hour), minutes: Number(local.minute), seconds: Number(local.second)
+    };
+    const [chart, dasha, navamsaChart, dashaTimeline, transitChart] = await Promise.all([
       navamsha("/api/v1/kundali/basic", apiPayload),
-      navamsha("/api/v1/dasha/current", apiPayload)
+      navamsha("/api/v1/dasha/current", apiPayload),
+      navamsha("/api/v1/divisional/d9", apiPayload),
+      navamsha("/api/v1/dasha/vimshottari", apiPayload),
+      navamsha("/api/v1/kundali/basic", transitPayload)
     ]);
+
+    const mahadashas = Array.isArray(dashaTimeline?.mahadashas) ? dashaTimeline.mahadashas : [];
+    const dashaOrder = ["Ketu", "Venus", "Sun", "Moon", "Mars", "Rahu", "Jupiter", "Saturn", "Mercury"];
+    const dashaYears = { Ketu: 7, Venus: 20, Sun: 6, Moon: 10, Mars: 7, Rahu: 18, Jupiter: 16, Saturn: 19, Mercury: 17 };
+    const antardashas = mahadashas.map(md => {
+      const start = new Date(md.start).getTime();
+      const end = new Date(md.end).getTime();
+      if (!Number.isFinite(start) || !Number.isFinite(end)) return { ...md, antardashas: [] };
+      const lordIndex = dashaOrder.indexOf(md.lord);
+      const sequence = dashaOrder.slice(lordIndex).concat(dashaOrder.slice(0, lordIndex));
+      let cursor = start;
+      const rows = sequence.map(lord => {
+        const duration = (end - start) * dashaYears[lord] / 120;
+        const row = { lord, start: new Date(cursor).toISOString(), end: new Date(Math.min(end, cursor + duration)).toISOString() };
+        cursor += duration;
+        return row;
+      });
+      if (rows.length) rows[rows.length - 1].end = md.end;
+      return { ...md, antardashas: rows };
+    });
 
     return Response.json({
       ok: true,
@@ -182,6 +218,7 @@ export default async function handler(request) {
         timezone: birth.timezone
       },
       birth: {
+        name: String(body.name || "").trim(),
         date: birth._birthDate,
         time: birth._birthTime,
         city: birth._location.name,
@@ -189,7 +226,11 @@ export default async function handler(request) {
         longitude: birth.longitude
       },
       chart,
-      dasha
+      dasha,
+      navamsaChart,
+      dashaTimeline: { ...dashaTimeline, mahadashas: antardashas },
+      transitChart,
+      transitAt: now.toISOString()
     }, {
       headers: {
         "Cache-Control": "private, max-age=86400"
