@@ -167,25 +167,11 @@ export default async function handler(request) {
       settings: birth.settings
     };
 
-    const now = new Date();
-    const localParts = new Intl.DateTimeFormat("en-GB", {
-      timeZone: body.timezoneName || "UTC",
-      hourCycle: "h23",
-      year: "numeric", month: "2-digit", day: "2-digit",
-      hour: "2-digit", minute: "2-digit", second: "2-digit"
-    }).formatToParts(now);
-    const local = Object.fromEntries(localParts.filter(p => p.type !== "literal").map(p => [p.type, p.value]));
-    const transitPayload = {
-      ...apiPayload,
-      year: Number(local.year), month: Number(local.month), date: Number(local.day),
-      hours: Number(local.hour), minutes: Number(local.minute), seconds: Number(local.second)
-    };
-    const [chart, dasha, navamsaChart, dashaTimeline, transitChart] = await Promise.all([
+    const [chart, dasha, navamsaChart, dashaTimeline] = await Promise.all([
       navamsha("/api/v1/kundali/basic", apiPayload),
       navamsha("/api/v1/dasha/current", apiPayload),
       navamsha("/api/v1/divisional/d9", apiPayload),
-      navamsha("/api/v1/dasha/vimshottari", apiPayload),
-      navamsha("/api/v1/kundali/basic", transitPayload)
+      navamsha("/api/v1/dasha/vimshottari", apiPayload)
     ]);
 
     const mahadashas = Array.isArray(dashaTimeline?.mahadashas) ? dashaTimeline.mahadashas : [];
@@ -229,8 +215,6 @@ export default async function handler(request) {
       dasha,
       navamsaChart,
       dashaTimeline: { ...dashaTimeline, mahadashas: antardashas },
-      transitChart,
-      transitAt: now.toISOString()
     }, {
       headers: {
         "Cache-Control": "private, max-age=86400"
