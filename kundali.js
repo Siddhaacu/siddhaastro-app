@@ -51,19 +51,79 @@ async function logoData(){const r=await fetch("/logo.png"),b=await r.blob();retu
 function pdfChart(doc,chart,x,y,size){const cell=size/4,by={};planets(chart).forEach(p=>(by[p.sign]??=[]).push(p));doc.setDrawColor(79,117,103);doc.setLineWidth(.5);doc.rect(x,y,size,size);[1,2,3].forEach(i=>{doc.line(x+i*cell,y,x+i*cell,y+size);doc.line(x,y+i*cell,x+size,y+i*cell)});SOUTH.forEach(([s,c,r])=>{const cx=x+c*cell,cy=y+r*cell;doc.setFontSize(6);doc.setFont("helvetica","bold");doc.text(tr(s),cx+2,cy+7);(by[s]||[]).forEach((p,i)=>doc.text(SYMBOLS[p.name]+(p.retro?" R":""),cx+2,cy+16+i*7))});doc.setFontSize(8);doc.text("D1 "+tr("Rasi"),x+size/2,y+size/2,{align:"center"})}
 async function downloadPdf(data){
  if(!window.jspdf?.jsPDF){alert(SiddhaApp.getLanguage()==="te"?"PDF జనరేటర్ ఇంకా లోడ్ అవుతోంది. దయచేసి మళ్లీ ప్రయత్నించండి.":"PDF generator is still loading. Please try again.");return}
- const{jsPDF}=window.jspdf,doc=new jsPDF({unit:"mm",format:"a4"}),m=15,W=210,H=297;
+ const{jsPDF}=window.jspdf,doc=new jsPDF({unit:"mm",format:"a4"}),m=14,W=210,H=297,te=SiddhaApp.getLanguage()==="te";
  const disclaimer="Astrology consultations, mantras, spiritual remedies, rituals, prayers, and related services do not guarantee any specific results. Outcomes and experiences vary from person to person and depend on individual circumstances. By using these services, you acknowledge that results are uncertain and cannot be assured.";
- const footer=()=>{doc.setDrawColor(223,231,225);doc.line(m,H-23,W-m,H-23);doc.setFont("helvetica","normal");doc.setFontSize(6);doc.setTextColor(105,118,111);doc.text(doc.splitTextToSize(disclaimer,W-m*2),m,H-19,{lineHeightFactor:1.15});doc.text("Siddha Astro • Page "+doc.getNumberOfPages(),m,H-7);doc.text("Vedic chart report",W-m,H-7,{align:"right"})};
- footer();
- try{const r=await fetch("/logo.png"),b=await r.blob(),d=await new Promise((res,rej)=>{const f=new FileReader();f.onload=()=>res(f.result);f.onerror=rej;f.readAsDataURL(b)});doc.addImage(d,"PNG",m,11,18,18)}catch{}
- const b=data.birth,c=data.chart||{},ps=planets(c),a=c.ascendant||{},moon=ps.find(p=>p.name==="Moon");
- doc.setTextColor(38,51,47);doc.setFont("helvetica","bold");doc.setFontSize(19);doc.text("Siddha Astro",38,20);doc.setFontSize(9);doc.setFont("helvetica","normal");doc.setTextColor(104,118,111);doc.text(SiddhaApp.getLanguage()==="te"?"వేద జన్మ చార్ట్ • జన్మ కుండలి":"Vedic Birth Chart • Janma Kundali",38,27);
- doc.setTextColor(38,51,47);doc.setFont("helvetica","bold");doc.setFontSize(11);doc.text(SiddhaApp.getLanguage()==="te"?"జన్మ వివరాలు":"Birth Details",m,45);doc.setFont("helvetica","normal");doc.setFontSize(9);doc.text((SiddhaApp.getLanguage()==="te"?"పేరు: ":"Name: ")+(b.name||"—"),m,53);doc.text((SiddhaApp.getLanguage()==="te"?"తేదీ: ":"Date: ")+b.date,m,60);doc.text((SiddhaApp.getLanguage()==="te"?"సమయం: ":"Time: ")+b.time,m,67);doc.text((SiddhaApp.getLanguage()==="te"?"స్థలం: ":"Place: ")+b.city,m,74);doc.text((SiddhaApp.getLanguage()==="te"?"కోఆర్డినేట్లు: ":"Coordinates: ")+Number(b.latitude).toFixed(4)+", "+Number(b.longitude).toFixed(4),m,81);
- doc.setFillColor(229,239,233);doc.roundedRect(112,43,83,36,4,4,"F");doc.setTextColor(54,89,77);doc.setFont("helvetica","bold");doc.setFontSize(8);doc.text(SiddhaApp.getLanguage()==="te"?"లగ్నం":"LAGNA",118,51);doc.setFontSize(13);doc.text(tr(a.zodiac_sign_name||"—"),118,59);doc.setFontSize(8);doc.text((SiddhaApp.getLanguage()==="te"?"చంద్రుడు: ":"Moon: ")+tr(moon?.sign||"—"),118,67);doc.text((SiddhaApp.getLanguage()==="te"?"నక్షత్రం: ":"Nakshatra: ")+(trNak(moon?.nak)||"—"),118,73);
- doc.setTextColor(38,51,47);doc.setFontSize(11);doc.text(SiddhaApp.getLanguage()==="te"?"రాశి చార్ట్ (D1)":"Rasi Chart (D1)",m,89);pdfChart(doc,c,m,95,110);
- doc.setFont("helvetica","bold");doc.text(SiddhaApp.getLanguage()==="te"?"ప్రస్తుత విమ్షోత్తరి దశ":"Current Vimshottari Dasha",m,217);doc.setFont("helvetica","normal");doc.setFontSize(9);doc.text((SiddhaApp.getLanguage()==="te"?"మహాదశ: ":"Mahadasha: ")+tr(data.dasha?.mahadasha?.lord||"—")+" • "+period(data.dasha?.mahadasha),m,225);doc.text((SiddhaApp.getLanguage()==="te"?"అంతర్దశ: ":"Antardasha: ")+tr(data.dasha?.antardasha?.lord||"—")+" • "+period(data.dasha?.antardasha),m,232);
- doc.setFont("helvetica","bold");doc.setFontSize(11);doc.text(SiddhaApp.getLanguage()==="te"?"గ్రహ స్థితులు":"Planetary Positions",m,244);let y=251;doc.setFontSize(7);doc.text(SiddhaApp.getLanguage()==="te"?"గ్రహం":"Planet",m,y);doc.text(SiddhaApp.getLanguage()==="te"?"రాశి":"Sign",42,y);doc.text(SiddhaApp.getLanguage()==="te"?"డిగ్రీ":"Degree",80,y);doc.text(SiddhaApp.getLanguage()==="te"?"భావం":"House",113,y);doc.text(SiddhaApp.getLanguage()==="te"?"నక్షత్రం":"Nakshatra",138,y);doc.setFont("helvetica","normal");y+=6;
- ps.forEach(p=>{doc.text(tr(p.name),m,y);doc.text(String(tr(p.sign)).slice(0,14),42,y);doc.text(deg(p.degree),80,y);doc.text(String(p.house),113,y);doc.text(String(trNak(p.nak)).slice(0,18),138,y);y+=6});
- doc.save("Siddha-Astro-Kundali-"+b.date+".pdf");
+ const b=data.birth||{},c=data.chart||{},ps=planets(c),a=c.ascendant||{},moon=ps.find(p=>p.name==="Moon"),d9ps=d9Planets(data),d9asc=data.navamsaChart?.reference_sign||data.navamsaChart?.ascendant?.zodiac_sign_name||"—";
+ const ink=[38,51,47],muted=[100,115,108],accent=[54,89,77],line=[220,229,222];
+ const text=(v,x,y,size=8,bold=false,color=ink)=>{doc.setFont("helvetica",bold?"bold":"normal");doc.setFontSize(size);doc.setTextColor(...color);doc.text(String(v??"—"),x,y)};
+ const section=(title,y)=>{text(title,m,y,12,true);doc.setDrawColor(...line);doc.line(m,y+2,W-m,y+2);return y+9};
+ const wrap=(value,width)=>doc.splitTextToSize(String(value??"—"),width);
+ const footer=()=>{doc.setDrawColor(...line);doc.line(m,H-23,W-m,H-23);doc.setFont("helvetica","normal");doc.setFontSize(5.8);doc.setTextColor(...muted);doc.text(wrap(disclaimer,W-2*m),m,H-19,{lineHeightFactor:1.05});text("Siddha Astro • Page "+doc.getNumberOfPages(),m,H-6,6,false,muted);text("Vedic chart report",W-m,H-6,6,false,muted)};
+ const newPage=title=>{doc.addPage();text("Siddha Astro",m,12,8,true,accent);text(title,W-m,12,8,true,muted);doc.setDrawColor(...line);doc.line(m,16,W-m,16)};
+ const finish=()=>{for(let i=1;i<=doc.getNumberOfPages();i++){doc.setPage(i);footer()}};
+ const table=(headers,rows,x,y,widths,rowH=7,fontSize=7)=>{
+   let xx=x;doc.setFillColor(235,242,237);doc.rect(x,y-4,widths.reduce((a,v)=>a+v,0),rowH,"F");
+   headers.forEach((h,i)=>{text(h,xx,y,fontSize,true,accent);xx+=widths[i]});y+=rowH;
+   rows.forEach(row=>{if(y>H-34){newPage("Kundali details");y=25;xx=x;doc.setFillColor(235,242,237);doc.rect(x,y-4,widths.reduce((a,v)=>a+v,0),rowH,"F");headers.forEach((h,i)=>{text(h,xx,y,fontSize,true,accent);xx+=widths[i]});y+=rowH}
+     xx=x;row.forEach((v,i)=>{const lines=wrap(v,Math.max(8,widths[i]-2));doc.setFont("helvetica","normal");doc.setFontSize(fontSize);doc.setTextColor(...ink);doc.text(lines.slice(0,2),xx,y,{lineHeightFactor:1.0});xx+=widths[i]});doc.setDrawColor(...line);doc.line(x,y+2,x+widths.reduce((a,v)=>a+v,0),y+2);y+=rowH;
+   });return y+4;
+ };
+ const chart=(list,asc,label,x,y,size)=>{
+   const cell=size/4,by={};list.forEach(p=>(by[p.sign]??=[]).push(p));
+   doc.setDrawColor(...accent);doc.setLineWidth(.35);doc.rect(x,y,size,size);
+   [1,2,3].forEach(i=>{doc.line(x+i*cell,y,x+i*cell,y+size);doc.line(x,y+i*cell,x+size,y+i*cell)});
+   SOUTH.forEach(([s,col,row])=>{const cx=x+col*cell,cy=y+row*cell;text(tr(s),cx+1.5,cy+5,5.5,true,muted);if(asc===s)text("Lagna",cx+1.5,cy+9,4.5,true,accent);(by[s]||[]).slice(0,5).forEach((p,i)=>text(SYMBOLS[p.name]+(p.retro?" R":""),cx+1.5,cy+14+i*4,5.5,true,ink))});
+   text(label,x+size/2,y+size/2-1,8,true,accent);
+ };
+ try{const r=await fetch("/logo.png");if(r.ok){const blob=await r.blob(),image=await new Promise((res,rej)=>{const fr=new FileReader();fr.onload=()=>res(fr.result);fr.onerror=rej;fr.readAsDataURL(blob)});doc.addImage(image,"PNG",m,8,17,17)}}catch{}
+ text("Siddha Astro",35,16,19,true,accent);text(te?"వేద జన్మ చార్ట్ • జన్మ కుండలి":"Complete Vedic Birth Chart • Janma Kundali",35,23,8,false,muted);
+ let y=section(te?"జన్మ వివరాలు":"Birth Details",37);
+ const birthRows=[
+  [te?"పేరు":"Name",b.name||"—"],[te?"జన్మ తేదీ":"Birth date",b.date||"—"],[te?"జన్మ సమయం":"Birth time",b.time||"—"],
+  [te?"జన్మ స్థలం":"Birth place",b.city||"—"],[te?"దేశం":"Country",b.country||"—"],
+  [te?"అక్షాంశం / రేఖాంశం":"Latitude / Longitude",[Number(b.latitude).toFixed(5),Number(b.longitude).toFixed(5)].join(" / ")],
+  [te?"సమయ మండలం":"Time zone",b.timezoneName||b.timezone||"—"],["Ayanamsha / Houses","Lahiri sidereal / Whole-sign"]
+ ];
+ y=table([te?"వివరం":"Field",te?"విలువ":"Value"],birthRows,m,y,[45,137],7,8);
+ y+=2;y=section(te?"జన్మ సారాంశం":"Chart Summary",y);
+ y=table(["Item","Value"],[
+  ["Lagna",tr(a.zodiac_sign_name||a.sign||"—")+" • "+deg(a.fullDegree??a.normDegree)],
+  ["Moon Rashi",tr(moon?.sign||"—")],
+  ["Janma Nakshatra",trNak(moon?.nak||"—")+" • Pada "+(moon?.pada??"—")],
+  ["Current Mahadasha",period(data.dasha?.mahadasha)],
+  ["Current Antardasha",period(data.dasha?.antardasha)]
+ ],m,y,[48,134],7,8);
+ newPage("D1 • Rasi Chart");y=25;y=section(te?"రాశి చార్ట్ (D1)":"Rasi Chart (D1)",y);chart(ps,a.zodiac_sign_name||a.sign||"—","D1",m,y,116);
+ newPage("D1 • Planetary Positions");y=25;y=section(te?"గ్రహ స్థితులు":"D1 Planetary Positions",y);
+ y=table(["Planet","Sign","Degree","House","Nakshatra","Pada","Status"],ps.map(p=>[tr(p.name),tr(p.sign),deg(p.degree),p.house,trNak(p.nak),p.pada,p.retro?"Retrograde":"Direct"]),m,y,[24,34,23,16,37,13,35],7,6.5);
+ y+=3;y=section(te?"నవాంశ చార్ట్ (D9)":"Navamsa Chart (D9)",y);text("Navamsa Lagna: "+tr(d9asc),m,y,8,false,muted);chart(d9ps,d9asc,"D9",m,y+5,105);
+ newPage("D9 • Planetary Placements");y=25;y=section(te?"నవాంశ గ్రహ స్థితులు":"D9 Planetary Placements",y);
+ y=table(["Planet","D9 Sign","House","Longitude","Nakshatra","Pada","Status"],d9ps.map(p=>[tr(p.name),tr(p.sign),p.house,deg(p.degree),trNak(p.nak),p.pada,p.retro?"Retrograde":"Direct"]),m,y,[25,35,17,26,37,13,29],7,6.5);
+ y+=4;y=section(te?"చంద్ర చార్ట్":"Moon Chart",y);
+ const signs=["Aries","Taurus","Gemini","Cancer","Leo","Virgo","Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"],mi=signs.indexOf(moon?.sign);
+ if(mi>=0){const moonPs=ps.map(p=>({...p,house:((signs.indexOf(p.sign)-mi+12)%12)+1}));chart(moonPs,moon?.sign,"Moon Chart",m,y,100);text("Houses are counted from natal Moon sign; uses natal placements, not current transits.",m,y+105,7,false,muted)}
+ newPage("Vimshottari Dasha & Antardasha");y=25;y=section(te?"ప్రస్తుత దశలు":"Current Dasha Summary",y);
+ y=table(["Period","Lord","Start","End"],[
+  ["Mahadasha",tr(data.dasha?.mahadasha?.lord||"—"),dateText(data.dasha?.mahadasha?.start),dateText(data.dasha?.mahadasha?.end)],
+  ["Antardasha",tr(data.dasha?.antardasha?.lord||"—"),dateText(data.dasha?.antardasha?.start),dateText(data.dasha?.antardasha?.end)]
+ ],m,y,[35,45,48,48],8,7);
+ y+=3;y=section(te?"మహాదశ మరియు అంతర్దశ కాలక్రమం":"Complete Mahadasha & Antardasha Timeline",y);
+ const mdPeriods=data.dashaTimeline?.mahadashas||[];
+ if(!mdPeriods.length){text("Detailed Dasha timeline was not supplied by the calculation provider.",m,y,8,false,muted)}
+ for(const md of mdPeriods){
+   if(y>H-55){newPage("Vimshottari Dasha Timeline");y=25}
+   text(tr(md.lord)+" Mahadasha  •  "+dateText(md.start)+" – "+dateText(md.end),m,y,8,true,accent);y+=5;
+   const ads=md.antardashas||[];
+   if(ads.length)y=table(["Antardasha","Starts","Ends"],ads.map(ad=>[tr(ad.lord),dateText(ad.start),dateText(ad.end)]),m,y,[70,56,50],6.5,7);
+   else {text("Antardasha dates unavailable",m,y,7,false,muted);y+=6}
+   y+=2;
+ }
+ newPage("Additional Calculation Details");y=25;y=section("Available Provider Data",y);
+ const extras=[];const addExtra=(label,val)=>{if(val!==undefined&&val!==null&&val!=="")extras.push([label,typeof val==="object"?JSON.stringify(val):String(val)])};
+ addExtra("Ascendant details",c.ascendant);addExtra("Dasha details",data.dasha);addExtra("Navamsa chart reference",data.navamsaChart?.reference_sign);addExtra("Calculation settings",data.calculation||data.settings);addExtra("Additional details",data.details);
+ if(extras.length)y=table(["Field","Value"],extras,m,y,[48,134],7,7);else text("All structured chart sections available in the app are included in the preceding pages.",m,y,8,false,muted);
+ finish();
+ const safeName=String(b.name||"Kundali").replace(/[^a-z0-9_-]+/gi,"-").replace(/^-+|-+$/g,"");
+ doc.save("Siddha-Astro-Kundali-"+(safeName||"Report")+"-"+(b.date||"birth-chart")+".pdf");
 }
 window.SiddhaKundali.downloadPdf=downloadPdf;
