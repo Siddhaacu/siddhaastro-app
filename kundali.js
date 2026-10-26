@@ -58,13 +58,13 @@ async function downloadPdf(data){
  const text=(v,x,y,size=8,bold=false,color=ink)=>{doc.setFont("helvetica",bold?"bold":"normal");doc.setFontSize(size);doc.setTextColor(...color);doc.text(String(v??"—"),x,y)};
  const section=(title,y)=>{text(title,m,y,12,true);doc.setDrawColor(...line);doc.line(m,y+2,W-m,y+2);return y+9};
  const wrap=(value,width)=>doc.splitTextToSize(String(value??"—"),width);
- const footer=()=>{doc.setDrawColor(...line);doc.line(m,H-23,W-m,H-23);doc.setFont("helvetica","normal");doc.setFontSize(5.8);doc.setTextColor(...muted);doc.text(wrap(disclaimer,W-2*m),m,H-19,{lineHeightFactor:1.05});text("Siddha Astro • Page "+doc.getNumberOfPages(),m,H-6,6,false,muted);text("Vedic chart report",W-m,H-6,6,false,muted)};
- const newPage=title=>{doc.addPage();text("Siddha Astro",m,12,8,true,accent);text(title,W-m,12,8,true,muted);doc.setDrawColor(...line);doc.line(m,16,W-m,16)};
+ const footer=()=>{doc.setDrawColor(...line);doc.line(m,H-32,W-m,H-32);doc.setFont("helvetica","normal");doc.setFontSize(5.4);doc.setTextColor(...muted);doc.text(wrap(disclaimer,W-2*m),m,H-28,{lineHeightFactor:1.0});text("Siddha Astro • Page "+doc.getNumberOfPages(),m,H-6,6,false,muted);text("Vedic chart report",W-m,H-6,6,false,muted)};
+ const newPage=title=>{doc.addPage();text("Siddha Astro • Mr. Sastri",m,12,8,true,accent);text(title,W-m,12,8,true,muted);doc.setDrawColor(...line);doc.line(m,16,W-m,16)};
  const finish=()=>{for(let i=1;i<=doc.getNumberOfPages();i++){doc.setPage(i);footer()}};
  const table=(headers,rows,x,y,widths,rowH=7,fontSize=7)=>{
    let xx=x;doc.setFillColor(235,242,237);doc.rect(x,y-4,widths.reduce((a,v)=>a+v,0),rowH,"F");
    headers.forEach((h,i)=>{text(h,xx,y,fontSize,true,accent);xx+=widths[i]});y+=rowH;
-   rows.forEach(row=>{if(y>H-34){newPage("Kundali details");y=25;xx=x;doc.setFillColor(235,242,237);doc.rect(x,y-4,widths.reduce((a,v)=>a+v,0),rowH,"F");headers.forEach((h,i)=>{text(h,xx,y,fontSize,true,accent);xx+=widths[i]});y+=rowH}
+   rows.forEach(row=>{if(y>H-39){newPage("Kundali details");y=25;xx=x;doc.setFillColor(235,242,237);doc.rect(x,y-4,widths.reduce((a,v)=>a+v,0),rowH,"F");headers.forEach((h,i)=>{text(h,xx,y,fontSize,true,accent);xx+=widths[i]});y+=rowH}
      xx=x;row.forEach((v,i)=>{const lines=wrap(v,Math.max(8,widths[i]-2));doc.setFont("helvetica","normal");doc.setFontSize(fontSize);doc.setTextColor(...ink);doc.text(lines.slice(0,2),xx,y,{lineHeightFactor:1.0});xx+=widths[i]});doc.setDrawColor(...line);doc.line(x,y+2,x+widths.reduce((a,v)=>a+v,0),y+2);y+=rowH;
    });return y+4;
  };
@@ -76,7 +76,7 @@ async function downloadPdf(data){
    text(label,x+size/2,y+size/2-1,8,true,accent);
  };
  try{const r=await fetch("/logo.png");if(r.ok){const blob=await r.blob(),image=await new Promise((res,rej)=>{const fr=new FileReader();fr.onload=()=>res(fr.result);fr.onerror=rej;fr.readAsDataURL(blob)});doc.addImage(image,"PNG",m,8,17,17)}}catch{}
- text("Siddha Astro",35,16,19,true,accent);text(te?"వేద జన్మ చార్ట్ • జన్మ కుండలి":"Complete Vedic Birth Chart • Janma Kundali",35,23,8,false,muted);
+ text("Siddha Astro",35,16,19,true,accent);text(te?"వేద జన్మ చార్ట్ • జన్మ కుండలి":"Complete Vedic Birth Chart • Janma Kundali",35,23,8,false,muted);text("Consultation: Mr. Sastri",35,29,8,true,accent);
  let y=section(te?"జన్మ వివరాలు":"Birth Details",37);
  const birthRows=[
   [te?"పేరు":"Name",b.name||"—"],[te?"జన్మ తేదీ":"Birth date",b.date||"—"],[te?"జన్మ సమయం":"Birth time",b.time||"—"],
