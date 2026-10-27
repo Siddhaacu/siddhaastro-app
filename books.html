@@ -139,34 +139,74 @@
 </center>
 <br>
  <br> <div class="search-box">
-    <input 
-        type="text" 
-        id="bookSearch" 
-        placeholder="Search books, stotras, slokas..."
-        onkeyup="searchBooks()">
-        
-    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="search" id="bookSearch" aria-label="Search Vedic scriptures / వేద గ్రంథాలను వెతకండి" placeholder="Search by title in Telugu or English / తెలుగు లేదా Englishలో వెతకండి" autocomplete="off">
+    <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
 </div>
-
+<div class="scripture-tools" aria-label="Scripture search and filters">
+  <div class="scripture-filters" role="group" aria-label="Filter scripture categories">
+    <button type="button" class="scripture-filter active" data-scripture-filter="all">All / అన్నీ</button>
+    <button type="button" class="scripture-filter" data-scripture-filter="stotra">Stotras & Slokas / స్తోత్రాలు</button>
+    <button type="button" class="scripture-filter" data-scripture-filter="puja">Puja & Rituals / పూజా విధానాలు</button>
+    <button type="button" class="scripture-filter" data-scripture-filter="vrata">Vratas & Festivals / వ్రతాలు, పండుగలు</button>
+    <button type="button" class="scripture-filter" data-scripture-filter="sukta">Vedas & Suktas / వేదాలు, సూక్తాలు</button>
+  </div>
+  <p id="scriptureSearchStatus" class="scripture-search-status" role="status" aria-live="polite">Search by Telugu or English title / తెలుగు లేదా English పేరుతో వెతకండి</p>
+</div>
+<style>
+.scripture-tools{margin:-10px 0 22px}
+.scripture-filters{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.scripture-filter{border:1px solid var(--border);border-radius:999px;padding:8px 12px;background:var(--surface-2);color:var(--text);font:inherit;font-size:.88rem;cursor:pointer}
+.scripture-filter.active{background:var(--accent-dark);color:#fff;border-color:var(--accent-dark)}
+.scripture-search-status{font-size:.9rem;color:var(--muted);margin:8px 0}
+.book-item[hidden]{display:none!important}
+</style>
 <script>
-function searchBooks() {
-
-    let input = document.getElementById("bookSearch");
-    let filter = input.value.toLowerCase();
-
-    let items = document.getElementsByClassName("book-item");
-
-    for (let i = 0; i < items.length; i++) {
-
-        let text = items[i].textContent || items[i].innerText;
-
-        if (text.toLowerCase().indexOf(filter) > -1) {
-            items[i].style.display = "";
-        } else {
-            items[i].style.display = "none";
-        }
-    }
-}
+(function(){
+ const input=document.getElementById("bookSearch");
+ const status=document.getElementById("scriptureSearchStatus");
+ const filters=[...document.querySelectorAll("[data-scripture-filter]")];
+ let activeFilter="all";
+ const items=[...document.querySelectorAll(".book-item")];
+ function categoryFor(item){
+   const text=(item.textContent||"").toLowerCase();
+   const parent=item.closest(".feature-grid");
+   let heading=parent?.previousElementSibling;
+   while(heading && !/^H[1-6]$/.test(heading.tagName)) heading=heading.previousElementSibling;
+   const section=((heading?.textContent||"")+" "+text).toLowerCase();
+   if(/sukta|vedam|rudram|sūkt|సూక్త|వేదం|రుద్రం/.test(section)) return "sukta";
+   if(/vrata|festival|puja|pūjā|vidhanam|వ్రత|పూజ|విధానం|పండుగ/.test(section)) return /vrata|festival|వ్రత|పండుగ|పౌర్ణమి|అమావాస్య|ఏకాదశి|జయంతి/.test(section)?"vrata":"puja";
+   return "stotra";
+ }
+ function searchBooks(){
+   const query=(input.value||"").normalize("NFC").toLocaleLowerCase().trim();
+   let visible=0;
+   items.forEach(item=>{
+     const matchText=(item.textContent||"").normalize("NFC").toLocaleLowerCase();
+     const matchQuery=!query||matchText.includes(query);
+     const matchCategory=activeFilter==="all"||categoryFor(item)===activeFilter;
+     const show=matchQuery&&matchCategory;
+     item.hidden=!show;
+     const card=item.closest(".feature-card");
+     if(card)card.hidden=!show;
+     if(show)visible++;
+   });
+   document.querySelectorAll(".feature-grid").forEach(grid=>{
+     const cards=[...grid.querySelectorAll(".feature-card")];
+     grid.hidden=cards.length>0&&!cards.some(card=>!card.hidden);
+   });
+   status.textContent=visible
+     ? visible+" scriptures found / "+visible+" గ్రంథాలు కనిపించాయి"
+     : "No scriptures found. Try another Telugu or English keyword. / గ్రంథాలు కనబడలేదు. మరో తెలుగు లేదా English పదంతో వెతకండి.";
+ }
+ input.addEventListener("input",searchBooks);
+ filters.forEach(button=>button.addEventListener("click",()=>{
+   activeFilter=button.dataset.scriptureFilter;
+   filters.forEach(b=>{const active=b===button;b.classList.toggle("active",active);b.setAttribute("aria-pressed",String(active))});
+   searchBooks();
+ }));
+ window.searchBooks=searchBooks;
+ searchBooks();
+})();
 </script>
 
 <br><br>
