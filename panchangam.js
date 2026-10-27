@@ -37,8 +37,8 @@ function normalizePrimary(d,c){
     thithi:d.tithi?.name||"—",
     nakshatra:d.nakshatra?.name||"—",
     rashi:d.rashi?.name||d.rashi||"Not provided",
-    samvathsara:d.samvathsara||d.samvatsara||"Not provided",
-    masa:d.masa?.name||d.masa||"Not provided",
+    samvathsara:typeof (d.samvathsara||d.samvatsara)==="object"?((d.samvathsara||d.samvatsara)?.name||(d.samvathsara||d.samvatsara)?.value||"Not provided"):(d.samvathsara||d.samvatsara||"Not provided"),
+    masa:typeof d.masa==="object"?(d.masa?.name||d.masa?.amanta||d.masa?.value||"Not provided"):(d.masa||"Not provided"),
     yoga:d.yoga?.name||"—",
     karana:d.karana?.name||"—",
     sunrise:d.sun?.sunrise||d.sunrise||"—",
@@ -260,7 +260,7 @@ async function fetchPanchangam(date=indiaToday(),city=DEFAULT_CITY){
 const TELUGU_VALUES={
   vara:{Sunday:"ఆదివారం",Monday:"సోమవారం",Tuesday:"మంగళవారం",Wednesday:"బుధవారం",Thursday:"గురువారం",Friday:"శుక్రవారం",Saturday:"శనివారం"},
   rashi:{Aries:"మేషం",Taurus:"వృషభం",Gemini:"మిథునం",Cancer:"కర్కాటకం",Leo:"సింహం",Virgo:"కన్య",Libra:"తుల",Scorpio:"వృశ్చికం",Sagittarius:"ధనుస్సు",Capricorn:"మకరం",Aquarius:"కుంభం",Pisces:"మీనం",Mesha:"మేషం",Vrishabha:"వృషభం",Mithuna:"మిథునం",Karkataka:"కర్కాటకం",Simha:"సింహం",Kanya:"కన్య",Tula:"తుల",Vrischika:"వృశ్చికం",Dhanus:"ధనుస్సు",Makara:"మకరం",Kumbha:"కుంభం",Meena:"మీనం"},
-  masa:{Chaitra:"చైత్రం",Vaishakha:"వైశాఖం",Jyeshtha:"జ్యేష్ఠం",Ashadha:"ఆషాఢం",Shravana:"శ్రావణం",Bhadrapada:"భాద్రపదం",Ashwin:"ఆశ్వయుజం",Ashvayuja:"ఆశ్వయుజం",Kartika:"కార్తీకం",Margashirsha:"మార్గశిరం",Pausha:"పుష్యం",Magha:"మాఘం",Phalguna:"ఫాల్గుణం"},
+  masa:{Ashwina:"ఆశ్వయుజం",Ashvina:"ఆశ్వయుజం",Ashwin:"ఆశ్వయుజం",Ashvayuja:"ఆశ్వయుజం",Aswayuja:"ఆశ్వయుజం",Chaitra:"చైత్రం",Vaishakha:"వైశాఖం",Jyeshtha:"జ్యేష్ఠం",Ashadha:"ఆషాఢం",Shravana:"శ్రావణం",Bhadrapada:"భాద్రపదం",Ashwin:"ఆశ్వయుజం",Ashvayuja:"ఆశ్వయుజం",Kartika:"కార్తీకం",Margashirsha:"మార్గశిరం",Pausha:"పుష్యం",Magha:"మాఘం",Phalguna:"ఫాల్గుణం"},
   nakshatra:{Ashwini:"అశ్విని",Bharani:"భరణి",Krittika:"కృత్తిక",Rohini:"రోహిణి",Mrigashira:"మృగశిర",Ardra:"ఆర్ద్ర",Punarvasu:"పునర్వసు",Pushya:"పుష్యమి",Ashlesha:"ఆశ్లేష",Magha:"మఘ",PurvaPhalguni:"పుబ్బ",UttaraPhalguni:"ఉత్తర ఫల్గుణి",Hasta:"హస్త",Chitra:"చిత్త",Swati:"స్వాతి",Vishakha:"విశాఖ",Anuradha:"అనూరాధ",Jyeshtha:"జ్యేష్ఠ",Mula:"మూల",PurvaAshadha:"పూర్వాషాఢ",UttaraAshadha:"ఉత్తరాషాఢ",Shravana:"శ్రవణం",Dhanishta:"ధనిష్ఠ",Shatabhisha:"శతభిషం",PurvaBhadrapada:"పూర్వాభాద్ర",UttaraBhadrapada:"ఉత్తరాభాద్ర",Revati:"రేవతి"},
   yoga:{Vishkambha:"విష్కంభ",Preeti:"ప్రీతి",Ayushman:"ఆయుష్మాన్",Saubhagya:"సౌభాగ్య",Shobhana:"శోభన",Atiganda:"అతిగండ",Sukarma:"సుకర్మ",Dhriti:"ధృతి",Shula:"శూల",Ganda:"గండ",Vriddhi:"వృద్ధి",Dhruva:"ధ్రువ",Vyaghata:"వ్యాఘాత",Harshana:"హర్షణ",Vajra:"వజ్ర",Siddhi:"సిద్ధి",Vyatipata:"వ్యతి పాత",Variyana:"వరీయాన్",Parigha:"పరిఘ",Shiva:"శివ",Siddha:"సిద్ధ",Sadhya:"సాధ్య",Shubha:"శుభ",Shukla:"శుక్ల",Brahma:"బ్రహ్మ",Indra:"ఇంద్ర",Vaidhriti:"వైధృతి"},
   karana:{Bava:"బవ",Balava:"బాలవ",Kaulava:"కౌలవ",Taitila:"తైతిల",Garaja:"గరజ",Vanija:"వణిజ",Vishti:"విష్టి",Shakuni:"శకుని",Chatushpada:"చతుష్పాద",Naga:"నాగ",Kimstughna:"కింస్తుఘ్న"},
@@ -270,7 +270,7 @@ const TELUGU_TITHI={Pratipada:"పాడ్యమి",Dvitiiya:"విదియ"
 function translatePanchangValue(type,value){
   if(value==null)return value;
   const raw=String(value).trim();
-  if(!raw||raw==="—"||raw==="Not provided")return raw;
+  if(!raw||raw==="—"||raw==="Not provided"||/^undefined|null|\[object Object\]$/i.test(raw))return "—";
   const lang=window.SiddhaApp?.getLanguage?.()||"en";
   if(lang!=="te")return raw;
   const map=TELUGU_VALUES[type]||{};
