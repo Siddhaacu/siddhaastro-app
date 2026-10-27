@@ -13,8 +13,8 @@
  renderSankalpam(lastP);
 }
 const VARA_SANSKRIT={Sunday:"భానువాసరే",Monday:"ఇందువాసరే",Tuesday:"భౌమవాసరే",Wednesday:"సౌమ్యవాసరే",Thursday:"గురువాసరే",Friday:"భృగువాసరే",Saturday:"స్థిరవాసరే"};
-const RUTU_BY_MASA={Chaitra:"వసంత",Vaishakha:"వసంత",Jyeshtha:"గ్రీష్మ",Ashadha:"గ్రీష్మ",Shravana:"వర్ష",Bhadrapada:"వర్ష",Ashwin:"శరద్",Ashvayuja:"శరద్",Kartika:"శరద్",Margashirsha:"హేమంత",Pausha:"హేమంత",Magha:"శిశిర",Phalguna:"శిశిర"};
-const TELUGU_RUTU={Chaitra:"వసంత",Vaishakha:"వసంత",Jyeshtha:"గ్రీష్మ",Ashadha:"గ్రీష్మ",Shravana:"వర్ష",Bhadrapada:"వర్ష",Ashwin:"శరద్",Ashvayuja:"శరద్",Kartika:"శరద్",Margashirsha:"హేమంత",Pausha:"హేమంత",Magha:"శిశిర",Phalguna:"శిశిర"};
+const RUTU_BY_MASA={Ashwina:"శరద్",Ashvina:"శరద్",Ashwin:"శరద్",Ashvayuja:"శరద్",Aswayuja:"శరద్",Chaitra:"వసంత",Vaishakha:"వసంత",Jyeshtha:"గ్రీష్మ",Ashadha:"గ్రీష్మ",Shravana:"వర్ష",Bhadrapada:"వర్ష",Ashwin:"శరద్",Ashvayuja:"శరద్",Kartika:"శరద్",Margashirsha:"హేమంత",Pausha:"హేమంత",Magha:"శిశిర",Phalguna:"శిశిర"};
+const TELUGU_RUTU={Ashwina:"శరద్",Ashvina:"శరద్",Ashwin:"శరద్",Ashvayuja:"శరద్",Aswayuja:"శరద్",Chaitra:"వసంత",Vaishakha:"వసంత",Jyeshtha:"గ్రీష్మ",Ashadha:"గ్రీష్మ",Shravana:"వర్ష",Bhadrapada:"వర్ష",Ashwin:"శరద్",Ashvayuja:"శరద్",Kartika:"శరద్",Margashirsha:"హేమంత",Pausha:"హేమంత",Magha:"శిశిర",Phalguna:"శిశిర"};
 const getMasaKey=v=>String(v||"").replace(/^Adhika\\s+/i,"").trim();
 function getPaksha(tithi){
  const raw=String(tithi||"");
