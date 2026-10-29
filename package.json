@@ -5,6 +5,8 @@
   "dependencies": {
     "@netlify/blobs": "^10.3.0",
     "web-push": "^3.6.7",
-    "@ishubhamx/panchangam-js": "^3.0.0"
+    "@ishubhamx/panchangam-js": "^3.0.0",
+    "firebase-admin": "^13.2.0",
+    "exceljs": "^4.4.0"
   }
 }

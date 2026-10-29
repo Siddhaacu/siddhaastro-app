@@ -63,6 +63,7 @@ Object.assign(dict,{
 });const reverse={};Object.keys(dict).forEach(k=>reverse[dict[k]]=k);
 function translateNode(n){
   if(n.nodeType!==3)return;
+  if(n.parentElement && n.parentElement.closest("[data-no-translate]"))return;
   const raw=n.nodeValue,trim=raw.trim();
   if(!trim)return;
   const target=lang==="te"?dict[trim]:reverse[trim];
