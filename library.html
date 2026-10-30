@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f5f7f3">
+<title>Library — Siddha Astro</title>
+<link rel="stylesheet" href="styles.css?v=20261030-embed1">
+<link rel="icon" type="image/png" href="/logo.png">
+<style>
+.library-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:20px}
+.library-card{display:flex;flex-direction:column;gap:12px;min-height:220px;padding:22px;background:var(--surface-2);border:1px solid var(--border);border-radius:20px;text-decoration:none;color:var(--text);transition:transform .18s ease,border-color .18s ease}
+.library-card:active{transform:scale(.99)}
+.library-card:hover{border-color:var(--accent)}
+.library-icon{width:48px;height:48px;display:grid;place-items:center;border-radius:14px;background:var(--surface);color:var(--accent-dark);font-size:1.55rem}
+.library-card h2{margin:0;font-size:1.12rem;color:var(--accent-dark)}
+.library-card p{margin:0;color:var(--muted);font-size:.88rem;line-height:1.65}
+.library-open{margin-top:auto;font-size:.86rem;font-weight:800;color:var(--accent-dark)}
+@media(max-width:620px){.library-grid{grid-template-columns:1fr}.library-card{min-height:180px;padding:18px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="header"><div class="header-inner">
+<a class="brand" href="index.html"><img src="logo.png" alt="Siddha Astro"><span class="brand-name" data-no-translate>Siddha Astro</span></a>
+<div class="page-title"><strong>Library</strong><span>Publications and Vedic scriptures</span></div>
+</div></header>
+<div class="controls global-controls">
+<button class="lang-btn" type="button" data-control-lang>తెలుగు</button>
+<button class="font-btn" type="button" data-font="down" aria-label="Decrease font size">A−</button>
+<span class="font-size" data-font-size>100%</span>
+<button class="font-btn" type="button" data-font="up" aria-label="Increase font size">A+</button>
+<button class="icon-btn theme-toggle" type="button" data-theme-toggle>☾</button>
+</div>
+<main class="main">
+<section class="hero">
+<div class="eyebrow">Siddha Astro</div>
+<h1>Library</h1>
+<p>Explore spiritual publications, sacred works, stotras, suktas and Vedic texts.</p>
+</section>
+<section class="library-grid" aria-label="Library collections">
+<a class="library-card" href="publications.html">
+<div class="library-icon" aria-hidden="true">📚</div>
+<h2>Publications</h2>
+<p>Explore sacred publications and spiritual works from Siddha Astro, including devotional compositions and books.</p>
+<span class="library-open">Explore Publications →</span>
+</a>
+<a class="library-card" href="books.html">
+<div class="library-icon" aria-hidden="true">🕉️</div>
+<h2>Vedic Scriptures</h2>
+<p>Access Nitya Vidhi, Nitya Pooja, Stotrani, Suktani, Rudram, Mantra Pushpam and festival-related texts.</p>
+<span class="library-open">Explore Vedic Scriptures →</span>
+</a>
+</section>
+</main>
+</div>
+<script src="app.js?v=20261030-embed3"></script>
+</body>
+</html>
