@@ -26,55 +26,65 @@ function cityConfig(city=DEFAULT_CITY){
   return CITIES[String(city).toLowerCase()]||CITIES[DEFAULT_CITY];
 }
 
+function valueName(value,fallback="—"){
+  if(value==null)return fallback;
+  if(typeof value==="object")return value.name||value.value||value.label||fallback;
+  const text=String(value).trim();
+  return text||fallback;
+}
+
 function normalizePrimary(d,c){
   return {
     date:d.date,
-    city:c.name,
+    city:valueName(d.city,c.name),
     source:"Nitya Panchangam",
     attributionUrl:"https://nityapanchangam.com/api/",
-    ayanamsa:d.ayanamsa||"Lahiri (Chitrapaksha)",
-    vara:d.vara?.name||d.vara||"—",
-    thithi:d.tithi?.name||"—",
-    nakshatra:d.nakshatra?.name||"—",
-    rashi:d.rashi?.name||d.rashi||"Not provided",
-    samvathsara:typeof (d.samvathsara||d.samvatsara)==="object"?((d.samvathsara||d.samvatsara)?.name||(d.samvathsara||d.samvatsara)?.value||"Not provided"):(d.samvathsara||d.samvatsara||"Not provided"),
-    masa:typeof d.masa==="object"?(d.masa?.name||d.masa?.amanta||d.masa?.value||"Not provided"):(d.masa||"Not provided"),
-    yoga:d.yoga?.name||"—",
-    karana:d.karana?.name||"—",
-    sunrise:d.sun?.sunrise||d.sunrise||"—",
-    sunset:d.sun?.sunset||d.sunset||"—",
-    rahuKalam:d.muhurta?.rahu_kalam||d.rahuKalam||"—",
-    yamagandam:d.muhurta?.yamagandam||d.yamagandamKalam||d.yamagandam||"—",
-    abhijit:d.muhurta?.abhijit_muhurtam||d.abhijitMuhurtham||d.abhijit||"—",
-    gulikaKalam:d.muhurta?.gulika_kalam||d.gulikaKalam||"—",
-    durmuhurtham:d.muhurta?.durmuhurtam||d.durmuhurtham||"—",
-    varjyam:d.muhurta?.varjyam||d.varjyam||"—"
+    ayanamsa:valueName(d.ayanamsa,"Lahiri (Chitrapaksha)"),
+    vara:valueName(d.vara||d.weekday),
+    thithi:valueName(d.tithi),
+    nakshatra:valueName(d.nakshatra),
+    rashi:valueName(d.rashi,"Not provided"),
+    samvathsara:valueName(d.samvathsara||d.samvatsara,"Not provided"),
+    masa:valueName(d.masa,"Not provided"),
+    yoga:valueName(d.yoga),
+    karana:valueName(d.karana),
+    sunrise:valueName(d.sun?.sunrise||d.sunrise),
+    sunset:valueName(d.sun?.sunset||d.sunset),
+    rahuKalam:valueName(d.muhurta?.rahu_kalam||d.rahuKalam),
+    yamagandam:valueName(d.muhurta?.yamagandam||d.yamagandamKalam||d.yamagandam),
+    abhijit:valueName(d.muhurta?.abhijit_muhurtam||d.abhijitMuhurtham||d.abhijit),
+    gulikaKalam:valueName(d.muhurta?.gulika_kalam||d.gulikaKalam),
+    durmuhurtham:valueName(d.muhurta?.durmuhurtam||d.durmuhurtham),
+    varjyam:valueName(d.muhurta?.varjyam||d.varjyam)
   };
 }
 
 function normalizeFallback(d,c){
+  // API Mitra returns several Panchangam fields as plain strings (not
+  // {name: ...} objects). Accept both response shapes so fallback data
+  // remains useful whenever the primary source is unavailable.
   return {
     date:d.date,
-    city:d.city||c.name,
+    city:valueName(d.city,c.name),
     source:"API Mitra",
     attributionUrl:"https://api.apimitra.in/",
-    ayanamsa:d.ayanamsa||"Lahiri / Sidereal",
-    vara:d.vara?.name||d.vara||"—",
-    thithi:d.tithi?.name||"—",
-    nakshatra:d.nakshatra?.name||"—",
-    rashi:d.rashi?.name||d.rashi||"Not provided",
-    samvathsara:d.samvathsara||d.samvatsara||"Not provided",
-    masa:d.masa?.name||d.masa||"Not provided",
-    yoga:d.yoga?.name||"—",
-    karana:d.karana?.name||"—",
-    sunrise:d.sun?.sunrise||d.sunrise||"—",
-    sunset:d.sun?.sunset||d.sunset||"—",
-    rahuKalam:d.muhurta?.rahu_kalam||d.rahuKalam||"—",
-    yamagandam:d.muhurta?.yamagandam||d.yamagandam||"—",
-    abhijit:d.muhurta?.abhijit_muhurtam||d.abhijit||"—",
-    gulikaKalam:d.muhurta?.gulika_kalam||d.gulikaKalam||"—",
-    durmuhurtham:d.muhurta?.durmuhurtam||d.durmuhurtham||"—",
-    varjyam:d.muhurta?.varjyam||d.varjyam||"—"
+    ayanamsa:valueName(d.ayanamsa,"Lahiri / Sidereal"),
+    vara:valueName(d.vara||d.weekday),
+    thithi:valueName(d.tithi),
+    nakshatra:valueName(d.nakshatra),
+    rashi:valueName(d.rashi,"Not provided"),
+    samvathsara:valueName(d.samvathsara||d.samvatsara,"Not provided"),
+    masa:valueName(d.masa,"Not provided"),
+    yoga:valueName(d.yoga),
+    karana:valueName(d.karana),
+    sunrise:valueName(d.sun?.sunrise||d.sunrise),
+    sunset:valueName(d.sun?.sunset||d.sunset),
+    rahuKalam:valueName(d.muhurta?.rahu_kalam||d.rahuKalam),
+    yamagandam:valueName(d.muhurta?.yamagandam||d.yamagandam),
+    abhijit:valueName(d.muhurta?.abhijit_muhurtam||d.abhijit),
+    gulikaKalam:valueName(d.muhurta?.gulika_kalam||d.gulikaKalam),
+    durmuhurtham:valueName(d.muhurta?.durmuhurtam||d.durmuhurtham),
+    varjyam:valueName(d.muhurta?.varjyam||d.varjyam)
   };
 }
 
