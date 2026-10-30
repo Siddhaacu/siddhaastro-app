@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f5f7f3"><title>Astrology — Siddha Astro</title>
+<link rel="stylesheet" href="styles.css"><link rel="icon" type="image/png" href="/logo.png">
+<style>
+.astrology-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;margin:0 0 16px;padding:4px;border-bottom:1px solid var(--border)}
+.astrology-tab{border:0;border-radius:0;background:transparent;color:var(--muted);padding:12px 5px 10px;font-weight:800;font-size:.82rem;line-height:1.35;min-height:50px;border-bottom:4px solid transparent}
+.astrology-tab[aria-selected="true"]{color:#e85a0c;border-bottom-color:#e85a0c}
+.astrology-frame{width:100%;height:calc(100dvh - 270px);min-height:590px;border:0;border-radius:16px;background:var(--bg);display:block}
+@media(max-width:520px){.astrology-tab{font-size:.7rem;padding:10px 2px;min-height:54px}.astrology-frame{height:calc(100dvh - 245px);min-height:620px}}
+</style></head>
+<body><div class="app">
+<header class="header"><div class="header-inner"><a class="brand" href="index.html"><img src="logo.png" alt="Siddha Astro"><span class="brand-name" data-no-translate>Siddha Astro</span></a><div class="page-title"><strong>Astrology</strong><span>Kundali, horoscope and daily bala</span></div></div></header>
+<div class="controls global-controls"><button class="lang-btn" type="button" data-control-lang>తెలుగు</button><button class="font-btn" type="button" data-font="down">A−</button><span class="font-size" data-font-size>100%</span><button class="font-btn" type="button" data-font="up">A+</button><button class="icon-btn theme-toggle" type="button" data-theme-toggle>☾</button></div>
+<main class="main"><section class="hero"><div class="eyebrow">Siddha Astro</div><h1>Astrology</h1><p>Explore your birth chart, daily horoscope and personal Tara and Chandra Bala.</p></section>
+<div class="astrology-tabs" role="tablist" aria-label="Astrology sections">
+<button class="astrology-tab" role="tab" id="tab-kundali" aria-controls="astrologyContent" aria-selected="true" data-page="kundali.html">Kundali</button>
+<button class="astrology-tab" role="tab" id="tab-horoscope" aria-controls="astrologyContent" aria-selected="false" data-page="horoscope.html">Horoscope</button>
+<button class="astrology-tab" role="tab" id="tab-bala" aria-controls="astrologyContent" aria-selected="false" data-page="tarabalam.html">Tarabalam &amp; Chandrabalam</button></div>
+<iframe class="astrology-frame" id="astrologyContent" title="Astrology section" src="kundali.html"></iframe>
+</main></div>
+<script src="app.js?v=20261030-astro1"></script>
+<script>
+(()=>{const frame=document.getElementById("astrologyContent"),tabs=[...document.querySelectorAll(".astrology-tab")];tabs.forEach(tab=>tab.addEventListener("click",()=>{tabs.forEach(t=>t.setAttribute("aria-selected",String(t===tab)));frame.src=tab.dataset.page;}));})();
+</script></body></html>
