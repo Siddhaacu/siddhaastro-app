@@ -146,7 +146,7 @@ function ensureLegacyHeader(){
   ensureGlobalControls();
 }
 function ensureGlobalControls(){
-  if(!document.body)return;
+  if(!document.body||window.self!==window.top){document.querySelector(".global-controls")?.remove();return;}
   let controls=document.querySelector(".global-controls");
   if(!controls){
     controls=document.createElement("div");
@@ -170,6 +170,7 @@ function ensureGlobalControls(){
   controls.querySelector("[data-theme-toggle]").onclick=toggleTheme;
 }
 function renderControls(){
+  if(window.self!==window.top){document.querySelector(".header")?.remove();document.querySelector(".global-controls")?.remove();return;}
   renderLegacyShell();
   let controls=document.querySelector(".global-controls");
   if(!controls){
@@ -203,7 +204,7 @@ function changeFont(d){
   sync();
 }
 function renderNav(){
-  if(window.self!==window.top){document.querySelector(".nav")?.remove();document.querySelector(".app")?.classList.add("embedded-page");return;}
+  if(window.self!==window.top){document.querySelector(".nav")?.remove();document.querySelector(".header")?.remove();document.querySelector(".global-controls")?.remove();document.querySelector(".app")?.classList.add("embedded-page");return;}
   const file=location.pathname.split("/").pop()||"index.html";
   const items=[["index.html","Home"],["panchangam.html","Panchangam"],["astrology.html","Astrology"],["library.html","Library"],["more.html","Settings"]];
   const icons={Home:'<path d="M3 10.8 12 3l9 7.8"/><path d="M5.5 9.8V21h13V9.8M9.5 21v-6.5h5V21"/>',Astrology:'<circle cx="12" cy="12" r="8.5"/><path d="M12 3.5v17M3.5 12h17"/>',Panchangam:'<rect x="3.5" y="5" width="17" height="16" rx="2.5"/><path d="M7.5 3v4M16.5 3v4M3.5 9.5h17"/>',Horoscope:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2"/>',Kundali:'<circle cx="12" cy="12" r="8.5"/><path d="M12 3.5v17M3.5 12h17M6 6l12 12M18 6 6 18"/>',Settings:'<circle cx="12" cy="12" r="3"/><path d="m19.4 15 .1.1 1.1 1.9-1.8 3.1-2.2-.5a8 8 0 0 1-1.7 1l-.4 2.2h-3.6l-.4-2.2a8 8 0 0 1-1.7-1l-2.2.5-1.8-3.1 1.1-1.9A8 8 0 0 1 5.8 12l-1.1-1.9 1.8-3.1 2.2.5a8 8 0 0 1 1.7-1l.4-2.2h3.6l.4 2.2a8 8 0 0 1 1.7 1l2.2-.5 1.8 3.1-1.1 1.9a8 8 0 0 1 0 3z"/>'};
@@ -297,6 +298,15 @@ function bootSiddhaApp(){
       r.classList.toggle("dark",theme==="dark");
       renderControls();
       document.dispatchEvent(new CustomEvent("themechange"));
+    }
+    if(e.key==="siddha-language"){
+      lang=e.newValue==="te"?"te":"en";
+      applyLanguage();
+      document.dispatchEvent(new CustomEvent("languagechange"));
+    }
+    if(e.key==="siddha-scale"){
+      s=Math.min(2.6,Math.max(.9,Number(e.newValue)||1));
+      sync();
     }
   });
   languageObserver=new MutationObserver(()=>{if(!translating&&lang==="te")applyLanguage();});
