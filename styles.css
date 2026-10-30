@@ -367,5 +367,5 @@ html.dark{color-scheme:dark}
 #notificationPreferences{scroll-margin-top:16px}
 @media(max-width:480px){.settings-row{gap:12px;padding:13px 12px;min-height:76px}.settings-icon{flex-basis:44px;width:44px;height:44px;font-size:22px}.settings-inline-control select.settings-select{max-width:132px}}
 
-/* Unified five-item bottom navigation */
-.nav{grid-template-columns:repeat(5,minmax(0,1fr));width:min(760px,calc(100% - 16px))}.nav a{min-width:0;font-size:clamp(.55rem,1.8vw,.68rem);white-space:nowrap}.nav a span:first-child{font-size:1.2rem;line-height:1.2}@media(max-width:380px){.nav a{font-size:.52rem}}
+/* Unified four-item bottom navigation */
+.nav{grid-template-columns:repeat(4,minmax(0,1fr));width:min(760px,calc(100% - 16px))}.nav a{min-width:0;font-size:clamp(.55rem,1.8vw,.68rem);white-space:nowrap}.nav a span:first-child{font-size:1.2rem;line-height:1.2}@media(max-width:380px){.nav a{font-size:.52rem}}
