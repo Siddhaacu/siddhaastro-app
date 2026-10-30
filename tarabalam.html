@@ -1,5 +1,5 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Tarabalam & Chandrabalam — Siddha Astro</title><link rel="stylesheet" href="styles.css"><link rel="icon" type="image/png" href="/logo.png"><link rel="shortcut icon" type="image/png" href="/logo.png"><link rel="apple-touch-icon" href="/logo.png"></head><body><div class="app">
-<header class="header"><div class="header-inner"><a class="brand" href="index.html"><img src="logo.png" alt="Siddha Astro"><span><span class="brand-name">Siddha Astro</span><span class="brand-tag">Vedic wisdom, simply presented</span></span></a><div class="page-title"><strong>Tarabalam & Chandrabalam</strong><span>Personal daily strength</span></div></div></header>
+<header class="header"><div class="header-inner"><a class="brand" href="index.html"><img src="logo.png" alt="Siddha Astro"><span><span class="brand-name" data-no-translate>Siddha Astro</span><span class="brand-tag">Vedic wisdom, simply presented</span></span></a><div class="page-title"><strong>Tarabalam & Chandrabalam</strong><span>Personal daily strength</span></div></div></header>
 
 <main class="main">
 <section class="hero"><div class="eyebrow">Personal Muhurta Guide</div><h1>Tarabalam & Chandrabalam</h1><p>Check your personal Tara Bala and Chandra Bala for the selected date and city.</p></section>
@@ -7,9 +7,15 @@
 <section class="card" id="tbResult"><div class="empty">Enter your Janma Nakshatra and Janma Rashi to calculate.</div></section>
 <section class="card"><div class="section-head"><div><h2>How it is calculated</h2><p>Traditional Navatara and Moon-sign counting.</p></div></div><div class="result-list"><ul><li>Tarabalam counts from your Janma Nakshatra to the day's Moon Nakshatra and reduces the count to a 1–9 Tara cycle.</li><li>Sampat, Kshema, Sadhana, Mitra and Parama Mitra are generally favourable; Vipat, Pratyari and Naidhana are cautionary. Janma is mixed.</li><li>Chandrabalam counts the day's Moon sign from your Janma Rashi. The 1st, 3rd, 6th, 7th, 10th and 11th positions are traditionally strong.</li></ul></div></section>
 </main>
-<nav class="nav"><a href="index.html">⌂<span>Home</span></a><a href="panchangam.html">◫<span>Panchangam</span></a><a href="horoscope.html">✦<span>Horoscope</span></a><a href="kundali.html">◈<span>Kundali</span></a><a href="more.html" class="active">•••<span>More</span></a></nav>
+<nav class="nav" aria-label="Primary navigation">
+<a href="index.html" class=""><svg viewBox="0 0 24 24"><path d="M3 10.8 12 3l9 7.8"/><path d="M5.5 9.8V21h13V9.8M9.5 21v-6.5h5V21"/></svg><span>Home</span></a>
+<a href="astrology.html" class="active"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg><span>Astrology</span></a>
+<a href="panchangam.html" class=""><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="16" rx="2.5"/><path d="M7.5 3v4M16.5 3v4M3.5 9.5h17"/></svg><span>Panchangam</span></a>
+<a href="library.html" class=""><svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21z"/><path d="M4 5.5v15.5M8 7h8M8 11h8"/></svg><span>Library</span></a>
+<a href="settings.html" class=""><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="m19.4 15 .1.1 1.1 1.9-1.8 3.1-2.2-.5a8 8 0 0 1-1.7 1l-.4 2.2h-3.6l-.4-2.2a8 8 0 0 1-1.7-1l-2.2.5-1.8-3.1 1.1-1.9A8 8 0 0 1 5.8 12l-1.1-1.9 1.8-3.1 2.2.5a8 8 0 0 1 1.7-1l.4-2.2h3.6l.4 2.2a8 8 0 0 1 1.7 1l2.2-.5 1.8 3.1-1.1 1.9a8 8 0 0 1 0 3z"/></svg><span>Settings</span></a>
+</nav>
 </div>
-<script src="app.js?v=20261008-2"></script><script src="panchangam.js?v=20261007-1"></script>
+<script src="app.js?v=20261030-1"></script><script src="panchangam.js?v=20261007-1"></script>
 <script>
 document.addEventListener("DOMContentLoaded",()=>{const d=document.getElementById("tbDate"),city=document.getElementById("tbCity"),star=document.getElementById("birthNakshatra"),rashi=document.getElementById("birthRashi"),status=document.getElementById("tbStatus"),result=document.getElementById("tbResult");
 const stars=[["Ashwini","అశ్విని"],["Bharani","భరణి"],["Krittika","కృత్తిక"],["Rohini","రోహిణి"],["Mrigashira","మృగశిర"],["Ardra","ఆర్ద్ర"],["Punarvasu","పునర్వసు"],["Pushya","పుష్యమి"],["Ashlesha","ఆశ్లేష"],["Magha","మఘ"],["Purva Phalguni","పూర్వ ఫల్గుణి"],["Uttara Phalguni","ఉత్తర ఫల్గుణి"],["Hasta","హస్త"],["Chitra","చిత్త"],["Swati","స్వాతి"],["Vishakha","విశాఖ"],["Anuradha","అనూరాధ"],["Jyeshtha","జ్యేష్ఠ"],["Mula","మూల"],["Purva Ashadha","పూర్వాషాఢ"],["Uttara Ashadha","ఉత్తరాషాఢ"],["Shravana","శ్రవణం"],["Dhanishtha","ధనిష్ఠ"],["Shatabhisha","శతభిష"],["Purva Bhadrapada","పూర్వాభాద్ర"],["Uttara Bhadrapada","ఉత్తరాభాద్ర"],["Revati","రేవతి"]];
