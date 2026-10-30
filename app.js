@@ -204,11 +204,31 @@ function changeFont(d){
 }
 function renderNav(){
   const file=location.pathname.split("/").pop()||"index.html";
-  const items=[["index.html","Home"],["panchangam.html","Panchangam"],["horoscope.html","Horoscope"],["kundali.html","Kundali"],["more.html","More"]];
-  const icons={Home:'<path d="M3 10.8 12 3l9 7.8"/><path d="M5.5 9.8V21h13V9.8M9.5 21v-6.5h5V21"/>',Panchangam:'<rect x="3.5" y="5" width="17" height="16" rx="2.5"/><path d="M7.5 3v4M16.5 3v4M3.5 9.5h17"/>',Horoscope:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2"/>',Kundali:'<circle cx="12" cy="12" r="8.5"/><path d="M12 3.5v17M3.5 12h17M6 6l12 12M18 6 6 18"/>',More:'<circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/>'};
+  const activeGroup=({
+    "index.html":"Home",
+    "astrology.html":"Astrology",
+    "kundali.html":"Astrology",
+    "horoscope.html":"Astrology",
+    "tarabalam.html":"Astrology",
+    "panchangam.html":"Panchangam",
+    "library.html":"Library",
+    "books.html":"Library",
+    "publications.html":"Library",
+    "settings.html":"Settings",
+    "more.html":"Settings",
+    "profile.html":"Settings"
+  })[file]||"Home";
+  const items=[["index.html","Home"],["astrology.html","Astrology"],["panchangam.html","Panchangam"],["library.html","Library"],["settings.html","Settings"]];
+  const icons={
+    Home:'<path d="M3 10.8 12 3l9 7.8"/><path d="M5.5 9.8V21h13V9.8M9.5 21v-6.5h5V21"/>',
+    Astrology:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0-18"/>',
+    Panchangam:'<rect x="3.5" y="5" width="17" height="16" rx="2.5"/><path d="M7.5 3v4M16.5 3v4M3.5 9.5h17"/>',
+    Library:'<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21z"/><path d="M4 5.5v15.5M8 7h8M8 11h8"/>',
+    Settings:'<circle cx="12" cy="12" r="3"/><path d="m19.4 15 .1.1 1.1 1.9-1.8 3.1-2.2-.5a8 8 0 0 1-1.7 1l-.4 2.2h-3.6l-.4-2.2a8 8 0 0 1-1.7-1l-2.2.5-1.8-3.1 1.1-1.9A8 8 0 0 1 5.8 12l-1.1-1.9 1.8-3.1 2.2.5a8 8 0 0 1 1.7-1l.4-2.2h3.6l.4 2.2a8 8 0 0 1 1.7 1l2.2-.5 1.8 3.1-1.1 1.9a8 8 0 0 1 0 3z"/>
+  };
   let nav=document.querySelector(".nav");
   if(!nav){nav=document.createElement("nav");nav.className="nav";nav.setAttribute("aria-label","Primary navigation");(document.querySelector(".app")||document.body).appendChild(nav)}
-  nav.innerHTML=items.map(x=>'<a href="'+x[0]+'" class="'+(file===x[0]?"active":"")+'"><svg viewBox="0 0 24 24">'+icons[x[1]]+'</svg><span>'+(lang==="te"?dict[x[1]]:x[1])+'</span></a>').join("");
+  nav.innerHTML=items.map(x=>'<a href="'+x[0]+'" class="'+(activeGroup===x[1]?"active":"")+'"><svg viewBox="0 0 24 24">'+icons[x[1]]+'</svg><span>'+(lang==="te"?dict[x[1]]:x[1])+'</span></a>').join("");
 }
 window.SiddhaApp={
   getLanguage:()=>lang,
