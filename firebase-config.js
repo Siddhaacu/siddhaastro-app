@@ -1,3 +1,13 @@
-// Firebase Console > Project settings > Your apps. Replace placeholders with the public web config.
-// Never put Firebase Admin credentials or email-provider secrets in this browser file.
-export const firebaseConfig = { apiKey:"YOUR_FIREBASE_WEB_API_KEY", authDomain:"YOUR_PROJECT_ID.firebaseapp.com", projectId:"YOUR_PROJECT_ID", appId:"YOUR_FIREBASE_WEB_APP_ID" };
+// Loads the public Firebase Web App configuration from a same-origin Netlify Function.
+export async function loadFirebaseConfig() {
+  const response = await fetch("/.netlify/functions/firebase-config", { method: "GET", headers: { Accept: "application/json" }, cache: "no-store" });
+  let payload;
+  try { payload = await response.json(); } catch { throw new Error("Firebase configuration endpoint returned an invalid response."); }
+  if (!response.ok || !payload || !payload.configured || !payload.config) {
+    const missing = payload && Array.isArray(payload.missing) ? payload.missing : [];
+    const error = new Error((payload && payload.message) || "Firebase web configuration is not complete.");
+    error.missing = missing;
+    throw error;
+  }
+  return payload.config;
+}
