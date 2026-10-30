@@ -218,7 +218,7 @@ function renderNav(){
     "more.html":"Settings",
     "profile.html":"Settings"
   })[file]||"Home";
-  const items=[["index.html","Home"],["astrology.html","Astrology"],["panchangam.html","Panchangam"],["library.html","Library"],["settings.html","Settings"]];
+  const items=[["index.html","Home"],["panchangam.html","Panchangam"],["astrology.html","Astrology"],["library.html","Library"],["settings.html","Settings"]];
   const icons={
     Home:'<path d="M3 10.8 12 3l9 7.8"/><path d="M5.5 9.8V21h13V9.8M9.5 21v-6.5h5V21"/>',
     Astrology:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0-18"/>',
