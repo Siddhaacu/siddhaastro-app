@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#f5f7f3"><title>Astrology — Siddha Astro</title>
-<link rel="stylesheet" href="styles.css"><link rel="icon" type="image/png" href="/logo.png">
+<link rel="stylesheet" href="styles.css?v=20261030-embed1"><link rel="icon" type="image/png" href="/logo.png">
 <style>
 .astrology-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;margin:0 0 16px;padding:4px;border-bottom:1px solid var(--border)}
 .astrology-tab{border:0;border-radius:0;background:transparent;color:var(--muted);padding:12px 5px 10px;font-weight:800;font-size:.82rem;line-height:1.35;min-height:50px;border-bottom:4px solid transparent}
@@ -21,7 +21,7 @@
 <button class="astrology-tab" role="tab" id="tab-bala" aria-controls="astrologyContent" aria-selected="false" data-page="tarabalam.html">Tarabalam &amp; Chandrabalam</button></div>
 <iframe class="astrology-frame" id="astrologyContent" title="Astrology section" src="kundali.html"></iframe>
 </main></div>
-<script src="app.js?v=20261030-library2"></script>
+<script src="app.js?v=20261030-embed1"></script>
 <script>
 (()=>{const frame=document.getElementById("astrologyContent"),tabs=[...document.querySelectorAll(".astrology-tab")];tabs.forEach(tab=>tab.addEventListener("click",()=>{tabs.forEach(t=>t.setAttribute("aria-selected",String(t===tab)));frame.src=tab.dataset.page;}));})();
 </script></body></html>
