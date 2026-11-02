@@ -368,3 +368,11 @@ html.dark{color-scheme:dark}
 @media(max-width:480px){.settings-row{gap:12px;padding:13px 12px;min-height:76px}.settings-icon{flex-basis:44px;width:44px;height:44px;font-size:22px}.settings-inline-control select.settings-select{max-width:132px}}
 
 .embedded-page{padding-bottom:24px!important}
+
+
+/* Settings + Panchangam: keep shared chrome at a fixed size; scale page content only. */
+body.settings-page,body.panchangam-page{font-size:17px}
+body.settings-page .main,body.panchangam-page .main{font-size:calc(17px * var(--scale,1));min-width:0}
+body.settings-page .main *,body.panchangam-page .main *{min-width:0}
+body.settings-page .main :is(.settings-row,.settings-row-main,.section-head,.form-grid,.field,.tile,.panchang-grid),body.panchangam-page .main :is(.section-head,.form-grid,.field,.tile,.panchang-grid){overflow-wrap:anywhere}
+body.settings-page .header,body.settings-page .nav,body.settings-page .global-controls,body.panchangam-page .header,body.panchangam-page .nav,body.panchangam-page .global-controls{font-size:17px}
