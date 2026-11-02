@@ -1,0 +1,7 @@
+# Firebase Authentication same-origin proxy.
+# Required for Safari/iOS redirect sign-in when the site is hosted outside Firebase Hosting.
+[[redirects]]
+  from = "/__/auth/*"
+  to = "https://siddha-astro-bf578.firebaseapp.com/__/auth/:splat"
+  status = 200
+  force = true
