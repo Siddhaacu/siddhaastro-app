@@ -421,3 +421,12 @@ body.settings-page .header,body.settings-page .nav,body.settings-page .global-co
 .legal-tabs>span{justify-self:center}
 .legal-intro-card{min-width:0;overflow:visible}
 @media(max-width:380px){.legal-tabs{font-size:.9rem;gap:4px}.legal-tab{font-size:inherit;padding-inline:1px}}
+
+/* App share and version footer at the bottom of Settings. */
+.settings-app-info{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:16px;padding:16px}
+.settings-app-version{display:grid;gap:3px}
+.settings-app-version span{font-size:.78rem;color:var(--muted)}
+.settings-app-version strong{font-size:1.05rem;color:var(--text)}
+.settings-share-app{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:44px;padding:8px 14px;border:1px solid var(--border);border-radius:14px;background:var(--surface-2);color:var(--accent-dark);font:inherit;font-weight:800;cursor:pointer}
+.settings-share-icon{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;font-size:1.2rem}
+@media(max-width:360px){.settings-app-info{align-items:flex-start;flex-direction:column}.settings-share-app{width:100%}}
