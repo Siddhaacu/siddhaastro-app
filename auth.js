@@ -13,6 +13,7 @@ const $ = id => document.getElementById(id);
 const status = $("authStatus");
 const profileStatus = $("profileStatus");
 const signedOut = $("signedOut");
+const authLoading = $("authLoading");
 const signedIn = $("signedIn");
 const googleButton = $("googleSignIn");
 const menu = $("profileMenu");
@@ -36,6 +37,8 @@ const configured = Boolean(
 );
 
 if (!configured) {
+  authLoading?.classList.add("hidden");
+  signedOut.classList.remove("hidden");
   status.textContent = "Sign-in is temporarily unavailable because the Firebase web configuration is incomplete.";
   googleButton.disabled = true;
 } else {
@@ -90,7 +93,9 @@ if (!configured) {
     googleButton.disabled = false;
   });
 
-  onAuthStateChanged(auth, async user => {
+  // Wait for Firebase to restore the persisted session before showing the sign-in screen.
+  persistenceReady.then(() => onAuthStateChanged(auth, async user => {
+    authLoading?.classList.add("hidden");
     currentUser = user;
     authReady = true;
     signedOut.classList.toggle("hidden", Boolean(user));
@@ -121,6 +126,11 @@ if (!configured) {
       console.error("Could not sync user profile:", error);
       profileStatus.textContent = "You are signed in, but your profile could not be synced. Please check your connection.";
     }
+  })).catch(error => {
+    console.error("Firebase session persistence could not be initialized:", error);
+    authLoading?.classList.add("hidden");
+    signedOut.classList.remove("hidden");
+    status.textContent = "Unable to restore your saved session. Please check your browser settings and try again.";
   });
 
   async function syncUserRecord(user) {
