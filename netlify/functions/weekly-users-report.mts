@@ -6,6 +6,11 @@ import ExcelJS from "exceljs";
 const RECIPIENT = "siddhagroupss@gmail.com";
 
 export default async () => {
+  // Never send personal account reports from a Deploy Preview or branch deployment.
+  if (Netlify.env.get("CONTEXT") !== "production") {
+    return new Response("Weekly user reports are disabled outside production.", { status: 403 });
+  }
+
   const serviceAccountText = Netlify.env.get("FIREBASE_SERVICE_ACCOUNT_JSON");
   const resendApiKey = Netlify.env.get("RESEND_API_KEY");
   const fromEmail = Netlify.env.get("REPORT_FROM_EMAIL");
@@ -71,7 +76,7 @@ export default async () => {
       ["Report generated (UTC)", now.toISOString()],
       ["Total Firebase accounts", users.length],
       ["New registrations (last 7 days)", createdThisWeek],
-      ["Users active (last 7 days)", activeThisWeek],
+      ["Accounts with sign-in/profile activity (last 7 days)", activeThisWeek],
       ["Delivery day", "Sunday, 08:00 IST"],
       ["Scope", "All Firebase Authentication accounts"]
     ]);
@@ -88,7 +93,7 @@ export default async () => {
       { header: "Sign-in Provider", key: "provider", width: 18 },
       { header: "Account Created (UTC)", key: "createdAt", width: 27 },
       { header: "Last Sign-In (UTC)", key: "lastSignInAt", width: 27 },
-      { header: "Last Seen in App (UTC)", key: "lastSeenAt", width: 27 },
+      { header: "Last Profile Activity (UTC)", key: "lastSeenAt", width: 27 },
       { header: "Email Verified", key: "emailVerified", width: 16 },
       { header: "Account Disabled", key: "disabled", width: 18 },
       { header: "Profile Photo URL", key: "photoURL", width: 48 }
@@ -121,7 +126,7 @@ export default async () => {
         from: fromEmail,
         to: [RECIPIENT],
         subject: `Siddha Astro weekly user report — ${date}`,
-        text: `Attached is the weekly Siddha Astro user report. Total Firebase accounts: ${users.length}; new registrations in the last 7 days: ${createdThisWeek}; active in the app or signed in during the last 7 days: ${activeThisWeek}. The attachment contains the account details currently available to Siddha Astro. Handle it as confidential personal data.`,
+        text: `Attached is the weekly Siddha Astro user report. Total Firebase accounts: ${users.length}; new registrations in the last 7 days: ${createdThisWeek}; with a sign-in or profile activity timestamp in the last 7 days: ${activeThisWeek}. The attachment contains the account details currently available to Siddha Astro. Handle it as confidential personal data.`,
         attachments: [{
           filename: `siddha-astro-users-${date}.xlsx`,
           content: Buffer.from(bytes).toString("base64")
