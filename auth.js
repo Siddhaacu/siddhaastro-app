@@ -80,21 +80,23 @@ if (!configured) {
     }
   });
 
-  // Complete redirect sign-in when Google returns to the app.
-  getRedirectResult(auth).then(result => {
-    if (result?.user) status.textContent = "Signed in successfully.";
-  }).catch(error => {
-    console.error("Google redirect result failed:", {
-      code: error?.code,
-      message: error?.message,
-      customData: error?.customData
-    });
-    status.textContent = friendlyAuthError(error);
-    googleButton.disabled = false;
-  });
+  // On iOS PWAs, initialize persistence before processing the OAuth return.
+  // Calling getRedirectResult before persistence is ready can race session restoration.
+  const authInitialization = (async () => {
+    await persistenceReady;
+    try {
+      const result = await getRedirectResult(auth);
+      if (result?.user && status) status.textContent = "Google sign-in completed. Loading your profile…";
+    } catch (error) {
+      console.error("Google redirect result failed:", {
+        code: error?.code,
+        message: error?.message,
+        customData: error?.customData
+      });
+      if (status) status.textContent = friendlyAuthError(error);
+    }
 
-  // Wait for Firebase to restore the persisted session before showing the sign-in screen.
-  persistenceReady.then(() => onAuthStateChanged(auth, async user => {
+    onAuthStateChanged(auth, async user => {
     authLoading?.classList.add("hidden");
     currentUser = user;
     authReady = true;
@@ -126,11 +128,16 @@ if (!configured) {
       console.error("Could not sync user profile:", error);
       profileStatus.textContent = "You are signed in, but your profile could not be synced. Please check your connection.";
     }
-  })).catch(error => {
-    console.error("Firebase session persistence could not be initialized:", error);
+    });
+  })().catch(error => {
+    console.error("Firebase session initialization failed:", {
+      code: error?.code,
+      message: error?.message
+    });
     authLoading?.classList.add("hidden");
     signedOut.classList.remove("hidden");
-    status.textContent = "Unable to restore your saved session. Please check your browser settings and try again.";
+    if (status) status.textContent = friendlyAuthError(error);
+    googleButton.disabled = false;
   });
 
   async function syncUserRecord(user) {
