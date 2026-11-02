@@ -1,3 +1,10 @@
-// Firebase Console > Project settings > Your apps. Replace placeholders with the public web config.
-// Never put Firebase Admin credentials or email-provider secrets in this browser file.
-export const firebaseConfig = { apiKey:"YOUR_FIREBASE_WEB_API_KEY", authDomain:"YOUR_PROJECT_ID.firebaseapp.com", projectId:"YOUR_PROJECT_ID", appId:"YOUR_FIREBASE_WEB_APP_ID" };
+// Public Firebase Web App configuration. Never place Admin SDK keys or email-provider secrets here.
+export const firebaseConfig = {
+  apiKey: "AIzaSyCIfPJWhQPdvBEbaDkGh-JZUpeVfB9tBRE",
+  authDomain: "siddha-astro-bf578.firebaseapp.com",
+  projectId: "siddha-astro-bf578",
+  storageBucket: "siddha-astro-bf578.firebasestorage.app",
+  messagingSenderId: "319549832378",
+  appId: "1:319549832378:web:0d46704d7cf19f2a02d683",
+  measurementId: "G-J67CKBFPM5"
+};
