@@ -78,9 +78,16 @@ if (!configured) {
   });
 
   // Complete redirect sign-in when Google returns to the app.
-  getRedirectResult(auth).catch(error => {
-    console.error("Google redirect result failed:", error);
+  getRedirectResult(auth).then(result => {
+    if (result?.user) status.textContent = "Signed in successfully.";
+  }).catch(error => {
+    console.error("Google redirect result failed:", {
+      code: error?.code,
+      message: error?.message,
+      customData: error?.customData
+    });
     status.textContent = friendlyAuthError(error);
+    googleButton.disabled = false;
   });
 
   onAuthStateChanged(auth, async user => {
@@ -189,7 +196,9 @@ function friendlyAuthError(error) {
     "auth/network-request-failed": "Network error. Check your connection and try again.",
     "auth/too-many-requests": "Too many attempts. Please wait a few minutes and try again."
   };
-  return messages[error?.code] || "Google sign-in could not be completed. Please try again.";
+  const code = error?.code || "unknown-error";
+  const detail = messages[code] || error?.message || "No additional error details were provided.";
+  return `${detail} (Firebase: ${code})`;
 }
 
 menuToggle.addEventListener("click", () => menu.classList.toggle("open"));
