@@ -376,3 +376,38 @@ body.settings-page .main,body.panchangam-page .main{font-size:calc(17px * var(--
 body.settings-page .main *,body.panchangam-page .main *{min-width:0}
 body.settings-page .main :is(.settings-row,.settings-row-main,.section-head,.form-grid,.field,.tile,.panchang-grid),body.panchangam-page .main :is(.section-head,.form-grid,.field,.tile,.panchang-grid){overflow-wrap:anywhere}
 body.settings-page .header,body.settings-page .nav,body.settings-page .global-controls,body.panchangam-page .header,body.panchangam-page .nav,body.panchangam-page .global-controls{font-size:17px}
+
+
+/* Personal Events — native-app inspired layout, using Siddha Astro colours and surfaces. */
+.personal-events-card{margin-top:16px}
+.personal-events-list{display:grid;gap:10px;margin:14px 0}
+.personal-event-empty{text-align:center;padding:18px 10px 22px}
+.personal-event-art{display:flex;align-items:center;justify-content:center;gap:18px;margin:4px auto 18px;color:var(--accent);font-size:clamp(2.2rem,12vw,3.5rem)}
+.personal-event-art span:nth-child(2){font-size:1.35em}
+.personal-event-empty h3{margin:0 auto 10px;max-width:340px;font-size:1.18rem;line-height:1.35}
+.personal-event-empty p{margin:0 auto;max-width:390px;color:var(--muted);font-size:.9rem;line-height:1.55}
+.personal-event-add{width:100%;margin-top:4px}
+.personal-event-form{margin-top:18px;padding-top:18px;border-top:1px solid var(--border)}
+.personal-event-form[hidden]{display:none}
+.personal-event-fields{display:grid;gap:14px}
+.personal-event-fields .field{margin:0}
+.personal-event-fields label{display:block;margin-bottom:7px;font-weight:800;color:var(--text)}
+.personal-event-fields input,.personal-event-fields select{width:100%;min-height:54px;padding:12px 14px;border:1.5px solid var(--border);border-radius:14px;background:var(--surface);color:var(--text);font-size:1rem}
+.personal-event-fields input::placeholder{color:var(--muted)}
+.personal-reminder-title{margin:22px 0 10px;font-size:1.02rem}
+.personal-reminder-row{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:10px 0;padding:15px 16px;border-radius:14px;background:var(--surface-2);font-weight:750;line-height:1.4}
+.personal-reminder-row input{appearance:none;position:relative;flex:0 0 48px;width:48px;height:28px;margin:0;border-radius:999px;background:#b9b9b9;transition:background .18s}
+.personal-reminder-row input:checked{background:var(--accent)}
+.personal-reminder-row input:after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:transform .18s}
+.personal-reminder-row input:checked:after{transform:translateX(20px)}
+.personal-event-actions{display:grid;grid-template-columns:1fr 1.4fr;gap:10px;margin-top:22px}
+.personal-event-actions .btn{min-height:52px}
+.personal-event-note{min-height:18px;margin:8px 0 0;color:var(--accent-dark);font-size:.8rem}
+.personal-event-item{display:flex;align-items:center;gap:12px;padding:13px;border:1px solid var(--border);border-radius:15px;background:var(--surface-2)}
+.personal-event-symbol{display:grid;place-items:center;flex:0 0 44px;height:44px;border-radius:12px;background:var(--accent);font-size:1.35rem}
+.personal-event-item-copy{display:grid;gap:3px;flex:1;min-width:0}
+.personal-event-item-copy strong{font-size:.96rem;overflow-wrap:anywhere}
+.personal-event-item-copy small{color:var(--muted);font-size:.75rem;overflow-wrap:anywhere}
+.personal-event-delete{border:0;background:transparent;color:var(--muted);font-size:1.6rem;padding:5px 8px}
+.dark .personal-event-fields input,.dark .personal-event-fields select{background:var(--surface-2);border-color:var(--border)}
+@media(min-width:701px){.personal-event-fields{grid-template-columns:1fr 1fr}}
