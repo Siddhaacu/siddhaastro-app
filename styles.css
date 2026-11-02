@@ -430,3 +430,9 @@ body.settings-page .header,body.settings-page .nav,body.settings-page .global-co
 .settings-share-app{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:44px;padding:8px 14px;border:1px solid var(--border);border-radius:14px;background:var(--surface-2);color:var(--accent-dark);font:inherit;font-weight:800;cursor:pointer}
 .settings-share-icon{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;font-size:1.2rem}
 @media(max-width:360px){.settings-app-info{align-items:flex-start;flex-direction:column}.settings-share-app{width:100%}}
+
+/* Centre-align the version and app-share controls in the Settings footer. */
+.settings-app-info{flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:12px}
+.settings-app-version{justify-items:center;text-align:center}
+.settings-share-app{align-self:center;min-width:190px}
+@media(max-width:360px){.settings-app-info{align-items:center}.settings-share-app{width:auto}}
