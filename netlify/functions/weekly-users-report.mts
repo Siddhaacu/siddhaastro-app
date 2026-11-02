@@ -6,6 +6,11 @@ import ExcelJS from "exceljs";
 const RECIPIENT = "siddhagroupss@gmail.com";
 
 export default async () => {
+  // Explicit opt-in: keep the weekly report disabled until credentials, consent,
+  // and a synthetic-data delivery test have been completed.
+  if (Netlify.env.get("ENABLE_WEEKLY_USER_REPORT") !== "true") {
+    return new Response("Weekly user reports are currently disabled.", { status: 403 });
+  }
   // Never send personal account reports from a Deploy Preview or branch deployment.
   if (Netlify.env.get("CONTEXT") !== "production") {
     return new Response("Weekly user reports are disabled outside production.", { status: 403 });
