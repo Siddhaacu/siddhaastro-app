@@ -6,7 +6,7 @@ const link = document.getElementById("homeProfileLink");
 const photo = document.getElementById("homeProfilePhoto");
 if (link && photo && firebaseConfig?.apiKey && firebaseConfig?.authDomain) {
   try {
-    const app = initializeApp(firebaseConfig, "siddha-home-profile");
+    const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     onAuthStateChanged(auth, user => {
       if (!user) {
