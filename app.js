@@ -315,4 +315,4 @@ function bootSiddhaApp(){
   setTimeout(ensureGlobalControls,50);
   setTimeout(ensureGlobalControls,500);
 }
-if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",bootSiddhaApp,{once:true});else bootSiddhaApp();;import("./auth-gate.js?v=20261103-auth-bootstrap4").catch(error=>console.error("Siddha Astro sign-in gate failed to load:",error));})();
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",bootSiddhaApp,{once:true});else bootSiddhaApp();;import("./auth-gate.js?v=20261103-home-only-auth5").catch(error=>console.error("Siddha Astro sign-in gate failed to load:",error));})();
