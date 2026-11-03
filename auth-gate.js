@@ -1,5 +1,5 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
 import { firebaseConfig } from "./firebase-config.js";
 
 // Keep account and policy pages accessible before sign-in.
@@ -15,20 +15,26 @@ if (isNetlifyDeployPreview || window.self !== window.top || ["profile.html", "po
   const gate = document.createElement("div");
   gate.className = "siddha-auth-gate";
   gate.setAttribute("role", "status");
-  gate.innerHTML = '<div class="siddha-auth-gate-card"><img src="/logo.png" alt="Siddha Astro"><h1>Checking your sign-in</h1><p>Please wait while we securely verify your Google account.</p></div>';
+  gate.innerHTML = '<div class="siddha-auth-gate-card"><img src="/logo.png" alt="Siddha Astro"><p>Restoring your Siddha Astro session…</p></div>';
   document.body.appendChild(gate);
   const returnPath = location.pathname + location.search + location.hash;
   const showSignInRequired = () => location.replace("/profile.html?return=" + encodeURIComponent(returnPath));
   const showFallback = () => {
     gate.innerHTML = '<div class="siddha-auth-gate-card"><img src="/logo.png" alt="Siddha Astro"><h1>Google sign-in required</h1><p>We could not verify your session. Please sign in with Google to continue.</p><a href="/profile.html?return=' + encodeURIComponent(returnPath) + '">Continue to Google sign-in</a></div>';
   };
+  (async () => {
   try {
     if (!firebaseConfig?.apiKey || !firebaseConfig?.authDomain || !firebaseConfig?.projectId || !firebaseConfig?.appId) throw new Error("Firebase Authentication is not configured.");
-    const app = initializeApp(firebaseConfig);
+    // Reuse the same default Firebase app on every page. Initializing a second
+    // default app races with site-auth.js and can break session restoration.
+    const app = getApps().find(item => item.name === "[DEFAULT]") || initializeApp(firebaseConfig);
     const auth = getAuth(app);
+    // Persist one Google session across page navigation and PWA/browser restarts.
+    await setPersistence(auth, browserLocalPersistence);
     onAuthStateChanged(auth, user => {
       if (user) { gate.remove(); document.documentElement.classList.remove("siddha-auth-checking"); }
       else showSignInRequired();
     }, error => { console.error("Could not verify Siddha Astro sign-in:", error); showFallback(); });
   } catch (error) { console.error("Siddha Astro authentication gate could not start:", error); showFallback(); }
+  })();
 }
