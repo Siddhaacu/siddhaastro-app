@@ -37,22 +37,35 @@ if (isNetlifyDeployPreview || window.self !== window.top || ["profile.html", "po
       // before Google sign-in. Changing it on every page can race restoration.
       const app = getApps().find(item => item.name === "[DEFAULT]") || initializeApp(firebaseConfig);
       const auth = getAuth(app);
-      await auth.authStateReady();
-
-      if (!auth.currentUser) {
-        showSignInRequired();
-        return;
-      }
-
-      gate.remove();
-      document.documentElement.classList.remove("siddha-auth-checking");
-
-      // Keep the gate in sync if the user explicitly signs out on another tab.
-      onAuthStateChanged(auth, user => {
-        if (!user) showSignInRequired();
-      }, error => {
-        console.error("Siddha Astro authentication state failed:", error);
-        showFallback();
+      // Wait for Firebase's first auth-state event. This event is emitted only
+      // after Firebase has checked its persisted session in this browser/PWA.
+      // Keep this single observer active so later explicit sign-outs are caught.
+      let initialStateResolved = false;
+      await new Promise((resolve, reject) => {
+        const unsubscribe = onAuthStateChanged(auth, user => {
+          if (!initialStateResolved) {
+            initialStateResolved = true;
+            if (!user) {
+              unsubscribe();
+              showSignInRequired();
+              resolve();
+              return;
+            }
+            gate.remove();
+            document.documentElement.classList.remove("siddha-auth-checking");
+            resolve();
+            return;
+          }
+          if (!user) showSignInRequired();
+        }, error => {
+          if (!initialStateResolved) {
+            initialStateResolved = true;
+            reject(error);
+          } else {
+            console.error("Siddha Astro authentication state failed:", error);
+            showFallback();
+          }
+        });
       });
     } catch (error) {
       console.error("Siddha Astro authentication gate could not start:", error);
