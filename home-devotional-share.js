@@ -70,7 +70,7 @@
     const date=document.getElementById("homeDate")?.textContent?.trim()||"Today";
     const modalTitle=modal.querySelector("#devotionalShareTitle");if(modalTitle)modalTitle.textContent="Today\'s Panchangam";
     if(titleEl)titleEl.textContent=date;
-    if(verseEl)verseEl.textContent=panchangamRows().map(([label,value])=>label+"  •  "+value).join("\\n");
+    if(verseEl)verseEl.textContent=panchangamRows().map(([label,value])=>label+"  •  "+value).join("\n");
     const heading=modal.querySelector(".devotional-share-sheet h3");if(heading)heading.hidden=true;
     if(meaningEl){meaningEl.hidden=true;meaningEl.textContent="";}
     const divider=modal.querySelector(".devotional-share-divider");if(divider)divider.hidden=true;
