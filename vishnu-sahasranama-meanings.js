@@ -156,5 +156,85 @@ en:"Vishnu is incomparable and overcomes the fiercest opposition. He knows time 
 40:{
 te:"క్షయంలేని విష్ణువు జీవులకు మార్గదర్శకుడు, సమస్తానికి కారణం. దామోదరుడై యశోద ప్రేమబంధంతో తనను బంధించనిచ్చి భక్తప్రేమకు వశుడయ్యాడు. భూమిని ధరించి, మహాభాగ్యాన్ని ప్రసాదించి, వేగవంతుడై సమస్తాన్ని తనలో గ్రహించగల అపారశక్తి కలవాడు.",
 en:"Vishnu is imperishable, the path and cause of all. As Damodara He lovingly allowed Yashoda to bind Him, showing that divine love reaches Him. He upholds the Earth, bestows great fortune, moves with irresistible speed and can contain all things."
+},
+41:{
+te:"సృష్టికి మూలంగా ఉద్భవించి, ప్రకృతిని కదిలించి చైతన్యపరచేవాడు విష్ణువు. శ్రీగర్భుడై లక్ష్మీదేవిని తనలో ధరించి, పరమేశ్వరుడై సమస్తానికి అధిపతిగా ఉంటాడు. జగత్తు నిర్మాణానికి కారణమూ, సాధనమూ, కర్తా ఆయనే. సృష్టిని అనేక రూపాల్లో వ్యక్తం చేసి, అగాధమైన అంతర్యామిగా హృదయంలో నివసిస్తాడు.",
+en:"Vishnu is the source from which creation arises and the power that sets nature in motion. As Shrigarbha He bears Lakshmi; as Parameshwara He is the supreme Lord. He is the cause, instrument and maker of the cosmos, manifesting it in many forms while remaining the unfathomable indwelling Self."
+},
+42:{
+te:"నిశ్చయజ్ఞానస్వరూపుడై, సృష్టి వ్యవస్థను స్థాపించి నిలబెట్టేవాడు విష్ణువు. సమస్తానికి స్థానం, ఆధారం, స్థిరత్వం ప్రసాదిస్తాడు. పరమైశ్వర్యం ఆయనే; అయినా స్వయంగా సంపూర్ణుడు, సంతృప్తుడు. భక్తులపై శుభదృష్టి ప్రసరించి, వారికి పోషణను, శుభఫలితాలను అందిస్తాడు.",
+en:"Vishnu is firm resolve and the wisdom that establishes and maintains cosmic order. He gives every being its place and stability. He is supreme prosperity, yet complete and content in Himself. His auspicious glance nourishes devotees and brings well-being."
+},
+43:{
+te:"రాముడై ధర్మాన్ని ఆచరించి, విరాముడై సంసారదుఃఖానికి ముగింపు కలిగిస్తాడు. రజోగుణరహితుడై నిర్మలమైన మార్గాన్ని చూపిస్తాడు. భక్తులను సన్మార్గంలో నడిపించే నాయకుడు; పరాక్రమశాలి, శక్తిమంతులలో శ్రేష్ఠుడు. ధర్మమే ఆయన స్వరూపం; ధర్మాన్ని తెలిసినవారిలో ఉత్తముడు.",
+en:"As Rama, Vishnu embodies righteous conduct; as Virama, He brings worldly sorrow to rest. Free from impurity, He shows the clear path. He leads devotees, is the supreme hero among the strong, and is dharma itself—the highest knower of righteousness."
+},
+44:{
+te:"వైకుంఠుడైన విష్ణువు పరమపదానికి అధిపతి; సమస్త జీవులలో ప్రాణరూపంగా నివసిస్తాడు. ప్రాణాన్ని ప్రసాదించి, ఓంకారస్వరూపుడై వేదసారాన్ని తెలియజేస్తాడు. విశాలమైన స్వరూపంతో సమస్తాన్ని వ్యాపించి, హిరణ్యగర్భుడై సృష్టికి మూలమవుతాడు. శత్రువులను జయించి, వాయువులా సర్వత్రా వ్యాపించి, ఇంద్రియాలకు అందని పరమసత్యంగా నిలుస్తాడు.",
+en:"Vishnu is Vaikuntha, Lord of the supreme abode, and the life within all beings. He gives life and is the sacred Om, essence of the Vedas. Vast and all-pervading, He is Hiranyagarbha, the source of creation, the conqueror of enemies, present everywhere like the wind and beyond the senses."
+},
+45:{
+te:"కాలచక్రానికి అధిపతిగా ఋతువుల రూపంలో వ్యక్తమవుతాడు. సుదర్శనుడై అజ్ఞానాన్ని తొలగించి, కాలస్వరూపుడై సమస్తాన్ని నియంత్రిస్తాడు. పరమపదంలో స్థిరంగా ఉండి, భక్తులను తన అనుగ్రహంలో స్వీకరిస్తాడు. ఉగ్రశక్తితో దుష్టులను అణచి, సంవత్సరరూపంగా కాలాన్ని నడిపించి, సమర్థుడై విశ్వానికి విశ్రాంతి, సమతుల్యతను ప్రసాదిస్తాడు.",
+en:"Vishnu governs time and appears through the seasons. As Sudarshana He removes ignorance; as Time He orders all things. He abides in the supreme state and receives devotees into His grace. His fierce power restrains evil, while as the year He moves time and grants the universe rest and balance."
+},
+46:{
+te:"అపారంగా విస్తరించి, స్థావరజంగమాలన్నింటికీ ఆధారమైన స్థాణువు విష్ణువు. సత్యానికి ప్రమాణం, సృష్టికి అవినాశి బీజం ఆయనే. పరమార్థస్వరూపుడై, లోకసంపదలకూ భోగాలకూ మూలమవుతాడు. మహాకోశంలా సమస్తాన్ని తనలో ధరించి, భక్తులకు ఆధ్యాత్మిక సంపదను ప్రసాదిస్తాడు.",
+en:"Vishnu expands without limit and is the steadfast support of all moving and unmoving beings. He is the standard of truth and the imperishable seed of creation. He is the highest meaning, source of abundance and enjoyment, the great treasury containing all, and the supreme wealth granted to devotees."
+},
+47:{
+te:"ఎప్పుడూ నిరుత్సాహపడని, విశాలమైన స్వరూపం కలవాడు విష్ణువు. భూమిగా సమస్తాన్ని ధరించి, ధర్మయజ్ఞానికి స్తంభంలా నిలుస్తాడు. మహాయజ్ఞస్వరూపుడై యజ్ఞాలన్నింటి ఫలాన్ని స్వీకరిస్తాడు. నక్షత్రగమనానికి కేంద్రంగా ఉండి, సహనంతో, స్థిరత్వంతో, సమస్త సంకల్పాలను నెరవేర్చే శక్తిగా నిలుస్తాడు.",
+en:"Vishnu never despairs and is vast beyond measure. As the Earth He bears all beings and stands as the pillar of dharma's sacrifice. He is the great sacrifice and its recipient. He is the hub of the celestial order, patient, enduring and the power that brings purposes to fulfilment."
+},
+48:{
+te:"యజ్ఞస్వరూపుడూ, ఆరాధనకు అర్హుడూ, మహాపూజ్యుడూ విష్ణువు. యజ్ఞక్రతువులన్నీ ఆయనకే సమర్పితం; సజ్జనులకు పరమగమ్యం ఆయనే. సమస్తాన్ని దర్శించే సర్వసాక్షి; బంధాలనుండి విముక్తుడై, సర్వజ్ఞుడై, పరమజ్ఞానస్వరూపుడై ఉంటాడు.",
+en:"Vishnu is the sacrifice itself, worthy of worship and supremely revered. Every sacred rite is offered to Him, and He is the highest refuge of the virtuous. He sees all, is free from bondage, knows everything and is the embodiment of supreme knowledge."
+},
+49:{
+te:"శుభసంకల్పం, సౌమ్యముఖం, సూక్ష్మస్వరూపం కలవాడు విష్ణువు. ఆయన నాదం మంగళకరమైనది; భక్తులకు సుఖాన్ని, స్నేహాన్ని ప్రసాదిస్తాడు. మనస్సును ఆకర్షించి, కోపాన్ని జయించి, వీరబాహువులతో దుష్టశక్తులను సంహరిస్తాడు. ధర్మాన్ని రక్షించే పరాక్రమం ఆయనలో నిండి ఉంది.",
+en:"Vishnu is of noble resolve, gracious countenance and subtle nature. His sound is auspicious; He gives happiness and is the true friend of all. He captivates the mind, has conquered anger, and with heroic arms destroys forces opposed to dharma."
+},
+50:{
+te:"సృష్టిని యోగనిద్రలో నిలిపి, తన సంకల్పానుసారం సమస్తాన్ని నియంత్రించేవాడు విష్ణువు. ఒకే ఆత్మగా ఉన్నా అనేక రూపాలు, కార్యాల ద్వారా వ్యక్తమవుతాడు. కాలచక్రంలో సంవత్సరరూపుడై, జీవులపై వాత్సల్యం చూపి వారిని తన సంతానంలా కాపాడుతాడు. రత్నగర్భుడై సమస్త సంపదలకు మూలం, ధనాధిపతులకు కూడా అధిపతి.",
+en:"Vishnu holds creation in divine repose and governs all by His will. Though the one Self, He appears in many forms and performs many functions. As the year He moves time; as Vatsala He loves and protects beings as His own children. He is the source of treasures and Lord even of the lords of wealth."
+},
+51:{
+te:"ధర్మాన్ని కాపాడేవాడు, ధర్మాన్ని ఆచరింపజేసేవాడు, ధర్మస్వరూపుడు విష్ణువు. సత్‌-అసత్‌, నశ్వరమైనది-అనశ్వరమైనది అన్నింటికీ అంతర్యామి. సాధారణ జ్ఞానానికి అతీతుడై ఉన్నా, సహస్రకిరణాల సూర్యునిలా ప్రకాశిస్తాడు. సృష్టిని నియమించి, ప్రతి కార్యానికి తగిన లక్షణం, ఫలితాన్ని ప్రసాదిస్తాడు.",
+en:"Vishnu protects dharma, establishes it and is dharma itself. He is the indwelling reality of both manifest and unmanifest, changing and eternal. Beyond ordinary knowledge, He shines like the thousand-rayed sun, orders creation and assigns the proper nature and result to every action."
+},
+52:{
+te:"సూర్యకిరణాల చక్రంలా సమస్తాన్ని చైతన్యపరచేవాడు విష్ణువు. సత్త్వగుణంలో స్థితుడై, సింహంలా దుష్టులను జయించి, సమస్త భూతాలకు మహేశ్వరుడై ఉంటాడు. ఆదిదేవుడు, మహాదేవుడు, దేవతలకూ అధిపతి, దేవతలను పోషించే గురువు ఆయనే.",
+en:"Vishnu energises all like the wheel of the sun's rays. Established in purity, He conquers evil like a lion and is the great Lord of all beings. He is the primordial deity, the supreme divine Lord, ruler of the gods and the teacher who sustains them."
+},
+53:{
+te:"సమస్త బంధాలను దాటి ఉన్నతుడైన విష్ణువు గోపాలకుడూ, రక్షకుడూ. జ్ఞానంతోనే తెలుసుకోదగిన ప్రాచీన పరమాత్మ. సమస్త శరీరాలకు ఆధారమై, వాటి అనుభవాలకు సాక్షిగా ఉంటాడు. కపులలో శ్రేష్ఠుడైన హనుమంతునికి కూడా ఆరాధ్యుడు; అపారమైన దక్షిణ, దానధర్మాల మూలం.",
+en:"Vishnu is supreme beyond limitations, the protector and guardian of beings. This ancient Self is realised through knowledge. He supports every body and witnesses its experiences. He is revered by the foremost of the vanaras and is the source of abundant generosity and sacred giving."
+},
+54:{
+te:"యజ్ఞంలో సోమాన్ని స్వీకరించేవాడు, తపస్సు స్వరూపుడు విష్ణువు. సోమస్వరూపుడై ఆనందాన్ని ప్రసాదించి, అనేక శత్రువులను జయించేవాడు. సజ్జనులలో శ్రేష్ఠుడు; వినయాన్ని బోధించి, సత్యానికి కట్టుబడి ఉంటాడు. దాశార్హ వంశంలో అవతరించి, సాత్వతులకూ యాదవులకూ అధిపతిగా నిలిచాడు.",
+en:"Vishnu receives the Soma offering and embodies austerity. As Soma He gives delight and conquers many foes. He is foremost among the virtuous, teaches humility and is steadfast in truth. He incarnated in the Dasharha lineage and is Lord of the Satvatas and Yadavas."
+},
+55:{
+te:"జీవులలో జీవస్వరూపుడై, వినయాన్ని ప్రసాదించి, సాక్షిగా నిలిచేవాడు విష్ణువు. ముకుందుడై మోక్షాన్ని ప్రసాదిస్తాడు; అపారమైన విక్రమంతో సమస్తాన్ని జయిస్తాడు. జలరాశులకు మూలమైన అంభోనిధి, అనంతాత్మ. మహాసముద్రంపై శేషశయ్యలో విశ్రాంతి తీసుకునే వాడు; కాలాంతకుడై సమస్తానికి ముగింపును కలిగిస్తాడు.",
+en:"Vishnu is the life within living beings, the giver of humility and the impartial witness. As Mukunda He grants liberation; His immeasurable stride conquers all. He is the source of the waters, the infinite Self, the One reclining upon the cosmic ocean and the power that brings time to its end."
+},
+56:{
+te:"జన్మరహితుడు, పూజార్హుడు, స్వభావసిద్ధుడైన విష్ణువు శత్రువులను జయించి ఆనందాన్ని ప్రసాదిస్తాడు. ఆనందస్వరూపుడై భక్తులను సంతోషింపజేస్తాడు. సత్యధర్మాన్ని ఆచరించి, త్రివిక్రముడై మూడు లోకాలను మూడు అడుగులతో కొలిచినవాడు. ఆయన విజయమే ధర్మవిజయం.",
+en:"Vishnu is unborn, worthy of worship and perfect by His own nature. He conquers hostile forces and gives joy. He is bliss itself, delights devotees, embodies truth and dharma, and as Trivikrama measured the three worlds in three strides. His victory is the victory of righteousness."
+},
+57:{
+te:"మహర్షి కపిలాచార్యుడై జ్ఞానాన్ని బోధించినవాడు విష్ణువు. కృతజ్ఞుడై జీవుల కర్మలను తెలిసి ఫలితాలను ప్రసాదిస్తాడు; భూమికి అధిపతి. మూడు లోకాలను మూడు పాదాలతో వ్యాపించి, దేవతలకు అధిపతిగా, మహాశృంగధారిగా, సృష్టి క్రమానికి ముగింపు కలిగించేవాడిగా స్తుతించబడుతున్నాడు.",
+en:"Vishnu appeared as the great sage Kapila, teaching spiritual wisdom. He knows the actions of beings and grants their fruits; He is Lord of the Earth. His three strides pervade the worlds; He governs the gods, bears the mighty tusk and brings cosmic cycles to their appointed end."
+},
+58:{
+te:"మహావరాహరూపంలో భూమిని సముద్రం నుంచి ఉద్ధరించినవాడు విష్ణువు. గోవిందుడై గోవులను, భూమిని, వేదాలను రక్షిస్తాడు. దివ్యసేనతో కూడినవాడు, స్వర్ణాభరణాలను ధరించేవాడు. గూఢమైన పరమసత్యం, అగాధమైన జ్ఞానస్వరూపం; చక్రం, గదలను ధరించి భక్తులను కాపాడుతాడు.",
+en:"As the great Boar, Vishnu raised the Earth from the cosmic waters. As Govinda He protects cows, the Earth and sacred knowledge. He is accompanied by the divine host and adorned with golden ornaments. He is the hidden, profound Reality and bears the discus and mace to protect devotees."
+},
+59:{
+te:"సృష్టిని విధించే వేదస్వరూపుడు విష్ణువు; తనలోనే సమస్త అవయవాలను కలిగిన సంపూర్ణుడు. ఎవరూ జయించలేని అజితుడు, కృష్ణస్వరూపుడు, దృఢసంకర్షణుడు, అచ్యుతుడు. జలాలకు అధిపతి వరుణుడై, వృక్షంలా సమస్తానికి ఆధారమై, పద్మనేత్రుడై, విశాలమనస్సుతో ఉంటాడు.",
+en:"Vishnu is the ordainer and the Veda itself, complete in every aspect. He is unconquered, Krishna, the mighty Sankarshana and Achyuta. As Varuna He rules the waters; like a tree He supports all beings. He is lotus-eyed and possesses a vast, all-comprehending mind."
+},
+60:{
+te:"భగవంతుడై సమస్త ఐశ్వర్యాలు, జ్ఞానం, శక్తి, కీర్తి, వైరాగ్యాలకు నిలయమవుతాడు. భక్తులకు ఆనందాన్ని ఇచ్చి, వనమాలను ధరించి, హలాయుధసంబంధమైన బలరామస్వరూపాన్ని కూడా సూచిస్తాడు. ఆదిత్యుడై ప్రకాశించి, సూర్యుని తేజస్సుగా వెలిగి, సహనంతో సమస్త జీవులకు శ్రేష్ఠగతిని ప్రసాదిస్తాడు.",
+en:"As Bhagavan, Vishnu possesses all divine excellences—sovereignty, knowledge, strength, glory and detachment. He delights devotees, wears the forest garland and is associated with the plough-bearing Balarama. As Aditya He shines with solar radiance, is patient and grants the highest destination to all beings."
 }
 };
