@@ -4,14 +4,21 @@
   const titleEl=document.getElementById("devotionalShareVerseTitle");
   const verseEl=document.getElementById("devotionalShareVerse");
   const meaningEl=document.getElementById("devotionalShareMeaning");
+  const slides=[...document.querySelectorAll("[data-devotional-slide]")];
+  const dots=[...document.querySelectorAll("[data-devotional-dot]")];
+  let activeSlide=0;
+  const showSlide=index=>{activeSlide=(index+slides.length)%slides.length;slides.forEach((slide,i)=>{slide.hidden=i!==activeSlide;slide.classList.toggle("active",i===activeSlide);slide.setAttribute("aria-hidden",String(i!==activeSlide));});dots.forEach((dot,i)=>{dot.classList.toggle("active",i===activeSlide);dot.setAttribute("aria-selected",String(i===activeSlide));});};
+  dots.forEach(dot=>dot.addEventListener("click",()=>showSlide(Number(dot.dataset.devotionalDot))));
+  let touchStartX=0;const slideArea=document.getElementById("devotionalSlides");
+  slideArea?.addEventListener("touchstart",event=>{touchStartX=event.changedTouches[0].clientX;},{passive:true});
+  slideArea?.addEventListener("touchend",event=>{const dx=event.changedTouches[0].clientX-touchStartX;if(Math.abs(dx)>45)showSlide(activeSlide+(dx<0?1:-1));},{passive:true});showSlide(0);
   const reading=()=>{
-    const title=document.querySelector(".sloka h2")?.textContent?.trim()||"Daily devotional reading";
-    const number=document.getElementById("slokaNumber")?.textContent?.trim()||"";
-    const verse=document.getElementById("slokaTelugu")?.textContent?.trim()||"";
     const language=window.SiddhaApp?.getLanguage?.()==="te"?"te":"en";
-    const meaning=language==="te"
-      ?"ఈ శ్లోకం శ్రీ విష్ణు సహస్రనామ స్తోత్రంలోని భాగం. భగవంతుని దివ్య నామాలు, గుణాలు, సర్వవ్యాప్త స్వరూపాన్ని స్మరించుకుంటూ భక్తి మరియు దైవ రక్షణపై విశ్వాసాన్ని పెంపొందించుకోవాలని ఈ పారాయణం సూచిస్తుంది."
-      :"This verse is part of Sri Vishnu Sahasranamam, the sacred hymn of the Lord’s thousand names. It invites devotees to contemplate the divine qualities and all-pervading presence of Lord Vishnu, and to place their trust in divine guidance and protection.";
+    const isLalitha=activeSlide===1;
+    const title=isLalitha?(language==="te"?"శ్రీ లలితా సహస్రనామ స్తోత్రం":"Sri Lalitha Sahasranamam"):(language==="te"?"శ్రీ విష్ణు సహస్రనామమ్":"Sri Vishnu Sahasranamam");
+    const number=isLalitha?(language==="te"?"శ్లోకం 1 / 182":"Sloka 1 of 182"):(document.getElementById("slokaNumber")?.textContent?.trim()||"");
+    const verse=isLalitha?document.getElementById("lalithaSlokaTelugu")?.textContent?.trim():document.getElementById("slokaTelugu")?.textContent?.trim();
+    const meaning=isLalitha?(language==="te"?"శ్రీమాత, మహారాజ్ఞి, సింహాసనాధిష్ఠాత్రి అయిన దేవి, చిదగ్ని కుండం నుండి అవతరించి దేవతల కార్యసిద్ధి కోసం ప్రాకటించింది.":"The Divine Mother, the great sovereign and enthroned Queen, arose from the fire-pit of pure consciousness to fulfil the purpose of the gods."):(language==="te"?"ఈ శ్లోకం శ్రీ విష్ణు సహస్రనామ స్తోత్రంలోని భాగం.":"This verse is part of Sri Vishnu Sahasranamam.");
     return {title,number,verse,meaning,language};
   };
   const shareText=()=>{
