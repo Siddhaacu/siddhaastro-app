@@ -16,21 +16,33 @@ function publishAuthState(user) {
   if (homeLink) {
     const photo = homeLink.querySelector(".home-profile-photo");
     const icon = homeLink.querySelector(".home-login-icon");
+    // The Home header CSS only reveals the Google photo in this signed-in state.
+    homeLink.classList.remove("is-signed-in");
     if (user) {
       homeLink.setAttribute("aria-label", "View profile for " + (user.displayName || "your Google account"));
       homeLink.title = user.displayName ? user.displayName + " — My Profile" : "My Profile";
       if (photo && user.photoURL) {
-        photo.onerror = () => { photo.hidden = true; if (icon) icon.hidden = false; };
-        photo.onload = () => { photo.hidden = false; if (icon) icon.hidden = true; };
+        photo.onerror = () => {
+          homeLink.classList.remove("is-signed-in");
+          photo.hidden = true;
+          if (icon) icon.hidden = false;
+        };
+        photo.onload = () => {
+          photo.hidden = false;
+          homeLink.classList.add("is-signed-in");
+          if (icon) icon.hidden = true;
+        };
         photo.src = user.photoURL;
       } else {
         if (photo) { photo.removeAttribute("src"); photo.hidden = true; }
+        homeLink.classList.remove("is-signed-in");
         if (icon) icon.hidden = false;
       }
     } else {
       homeLink.setAttribute("aria-label", "Sign in to Siddha Astro");
       homeLink.title = "Login";
       if (photo) { photo.removeAttribute("src"); photo.hidden = true; }
+      homeLink.classList.remove("is-signed-in");
       if (icon) icon.hidden = false;
     }
   }
