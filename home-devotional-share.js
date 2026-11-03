@@ -64,11 +64,12 @@
     const labels={vara:"Vara",thithi:"Tithi",nakshatra:"Nakshatra",rashi:"Rashi",yoga:"Yoga",sunrise:"Sunrise",sunset:"Sunset",rahuKalam:"Rahu Kalam",yamagandam:"Yamagandam",tithiTiming:"Tithi timing",nakshatraTiming:"Nakshatra timing"};
     return Object.entries(labels).map(([key,label])=>{const value=document.querySelector('[data-p="'+key+'"]')?.textContent?.trim();return value&&value!=="—"?[label,value]:null;}).filter(Boolean);
   };
-  const panchangamShareText=()=>{const date=document.getElementById("homeDate")?.textContent?.trim()||"Today";return ["Today\'s Panchangam — "+date,...panchangamRows().map(([label,value])=>label+": "+value),"Siddha Astro — "+location.origin].join("\\n");};
+  const panchangamShareText=()=>{const date=document.getElementById("homeDate")?.textContent?.trim()||"Today";return ["Today\'s Panchangam — "+date,...panchangamRows().map(([label,value])=>label+": "+value),"Siddha Astro — "+location.origin].join("\n");};
   const openPanchangamModal=()=>{
     if(!modal)return;activeShareMode="panchangam";
     const date=document.getElementById("homeDate")?.textContent?.trim()||"Today";
-    if(titleEl)titleEl.textContent="Today\'s Panchangam · "+date;
+    const modalTitle=modal.querySelector("#devotionalShareTitle");if(modalTitle)modalTitle.textContent="Today\'s Panchangam";
+    if(titleEl)titleEl.textContent=date;
     if(verseEl)verseEl.textContent=panchangamRows().map(([label,value])=>label+"  •  "+value).join("\\n");
     const heading=modal.querySelector(".devotional-share-sheet h3");if(heading)heading.hidden=true;
     if(meaningEl){meaningEl.hidden=true;meaningEl.textContent="";}
