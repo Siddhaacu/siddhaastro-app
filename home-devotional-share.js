@@ -55,7 +55,20 @@
     const area=document.createElement("textarea");area.value=text;area.style.position="fixed";area.style.opacity="0";document.body.appendChild(area);area.select();
     const ok=document.execCommand("copy");area.remove();return ok;
   };
+  const panchangamShareText=()=>{
+    const date=document.getElementById("homeDate")?.textContent?.trim()||"Today";
+    const labels={vara:"Vara",thithi:"Tithi",nakshatra:"Nakshatra",rashi:"Rashi",yoga:"Yoga",sunrise:"Sunrise",sunset:"Sunset",rahuKalam:"Rahu Kalam",yamagandam:"Yamagandam",tithiTiming:"Tithi timing",nakshatraTiming:"Nakshatra timing"};
+    const rows=Object.entries(labels).map(([key,label])=>{const value=document.querySelector('[data-p="'+key+'"]')?.textContent?.trim();return value&&value!=="—"?label+": "+value:null;}).filter(Boolean);
+    return ["Today's Panchangam — "+date,...rows,"Siddha Astro — "+location.origin].join("\\n");
+  };
   document.addEventListener("click",async event=>{
+    const panchangamButton=event.target.closest("[data-home-panchang-share]");
+    if(panchangamButton){
+      const text=panchangamShareText();
+      try{if(navigator.share)await navigator.share({title:"Today's Panchangam",text,url:location.href});else{await copyText(text);panchangamButton.title="Panchangam copied to clipboard";}}
+      catch(error){if(error?.name!=="AbortError")try{await copyText(text);panchangamButton.title="Panchangam copied to clipboard";}catch(_){}}
+      return;
+    }
     if(event.target.closest("[data-devotional-open]")){openModal();return;}
     if(event.target.closest("[data-devotional-close]")){closeModal();return;}
     const button=event.target.closest("[data-devotional-share]");
