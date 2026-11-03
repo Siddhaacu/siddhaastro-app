@@ -436,3 +436,17 @@ body.settings-page .header,body.settings-page .nav,body.settings-page .global-co
 .settings-app-version{justify-items:center;text-align:center}
 .settings-share-app{align-self:center;min-width:190px}
 @media(max-width:360px){.settings-app-info{align-items:center}.settings-share-app{width:auto}}
+
+
+/* Daily devotional card sharing controls — use the active Siddha Astro theme. */
+.sloka .devotional-card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;position:relative;z-index:1;margin-bottom:8px}
+.devotional-share-actions{display:flex;align-items:center;gap:8px;flex:0 0 auto}
+.devotional-share-btn{display:grid;place-items:center;width:38px;height:38px;padding:0;border:1px solid var(--border);border-radius:50%;background:var(--surface-2);color:var(--accent-dark);cursor:pointer;transition:transform .15s ease,background .15s ease}
+.devotional-share-btn:active{transform:scale(.94)}
+.devotional-share-btn svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.devotional-share-btn.whatsapp{background:#e9f7ee;border-color:#b9e5c7;color:#168344;font-size:1.25rem}
+.devotional-share-btn.instagram{background:linear-gradient(145deg,#fff0df,#fbe5ef);border-color:#efc6d5;color:#b83279;font-size:1.5rem}
+.devotional-share-btn.native{background:var(--accent);border-color:var(--accent);color:#fff}
+.dark .devotional-share-btn.whatsapp{background:#173c2b;border-color:#285b40;color:#8ee0ad}
+.dark .devotional-share-btn.instagram{background:#3a2636;border-color:#68405d;color:#f3a5c9}
+@media(max-width:380px){.sloka .devotional-card-head{align-items:flex-start}.devotional-share-actions{gap:5px}.devotional-share-btn{width:34px;height:34px}}
