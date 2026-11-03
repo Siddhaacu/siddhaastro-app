@@ -109,7 +109,7 @@ const VISHNU_SAHASRANAMA = [
   "శంఖభృన్నందకీ చక్రీ శార్ఙ్గధన్వా గదాధరః ।\nరథాంగపాణిరక్షోభ్యస్సర్వప్రహరణాయుధః ॥"
 ];
 function getIndiaDateKey(){return new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Kolkata',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date())}
-function getTodayVishnuSloka(){const [y,m,d]=getIndiaDateKey().split('-').map(Number);const today=Date.UTC(y,m-1,d);const epoch=Date.UTC(2026,0,1);const index=Math.floor((today-epoch)/86400000)%VISHNU_SAHASRANAMA.length;return {number:index+1,text:VISHNU_SAHASRANAMA[(index+VISHNU_SAHASRANAMA.length)%VISHNU_SAHASRANAMA.length]}}
+function getTodayVishnuSloka(){const [y,m,d]=getIndiaDateKey().split('-').map(Number);const today=Date.UTC(y,m-1,d);const epoch=Date.UTC(2026,10,3);const elapsedDays=Math.floor((today-epoch)/86400000);const index=((elapsedDays%VISHNU_SAHASRANAMA.length)+VISHNU_SAHASRANAMA.length)%VISHNU_SAHASRANAMA.length;return {number:index+1,text:VISHNU_SAHASRANAMA[(index+VISHNU_SAHASRANAMA.length)%VISHNU_SAHASRANAMA.length]}}
 const TELUGU_TO_ROMAN={
 "అ":"a","ఆ":"aa","ఇ":"i","ఈ":"ee","ఉ":"u","ఊ":"oo","ఋ":"ru","ౠ":"ruu","ఎ":"e","ఏ":"ae","ఐ":"ai","ఒ":"o","ఓ":"oo","ఔ":"au",
 "క":"k","ఖ":"kh","గ":"g","ఘ":"gh","ఙ":"ng","చ":"ch","ఛ":"chh","జ":"j","ఝ":"jh","ఞ":"ny","ట":"t","ఠ":"th","డ":"d","ఢ":"dh","ణ":"n",
@@ -150,6 +150,5 @@ function renderDailySloka(){
 document.addEventListener('DOMContentLoaded',()=>{
  renderDailySloka();
  document.addEventListener('languagechange',renderDailySloka);
- const now=new Date(),next=new Date(now);next.setHours(24,0,0,0);
- setTimeout(()=>{renderDailySloka();setInterval(renderDailySloka,86400000)},next-now)
+ setInterval(renderDailySloka,30000)
 });
