@@ -110,7 +110,8 @@
       return;
     }
     try{
-      if(navigator.share){await navigator.share({title:"Daily devotional reading",text,url:location.href});}
+      if(activeShareMode==="panchangam"){await sharePanchangamImage();}
+      else if(navigator.share){await navigator.share({title:"Daily devotional reading",text,url:location.href});}
       else{await copyText(text);button.title="Reading copied to clipboard";}
     }catch(error){if(error?.name!=="AbortError")try{await copyText(text);button.title="Reading copied to clipboard";}catch(_){}}
   });
