@@ -139,13 +139,13 @@ function transliterateTelugu(text){
 }
 function renderDailySloka(){
  const s=getTodayVishnuSloka();
- const n=document.getElementById('slokaNumber'),t=document.getElementById('slokaTelugu'),title=document.querySelector('.sloka h2'),note=document.querySelector('.sloka-note');
+ const n=document.getElementById('slokaNumber'),t=document.getElementById('slokaTelugu'),title=document.querySelector('[data-devotional-slide="0"] h2');
  if(!n||!t)return;
  const english=window.SiddhaApp?.getLanguage?.()!=="te";
  n.textContent=(english?'Sloka ':'శ్లోకం ')+s.number+(english?' of 107':' / 107');
  if(title)title.textContent=english?'Sri Vishnu Sahasranamam':'శ్రీ విష్ణు సహస్రనామమ్';
  t.textContent=english?transliterateTelugu(s.text):s.text;
- if(note)note.textContent=english?'A new sloka is selected automatically every day using India time.':'భారత కాలమానం ప్రకారం ప్రతిరోజూ ఒక కొత్త శ్లోకం స్వయంచాలకంగా ఎంపిక అవుతుంది.';
+
 }
 document.addEventListener('DOMContentLoaded',()=>{
  renderDailySloka();
