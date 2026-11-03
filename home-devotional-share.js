@@ -46,6 +46,10 @@
   };
   const closeModal=()=>{
     if(!modal)return;
+    activeShareMode="devotional";
+    const heading=modal.querySelector(".devotional-share-sheet h3");if(heading)heading.hidden=false;
+    if(meaningEl)meaningEl.hidden=false;
+    const divider=modal.querySelector(".devotional-share-divider");if(divider)divider.hidden=false;
     modal.hidden=true;
     document.body.classList.remove("devotional-modal-open");
     document.querySelector("[data-devotional-open]")?.focus();
@@ -55,32 +59,52 @@
     const area=document.createElement("textarea");area.value=text;area.style.position="fixed";area.style.opacity="0";document.body.appendChild(area);area.select();
     const ok=document.execCommand("copy");area.remove();return ok;
   };
-  const panchangamShareText=()=>{
-    const date=document.getElementById("homeDate")?.textContent?.trim()||"Today";
+  let activeShareMode="devotional";
+  const panchangamRows=()=>{
     const labels={vara:"Vara",thithi:"Tithi",nakshatra:"Nakshatra",rashi:"Rashi",yoga:"Yoga",sunrise:"Sunrise",sunset:"Sunset",rahuKalam:"Rahu Kalam",yamagandam:"Yamagandam",tithiTiming:"Tithi timing",nakshatraTiming:"Nakshatra timing"};
-    const rows=Object.entries(labels).map(([key,label])=>{const value=document.querySelector('[data-p="'+key+'"]')?.textContent?.trim();return value&&value!=="—"?label+": "+value:null;}).filter(Boolean);
-    return ["Today's Panchangam — "+date,...rows,"Siddha Astro — "+location.origin].join("\n");
+    return Object.entries(labels).map(([key,label])=>{const value=document.querySelector('[data-p="'+key+'"]')?.textContent?.trim();return value&&value!=="—"?[label,value]:null;}).filter(Boolean);
+  };
+  const panchangamShareText=()=>{const date=document.getElementById("homeDate")?.textContent?.trim()||"Today";return ["Today\'s Panchangam — "+date,...panchangamRows().map(([label,value])=>label+": "+value),"Siddha Astro — "+location.origin].join("\\n");};
+  const openPanchangamModal=()=>{
+    if(!modal)return;activeShareMode="panchangam";
+    const date=document.getElementById("homeDate")?.textContent?.trim()||"Today";
+    if(titleEl)titleEl.textContent="Today\'s Panchangam · "+date;
+    if(verseEl)verseEl.textContent=panchangamRows().map(([label,value])=>label+"  •  "+value).join("\\n");
+    const heading=modal.querySelector(".devotional-share-sheet h3");if(heading)heading.hidden=true;
+    if(meaningEl){meaningEl.hidden=true;meaningEl.textContent="";}
+    const divider=modal.querySelector(".devotional-share-divider");if(divider)divider.hidden=true;
+    modal.hidden=false;document.body.classList.add("devotional-modal-open");modal.querySelector("[data-devotional-close]")?.focus();
+  };
+  const sharePanchangamImage=async()=>{
+    const rows=panchangamRows(),date=document.getElementById("homeDate")?.textContent?.trim()||"Today";
+    const canvas=document.createElement("canvas");canvas.width=1080;canvas.height=Math.max(1200,430+rows.length*76+120);
+    const ctx=canvas.getContext("2d");const bg=ctx.createLinearGradient(0,0,1080,canvas.height);bg.addColorStop(0,"#fffdf6");bg.addColorStop(1,"#edf5ef");ctx.fillStyle=bg;ctx.fillRect(0,0,1080,canvas.height);
+    ctx.strokeStyle="#dfe7e1";ctx.lineWidth=5;ctx.strokeRect(28,28,1024,canvas.height-56);
+    ctx.textAlign="center";ctx.fillStyle="#a27a2a";ctx.font="800 38px Arial";ctx.fillText("SIDDHA ASTRO",540,112);
+    ctx.fillStyle="#26332f";ctx.font="800 58px Arial";ctx.fillText("Today\'s Panchangam",540,210);
+    ctx.fillStyle="#68766f";ctx.font="32px Arial";ctx.fillText(date,540,270);
+    const top=345,left=110,right=970,rowH=76;rows.forEach(([label,value],i)=>{const y=top+i*rowH;ctx.fillStyle=i%2===0?"rgba(255,255,255,.76)":"rgba(229,239,233,.72)";ctx.fillRect(left,y,right-left,64);ctx.textAlign="left";ctx.fillStyle="#4f7567";ctx.font="700 27px Arial";ctx.fillText(label,left+24,y+42);ctx.textAlign="right";ctx.fillStyle="#26332f";ctx.font="600 27px Arial";ctx.fillText(value,right-24,y+42);});
+    ctx.textAlign="center";ctx.fillStyle="#a27a2a";ctx.font="700 25px Arial";ctx.fillText("Vedic wisdom for modern life  •  "+location.origin,540,canvas.height-78);
+    const blob=await new Promise(resolve=>canvas.toBlob(resolve,"image/png"));if(!blob)throw new Error("Could not create Panchangam image.");
+    const file=new File([blob],"siddha-astro-panchangam.png",{type:"image/png"});
+    if(navigator.canShare?.({files:[file]})&&navigator.share){await navigator.share({title:"Today\'s Panchangam",files:[file]});return;}
+    const url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=file.name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1500);
   };
   document.addEventListener("click",async event=>{
     const panchangamButton=event.target.closest("[data-home-panchang-share]");
-    if(panchangamButton){
-      const text=panchangamShareText();
-      try{if(navigator.share)await navigator.share({title:"Today's Panchangam",text,url:location.href});else{await copyText(text);panchangamButton.title="Panchangam copied to clipboard";}}
-      catch(error){if(error?.name!=="AbortError")try{await copyText(text);panchangamButton.title="Panchangam copied to clipboard";}catch(_){}}
-      return;
-    }
+    if(panchangamButton){openPanchangamModal();return;}
     if(event.target.closest("[data-devotional-open]")){openModal();return;}
     if(event.target.closest("[data-devotional-close]")){closeModal();return;}
     const button=event.target.closest("[data-devotional-share]");
     if(!button)return;
-    const text=shareText(),kind=button.dataset.devotionalShare;
+    const text=activeShareMode==="panchangam"?panchangamShareText():shareText(),kind=button.dataset.devotionalShare;
     if(kind==="whatsapp"){
       window.open("https://wa.me/?text="+encodeURIComponent(text),"_blank","noopener,noreferrer");
       return;
     }
     if(kind==="instagram"){
       try{
-        if(navigator.share){await navigator.share({title:"Daily devotional reading",text,url:location.href});}
+        if(activeShareMode==="panchangam"){await sharePanchangamImage();}else if(navigator.share){await navigator.share({title:"Daily devotional reading",text,url:location.href});}
         else{await copyText(text);window.open("https://www.instagram.com/","_blank","noopener,noreferrer");}
       }catch(error){if(error?.name!=="AbortError")try{await copyText(text);button.title="Reading copied — paste it into Instagram";}catch(_){}}
       return;
