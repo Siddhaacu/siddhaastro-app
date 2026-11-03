@@ -23,6 +23,7 @@ const displayName = $("displayName");
 const emailInput = $("email");
 const greeting = $("greeting");
 const avatar = $("avatar");
+const requestedReturn = new URLSearchParams(location.search).get("return");
 
 let auth;
 let db;
@@ -127,6 +128,17 @@ if (!configured) {
     } catch (error) {
       console.error("Could not sync user profile:", error);
       profileStatus.textContent = "You are signed in, but your profile could not be synced. Please check your connection.";
+    }
+    if (requestedReturn) {
+      try {
+        const target = new URL(requestedReturn, location.origin);
+        if (target.origin === location.origin && target.pathname !== "/profile.html") {
+          location.replace(target.href);
+          return;
+        }
+      } catch (error) {
+        console.warn("Ignoring invalid post-login return path:", error);
+      }
     }
     });
   })().catch(error => {
