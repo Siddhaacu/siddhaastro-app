@@ -27,7 +27,7 @@
     const title=isLalitha?(language==="te"?"శ్రీ లలితా సహస్రనామ స్తోత్రం":"Sri Lalitha Sahasranamam"):(language==="te"?"శ్రీ విష్ణు సహస్రనామమ్":"Sri Vishnu Sahasranamam");
     const number=isLalitha?(language==="te"?"శ్లోకం 1 / 182":"Sloka 1 of 182"):(document.getElementById("slokaNumber")?.textContent?.trim()||"");
     const verse=isLalitha?document.getElementById("lalithaSlokaTelugu")?.textContent?.trim():document.getElementById("slokaTelugu")?.textContent?.trim();
-    const slokaNumber=Number((number.match(/\\d+/)||[])[0]||1);
+    const slokaNumber=Number((number.match(/\d+/)||[])[0]||1);
     const vishnuMeaning=window.VISHNU_SAHASRANAMA_MEANINGS?.[slokaNumber];
     const meaning=isLalitha?(language==="te"?"శ్రీమాత, మహారాజ్ఞి, సింహాసనాధిష్ఠాత్రి అయిన దేవి, చిదగ్ని కుండం నుండి అవతరించి దేవతల కార్యసిద్ధి కోసం ప్రాకటించింది.":"The Divine Mother, the great sovereign and enthroned Queen, arose from the fire-pit of pure consciousness to fulfil the purpose of the gods."):(vishnuMeaning?.[language]||(language==="te"?"ఈ శ్లోకానికి సంబంధించిన వివరణ త్వరలో జోడించబడుతుంది.":"The detailed meaning for this verse is being prepared."));
     return {title,number,verse,meaning,language};
@@ -57,7 +57,7 @@
     document.querySelector("[data-devotional-open]")?.focus();
   };
   const copyText=async text=>{
-    if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(text);return true;}
+    if(navigator.clipboard?.writeText){try{await navigator.clipboard.writeText(text);return true;}catch(_){/* Fall through to the legacy copy method. */}}
     const area=document.createElement("textarea");area.value=text;area.style.position="fixed";area.style.opacity="0";document.body.appendChild(area);area.select();
     const ok=document.execCommand("copy");area.remove();return ok;
   };
