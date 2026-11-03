@@ -15,7 +15,7 @@
   const renderLalithaScript=()=>{
     const el=document.getElementById("lalithaSlokaTelugu");
     if(!el)return;
-    const verse="శ్రీమాతా శ్రీమహారాజ్ఞీ శ్రీమత్సింహాసనేశ్వరీ ।\\nచిదగ్నికుణ్డసమ్భూతా దేవకార్యసముద్యతా ॥ ౧ ॥";
+    const verse="శ్రీమాతా శ్రీమహారాజ్ఞీ శ్రీమత్సింహాసనేశ్వరీ ।\nచిదగ్నికుణ్డసమ్భూతా దేవకార్యసముద్యతా ॥ ౧ ॥";
     el.textContent=window.SiddhaApp?.getLanguage?.()==="te"?verse:(typeof transliterateTelugu==="function"?transliterateTelugu(verse):verse);
   };
   renderLalithaScript();
