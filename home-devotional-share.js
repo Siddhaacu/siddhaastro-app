@@ -11,7 +11,16 @@
   dots.forEach(dot=>dot.addEventListener("click",()=>showSlide(Number(dot.dataset.devotionalDot))));
   let touchStartX=0;const slideArea=document.getElementById("devotionalSlides");
   slideArea?.addEventListener("touchstart",event=>{touchStartX=event.changedTouches[0].clientX;},{passive:true});
-  slideArea?.addEventListener("touchend",event=>{const dx=event.changedTouches[0].clientX-touchStartX;if(Math.abs(dx)>45)showSlide(activeSlide+(dx<0?1:-1));},{passive:true});showSlide(0);
+  slideArea?.addEventListener("touchend",event=>{const dx=event.changedTouches[0].clientX-touchStartX;if(Math.abs(dx)>45)showSlide(activeSlide+(dx<0?1:-1));},{passive:true});
+  const renderLalithaScript=()=>{
+    const el=document.getElementById("lalithaSlokaTelugu");
+    if(!el)return;
+    const verse="శ్రీమాతా శ్రీమహారాజ్ఞీ శ్రీమత్సింహాసనేశ్వరీ ।\\nచిదగ్నికుణ్డసమ్భూతా దేవకార్యసముద్యతా ॥ ౧ ॥";
+    el.textContent=window.SiddhaApp?.getLanguage?.()==="te"?verse:(typeof transliterateTelugu==="function"?transliterateTelugu(verse):verse);
+  };
+  renderLalithaScript();
+  document.addEventListener("languagechange",renderLalithaScript);
+  showSlide(0);
   const reading=()=>{
     const language=window.SiddhaApp?.getLanguage?.()==="te"?"te":"en";
     const isLalitha=activeSlide===1;
