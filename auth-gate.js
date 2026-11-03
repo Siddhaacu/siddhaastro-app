@@ -2,10 +2,11 @@ import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/11.6.
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
 import { firebaseConfig } from "./firebase-config.js";
 
-// Public account and policy pages remain accessible without an app session.
+// Only the Home page requires a Google sign-in. All other app pages are public.
+// Firebase browserLocalPersistence keeps a successful Home sign-in across navigation and restarts.
 const page = (location.pathname.split("/").pop() || "index.html").toLowerCase();
 const isNetlifyDeployPreview = location.hostname.startsWith("deploy-preview-") && location.hostname.endsWith(".netlify.app");
-if (isNetlifyDeployPreview || window.self !== window.top || ["profile.html", "policies.html", "privacy.html"].includes(page)) {
+if (page !== "index.html" || isNetlifyDeployPreview || window.self !== window.top || ["profile.html", "policies.html", "privacy.html"].includes(page)) {
   // No app-wide sign-in gate on these pages.
 } else {
   const style = document.createElement("style");
