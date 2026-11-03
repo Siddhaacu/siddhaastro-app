@@ -315,4 +315,4 @@ function bootSiddhaApp(){
   setTimeout(ensureGlobalControls,50);
   setTimeout(ensureGlobalControls,500);
 }
-if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",bootSiddhaApp,{once:true});else bootSiddhaApp();;})();
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",bootSiddhaApp,{once:true});else bootSiddhaApp();;import("./auth-gate.js").catch(error=>console.error("Siddha Astro sign-in gate failed to load:",error));})();
