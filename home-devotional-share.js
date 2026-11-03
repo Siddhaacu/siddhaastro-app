@@ -59,7 +59,7 @@
     const date=document.getElementById("homeDate")?.textContent?.trim()||"Today";
     const labels={vara:"Vara",thithi:"Tithi",nakshatra:"Nakshatra",rashi:"Rashi",yoga:"Yoga",sunrise:"Sunrise",sunset:"Sunset",rahuKalam:"Rahu Kalam",yamagandam:"Yamagandam",tithiTiming:"Tithi timing",nakshatraTiming:"Nakshatra timing"};
     const rows=Object.entries(labels).map(([key,label])=>{const value=document.querySelector('[data-p="'+key+'"]')?.textContent?.trim();return value&&value!=="—"?label+": "+value:null;}).filter(Boolean);
-    return ["Today's Panchangam — "+date,...rows,"Siddha Astro — "+location.origin].join("\\n");
+    return ["Today's Panchangam — "+date,...rows,"Siddha Astro — "+location.origin].join("\n");
   };
   document.addEventListener("click",async event=>{
     const panchangamButton=event.target.closest("[data-home-panchang-share]");
