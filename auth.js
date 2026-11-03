@@ -47,7 +47,9 @@ if (!configured) {
   auth = getAuth(app);
   db = getFirestore(app);
   const provider = new GoogleAuthProvider();
-  provider.setCustomParameters({ prompt: "select_account" });
+  // Do not force the Google account chooser on every sign-in attempt.
+  // Google can reuse the existing browser session when the user has already
+  // authenticated on this device.
 
   // Keep the user's session on this device across browser/app restarts.
   const persistenceReady = setPersistence(auth, browserLocalPersistence);
