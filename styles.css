@@ -475,3 +475,7 @@ body.settings-page .header,body.settings-page .nav,body.settings-page .global-co
 body.devotional-modal-open{overflow:hidden}
 .dark .devotional-share-sheet{background:linear-gradient(155deg,#1b2924,#17211e)}
 @media(max-width:480px){.devotional-share-modal{padding:8px}.devotional-share-sheet{max-height:94dvh;padding:21px 17px 16px;border-radius:22px}.devotional-share-brand img{width:42px;height:42px}.devotional-share-verse{font-size:.96rem;line-height:1.8}.devotional-social{width:48px;height:48px}.devotional-share-main{min-width:145px;min-height:50px;padding:9px 16px}}
+
+.devotional-social svg{width:29px;height:29px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.devotional-social.whatsapp svg{fill:none;stroke:white}
+.devotional-social.instagram svg{stroke:white}
