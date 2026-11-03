@@ -4,7 +4,8 @@ import { firebaseConfig } from "./firebase-config.js";
 
 // Keep account and policy pages accessible before sign-in.
 const page = (location.pathname.split("/").pop() || "index.html").toLowerCase();
-const isNetlifyDeployPreview = /^deploy-preview-\\d+--[^.]+\\.netlify\\.app$/i.test(location.hostname);\nif (isNetlifyDeployPreview || window.self !== window.top || ["profile.html", "policies.html", "privacy.html"].includes(page)) {
+const isNetlifyDeployPreview = location.hostname.startsWith("deploy-preview-") && location.hostname.endsWith(".netlify.app");
+if (isNetlifyDeployPreview || window.self !== window.top || ["profile.html", "policies.html", "privacy.html"].includes(page)) {
   // Public entry and information pages do not need the app-wide gate.
 } else {
   const style = document.createElement("style");
