@@ -17,7 +17,7 @@
     if(!button)return;
     const text=shareText(),kind=button.dataset.devotionalShare;
     if(kind==="whatsapp"){
-      window.open("https://wa.me/?text="+encodeURIComponent(text)," _blank","noopener,noreferrer");
+      window.open("https://wa.me/?text="+encodeURIComponent(text),"_blank","noopener,noreferrer");
       return;
     }
     if(kind==="instagram"){
