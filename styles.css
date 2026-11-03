@@ -436,3 +436,58 @@ body.settings-page .header,body.settings-page .nav,body.settings-page .global-co
 .settings-app-version{justify-items:center;text-align:center}
 .settings-share-app{align-self:center;min-width:190px}
 @media(max-width:360px){.settings-app-info{align-items:center}.settings-share-app{width:auto}}
+
+
+/* Daily devotional card sharing controls — use the active Siddha Astro theme. */
+.sloka .devotional-card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;position:relative;z-index:1;margin-bottom:8px}
+.devotional-share-actions{display:flex;align-items:center;gap:8px;flex:0 0 auto}
+.devotional-share-btn{display:grid;place-items:center;width:38px;height:38px;padding:0;border:1px solid var(--border);border-radius:50%;background:var(--surface-2);color:var(--accent-dark);cursor:pointer;transition:transform .15s ease,background .15s ease}
+.devotional-share-btn:active{transform:scale(.94)}
+.devotional-share-btn svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.devotional-share-btn.whatsapp{background:#e9f7ee;border-color:#b9e5c7;color:#168344;font-size:1.25rem}
+.devotional-share-btn.instagram{background:linear-gradient(145deg,#fff0df,#fbe5ef);border-color:#efc6d5;color:#b83279;font-size:1.5rem}
+.devotional-share-btn.native{background:var(--accent);border-color:var(--accent);color:#fff}
+.dark .devotional-share-btn.whatsapp{background:#173c2b;border-color:#285b40;color:#8ee0ad}
+.dark .devotional-share-btn.instagram{background:#3a2636;border-color:#68405d;color:#f3a5c9}
+@media(max-width:380px){.sloka .devotional-card-head{align-items:flex-start}.devotional-share-actions{gap:5px}.devotional-share-btn{width:34px;height:34px}}
+
+/* Devotional share preview modal */
+.devotional-share-modal[hidden]{display:none!important}
+.devotional-share-modal{position:fixed;inset:0;z-index:100500;display:grid;place-items:center;padding:14px}
+.devotional-share-backdrop{position:absolute;inset:0;background:rgba(12,18,15,.62);backdrop-filter:blur(3px)}
+.devotional-share-sheet{position:relative;z-index:1;width:min(100%,510px);max-height:min(92dvh,850px);overflow:auto;overscroll-behavior:contain;padding:24px 24px 20px;border:1px solid var(--border);border-radius:26px;background:linear-gradient(155deg,var(--surface),var(--surface-2));color:var(--text);box-shadow:0 24px 80px rgba(0,0,0,.3);text-align:center}
+.devotional-share-brand{display:flex;align-items:center;justify-content:center;gap:10px;margin:2px 0 17px;color:var(--gold);font-size:.76rem;font-weight:900;letter-spacing:.18em}
+.devotional-share-brand img{width:48px;height:48px;object-fit:contain;border-radius:12px}
+.devotional-share-sheet h2{margin:0 0 12px;font-size:1.3rem;color:var(--text)}
+.devotional-share-verse-title{margin:8px auto 12px;font-size:1rem;font-weight:800;line-height:1.6}
+.devotional-share-verse{white-space:pre-line;font-size:1.02rem;font-weight:650;line-height:1.95;color:var(--text)}
+.devotional-share-divider{height:2px;width:min(70%,220px);margin:18px auto;background:var(--gold);opacity:.85}
+.devotional-share-sheet h3{margin:0 0 8px;font-size:1rem;color:var(--accent-dark)}
+.devotional-share-meaning{margin:0 auto 20px;max-width:430px;color:var(--muted);font-size:.94rem;line-height:1.65}
+.devotional-share-footer{display:flex;align-items:center;justify-content:center;gap:12px;margin:18px auto 12px}
+.devotional-social{display:grid;place-items:center;width:54px;height:54px;border:0;border-radius:15px;cursor:pointer;font-size:1.75rem}
+.devotional-social.whatsapp{background:#25d366;color:white}
+.devotional-social.instagram{background:linear-gradient(145deg,#ffcc70,#e1306c,#833ab4);color:white}
+.devotional-share-main{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-width:175px;min-height:54px;padding:10px 22px;border:0;border-radius:15px;background:var(--accent);color:white;font-size:1.15rem;font-weight:850;cursor:pointer}
+.devotional-share-main svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.devotional-close-bottom{display:block;margin:8px auto 0;padding:9px 24px;border:1px solid var(--border);border-radius:999px;background:var(--surface);color:var(--muted);font:inherit;font-weight:750;cursor:pointer}
+.devotional-modal-close-top{position:absolute;top:12px;right:14px;width:34px;height:34px;border:1px solid var(--border);border-radius:50%;background:var(--surface-2);color:var(--muted);font-size:1.5rem;line-height:1;cursor:pointer}
+body.devotional-modal-open{overflow:hidden}
+.dark .devotional-share-sheet{background:linear-gradient(155deg,#1b2924,#17211e)}
+@media(max-width:480px){.devotional-share-modal{padding:8px}.devotional-share-sheet{max-height:94dvh;padding:21px 17px 16px;border-radius:22px}.devotional-share-brand img{width:42px;height:42px}.devotional-share-verse{font-size:.96rem;line-height:1.8}.devotional-social{width:48px;height:48px}.devotional-share-main{min-width:145px;min-height:50px;padding:9px 16px}}
+
+.devotional-social svg{width:29px;height:29px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.devotional-social.whatsapp svg{fill:none;stroke:white}
+.devotional-social.instagram svg{stroke:white}
+
+/* Two devotional reading slides with touch swipe and compact page dots. */
+.devotional-slides{position:relative;z-index:1;touch-action:pan-y}
+.devotional-slide[hidden]{display:none!important}
+.devotional-slide{animation:devotionalSlideIn .22s ease}
+.devotional-slide h2{margin:4px 0}
+.devotional-pagination{display:flex;justify-content:center;align-items:center;gap:10px;margin:17px auto 0;position:relative;z-index:2}
+.devotional-dot{width:9px;height:9px;padding:0;border:0;border-radius:50%;background:var(--muted);opacity:.42;cursor:pointer;transition:width .18s ease,opacity .18s ease,background .18s ease}
+.devotional-dot.active{width:23px;border-radius:999px;background:var(--gold);opacity:1}
+.devotional-dot:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+@keyframes devotionalSlideIn{from{opacity:.55;transform:translateX(8px)}to{opacity:1;transform:translateX(0)}}
+@media(prefers-reduced-motion:reduce){.devotional-slide{animation:none}}
