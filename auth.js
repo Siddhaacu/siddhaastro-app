@@ -1,4 +1,4 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
 import {
   getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect,
   getRedirectResult, onAuthStateChanged, setPersistence, browserLocalPersistence,
@@ -43,7 +43,7 @@ if (!configured) {
   status.textContent = "Sign-in is temporarily unavailable because the Firebase web configuration is incomplete.";
   googleButton.disabled = true;
 } else {
-  const app = initializeApp(firebaseConfig);
+  const app = getApps().find(item => item.name === "[DEFAULT]") || initializeApp(firebaseConfig);
   auth = getAuth(app);
   db = getFirestore(app);
   const provider = new GoogleAuthProvider();
