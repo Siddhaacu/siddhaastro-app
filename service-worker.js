@@ -56,7 +56,7 @@ self.addEventListener("fetch", event => {
   }
 
   event.respondWith((async () => {
-    const cached = await caches.match(request);
+    const cached = await caches.match(request, { ignoreSearch: true });
     const update = fetch(request).then(response => {
       if (response && response.ok && response.type === "basic") {
         caches.open(CACHE_NAME).then(cache => cache.put(request, response.clone()));
