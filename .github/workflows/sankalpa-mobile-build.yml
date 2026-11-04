@@ -36,8 +36,22 @@ jobs:
           npm install
           npx cap add android
           npx cap sync android
+      - name: Check Android signing secrets
+        id: signing
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          if [ -n "$ANDROID_KEYSTORE_BASE64" ] && [ -n "$ANDROID_KEYSTORE_PASSWORD" ] && [ -n "$ANDROID_KEY_ALIAS" ] && [ -n "$ANDROID_KEY_PASSWORD" ]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Configure release signing when secrets exist
-        if: ${{ secrets.ANDROID_KEYSTORE_BASE64 != '' && secrets.ANDROID_KEYSTORE_PASSWORD != '' && secrets.ANDROID_KEY_ALIAS != '' && secrets.ANDROID_KEY_PASSWORD != '' }}
+        if: ${{ steps.signing.outputs.ready == 'true' }}
         working-directory: mobile
         env:
           ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
@@ -47,7 +61,7 @@ jobs:
         run: |
           echo "$ANDROID_KEYSTORE_BASE64" | base64 --decode > android/sankalpa-release.jks
           cat >> android/gradle.properties <<EOF
-          MYAPP_UPLOAD_STORE_FILE=sankalpa-release.jks
+          MYAPP_UPLOAD_STORE_FILE=../sankalpa-release.jks
           MYAPP_UPLOAD_KEY_ALIAS=$ANDROID_KEY_ALIAS
           MYAPP_UPLOAD_STORE_PASSWORD=$ANDROID_KEYSTORE_PASSWORD
           MYAPP_UPLOAD_KEY_PASSWORD=$ANDROID_KEY_PASSWORD
@@ -74,7 +88,7 @@ jobs:
         working-directory: mobile/android
         run: ./gradlew assembleDebug
       - name: Build signed release APK and AAB
-        if: ${{ secrets.ANDROID_KEYSTORE_BASE64 != '' && secrets.ANDROID_KEYSTORE_PASSWORD != '' && secrets.ANDROID_KEY_ALIAS != '' && secrets.ANDROID_KEY_PASSWORD != '' }}
+        if: ${{ steps.signing.outputs.ready == 'true' }}
         working-directory: mobile/android
         run: ./gradlew assembleRelease bundleRelease
       - uses: actions/upload-artifact@v4
@@ -135,7 +149,7 @@ jobs:
           IOS_TEAM_ID: ${{ secrets.IOS_TEAM_ID }}
         run: |
           xcodebuild -project App.xcodeproj -scheme App -configuration Release -destination 'generic/platform=iOS' -archivePath "$RUNNER_TEMP/Sankalpa.xcarchive" DEVELOPMENT_TEAM="$IOS_TEAM_ID" CODE_SIGN_STYLE=Manual archive
-          PROFILE_UUID=$(/usr/libexec/PlistBuddy -c 'Print UUID' /dev/stdin <<< "$(security cms -D -i "$HOME/Library/MobileDevice/Provisioning Profiles/sankalpa.mobileprovision")")
+          PROFILE_UUID=$(python3 -c 'import plistlib; print(plistlib.load(open("'"$HOME/Library/MobileDevice/Provisioning Profiles/sankalpa.mobileprovision"'","rb"))["UUID"])')
           cat > "$RUNNER_TEMP/ExportOptions.plist" <<EOF
           <?xml version="1.0" encoding="UTF-8"?>
           <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
