@@ -1,0 +1,19 @@
+{
+  "name": "sankalpa-mobile",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Capacitor wrapper for Sankalpa",
+  "scripts": {
+    "add:android": "cap add android",
+    "add:ios": "cap add ios",
+    "sync": "cap sync",
+    "open:android": "cap open android",
+    "open:ios": "cap open ios"
+  },
+  "dependencies": {
+    "@capacitor/core": "^7.4.3"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^7.4.3"
+  }
+}
