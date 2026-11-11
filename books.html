@@ -138,35 +138,94 @@
 
 </center>
 <br>
- <br> <div class="search-box">
-    <input 
-        type="text" 
-        id="bookSearch" 
-        placeholder="Search books, stotras, slokas..."
-        onkeyup="searchBooks()">
-        
-    <i class="fa-solid fa-magnifying-glass"></i>
+ <br> <div class="search-box scripture-search-wrap">
+    <input type="search" id="bookSearch" aria-label="Search Vedic scriptures / వేద గ్రంథాలను వెతకండి" placeholder="Search by title in Telugu or English / తెలుగు లేదా Englishలో వెతకండి" autocomplete="off" role="combobox" aria-autocomplete="list" aria-controls="scriptureSuggestions" aria-expanded="false">
+    <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+    <div id="scriptureSuggestions" class="scripture-suggestions" role="listbox" hidden></div>
 </div>
-
+<div class="scripture-tools" aria-label="Scripture search and filters">
+  <div class="scripture-filters" role="group" aria-label="Filter scripture categories">
+    <button type="button" class="scripture-filter active" data-scripture-filter="all">All / అన్నీ</button>
+    <button type="button" class="scripture-filter" data-scripture-filter="stotra">Stotras & Slokas / స్తోత్రాలు</button>
+    <button type="button" class="scripture-filter" data-scripture-filter="puja">Puja & Rituals / పూజా విధానాలు</button>
+    <button type="button" class="scripture-filter" data-scripture-filter="vrata">Vratas & Festivals / వ్రతాలు, పండుగలు</button>
+    <button type="button" class="scripture-filter" data-scripture-filter="sukta">Vedas & Suktas / వేదాలు, సూక్తాలు</button>
+  </div>
+  <p id="scriptureSearchStatus" class="scripture-search-status" role="status" aria-live="polite">Search by Telugu or English title / తెలుగు లేదా English పేరుతో వెతకండి</p>
+</div>
+<style>
+.scripture-search-wrap{position:relative}
+.scripture-suggestions{position:absolute;top:calc(100% + 4px);left:0;right:0;max-height:320px;overflow:auto;background:var(--surface);border:1px solid var(--border);border-radius:14px;box-shadow:0 12px 30px var(--shadow);z-index:30;padding:6px}
+.scripture-suggestions[hidden]{display:none}
+.scripture-suggestion{display:block;width:100%;text-align:left;padding:11px 12px;border:0;border-radius:9px;background:transparent;color:var(--text);font:inherit;cursor:pointer}
+.scripture-suggestion:hover,.scripture-suggestion:focus{background:var(--surface-2);outline:2px solid var(--border)}
+.scripture-suggestion small{display:block;color:var(--muted);font-size:.8rem;margin-top:3px}
+.scripture-tools{margin:-10px 0 22px}
+.scripture-filters{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.scripture-filter{border:1px solid var(--border);border-radius:999px;padding:8px 12px;background:var(--surface-2);color:var(--text);font:inherit;font-size:.88rem;cursor:pointer}
+.scripture-filter.active{background:var(--accent-dark);color:#fff;border-color:var(--accent-dark)}
+.scripture-search-status{font-size:.9rem;color:var(--muted);margin:8px 0}
+.book-item[hidden]{display:none!important}
+</style>
 <script>
-function searchBooks() {
-
-    let input = document.getElementById("bookSearch");
-    let filter = input.value.toLowerCase();
-
-    let items = document.getElementsByClassName("book-item");
-
-    for (let i = 0; i < items.length; i++) {
-
-        let text = items[i].textContent || items[i].innerText;
-
-        if (text.toLowerCase().indexOf(filter) > -1) {
-            items[i].style.display = "";
-        } else {
-            items[i].style.display = "none";
-        }
-    }
-}
+(function(){
+ function initScriptureSearch(){
+  const input=document.getElementById("bookSearch");
+  const status=document.getElementById("scriptureSearchStatus");
+  const suggestionBox=document.getElementById("scriptureSuggestions");
+  const filters=[...document.querySelectorAll("[data-scripture-filter]")];
+  if(!input||!status||!suggestionBox)return;
+  let activeFilter="all",activeIndex=-1;
+  const items=[...document.querySelectorAll(".book-item")];
+  const sectionHeadings=[...document.querySelectorAll(".content-card h3,.content-card h4,.content-card h5")];
+  function normalize(value){return String(value||"").normalize("NFC").toLocaleLowerCase().replace(/[\\s\\u200b]+/g," ").trim()}
+  function categoryFor(item){
+   let headingText="";
+   for(const heading of sectionHeadings){if(heading.compareDocumentPosition(item)&Node.DOCUMENT_POSITION_FOLLOWING)headingText=heading.textContent||"";else break}
+   const section=normalize(headingText+" "+item.textContent);
+   if(/sukta|suktani|veda|vedam|rudram|sūkt|సూక్త|వేదం|వేదాలు|రుద్రం/.test(section))return "sukta";
+   if(/vrata|festival|pūjā|puja|vidhanam|నిత్య విధి|నిత్య పూజ|వ్రత|పూజ|విధానం|పండుగ|పౌర్ణమి|అమావాస్య|ఏకాదశి|జయంతి|చవితి/.test(section))return /vrata|festival|వ్రత|పండుగ|పౌర్ణమి|అమావాస్య|ఏకాదశి|జయంతి|చవితి|నవరాత్రి/.test(section)?"vrata":"puja";
+   return "stotra";
+  }
+  function entries(){
+   const query=normalize(input.value);
+   return items.map(item=>({item,card:item.closest(".feature-card"),link:item.querySelector("a"),title:(item.textContent||"").replace(/\\s+/g," ").trim(),url:item.querySelector("a")?.getAttribute("href")||"",category:categoryFor(item)}))
+    .filter(x=>x.link&&(!query||normalize(x.title).includes(query))&&(activeFilter==="all"||x.category===activeFilter));
+  }
+  function closeSuggestions(){suggestionBox.hidden=true;suggestionBox.replaceChildren();input.setAttribute("aria-expanded","false");activeIndex=-1}
+  function update(){
+   const query=normalize(input.value),matches=entries();
+   items.forEach(item=>{const card=item.closest(".feature-card");item.hidden=true;if(card)card.hidden=true});
+   document.querySelectorAll(".feature-grid").forEach(grid=>grid.hidden=true);
+   matches.forEach(x=>{x.item.hidden=false;if(x.card)x.card.hidden=false;const grid=x.card?.closest(".feature-grid");if(grid)grid.hidden=false});
+   status.textContent=(query||activeFilter!=="all")?(matches.length?matches.length+" pages available / "+matches.length+" పేజీలు అందుబాటులో ఉన్నాయి":"No matching pages / సరిపోలే పేజీలు లేవు"):"Search by Telugu or English title / తెలుగు లేదా English పేరుతో వెతకండి";
+   suggestionBox.replaceChildren();activeIndex=-1;
+   if(query&&matches.length){
+    matches.slice(0,8).forEach((x,index)=>{
+     const button=document.createElement("button");button.type="button";button.className="scripture-suggestion";button.setAttribute("role","option");button.id="scripture-suggestion-"+index;
+     button.textContent=x.title;
+     const sub=document.createElement("small");sub.textContent=x.category==="sukta"?"Vedas & Suktas / వేదాలు, సూక్తాలు":x.category==="puja"?"Puja & Rituals / పూజా విధానాలు":x.category==="vrata"?"Vratas & Festivals / వ్రతాలు, పండుగలు":"Stotras & Slokas / స్తోత్రాలు";
+     button.appendChild(sub);
+     button.addEventListener("click",()=>{input.value=x.title;update();closeSuggestions();x.link.scrollIntoView({behavior:"smooth",block:"center"});x.link.focus({preventScroll:true})});
+     suggestionBox.appendChild(button);
+    });
+    suggestionBox.hidden=false;input.setAttribute("aria-expanded","true");
+   }else closeSuggestions();
+  }
+  input.addEventListener("input",update);
+  input.addEventListener("keydown",event=>{
+   const options=[...suggestionBox.querySelectorAll("button")];
+   if(event.key==="ArrowDown"&&options.length){event.preventDefault();activeIndex=(activeIndex+1)%options.length;options[activeIndex].focus()}
+   else if(event.key==="Escape")closeSuggestions();
+   else if(event.key==="Enter"&&options.length){event.preventDefault();(options[activeIndex>=0?activeIndex:0]).click()}
+  });
+  document.addEventListener("click",event=>{if(!event.target.closest(".scripture-search-wrap"))closeSuggestions()});
+  filters.forEach(button=>button.addEventListener("click",()=>{activeFilter=button.dataset.scriptureFilter||"all";filters.forEach(b=>{const active=b===button;b.classList.toggle("active",active);b.setAttribute("aria-pressed",String(active))});update()}));
+  window.searchBooks=update;update();
+ }
+ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",initScriptureSearch,{once:true});
+ else initScriptureSearch();
+})();
 </script>
 
 <br><br>
