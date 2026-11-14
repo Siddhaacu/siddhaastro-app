@@ -1,39 +1,146 @@
 <!doctype html>
-<html lang="en">
+<html lang="te">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#f5f7f3">
-<title>Muhurtham — Siddha Astro</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f5f7f3"><title>Muhurtham Creator — Siddha Astro</title>
 <link rel="stylesheet" href="styles.css?v=20261030-embed1">
 <style>
-.muhurtham-intro{margin:8px 0 18px;color:var(--muted);font-size:.96rem;line-height:1.6}
-.muhurtham-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
-.muhurtham-card{display:flex;align-items:center;gap:14px;min-height:116px;padding:18px;border:1px solid var(--border);border-radius:18px;background:var(--surface);box-shadow:0 5px 18px rgba(25,45,35,.055);color:var(--text);text-decoration:none;transition:transform .18s ease,border-color .18s ease}
-.muhurtham-card:active{transform:scale(.985)}
-.muhurtham-icon{display:grid;place-items:center;width:58px;height:58px;flex:0 0 58px;border-radius:16px;background:color-mix(in srgb,var(--accent) 10%,var(--surface));font-size:29px}
-.muhurtham-copy{min-width:0}
-.muhurtham-copy h2{margin:0 0 5px;font-size:1.03rem;line-height:1.35;color:var(--text)}
-.muhurtham-copy p{margin:0;color:var(--muted);font-size:.84rem;line-height:1.4}
-.muhurtham-arrow{margin-left:auto;color:var(--accent);font-size:1.3rem;flex:0 0 auto}
-@media(max-width:620px){.muhurtham-grid{grid-template-columns:1fr;gap:11px}.muhurtham-card{min-height:94px;padding:14px}.muhurtham-icon{width:52px;height:52px;flex-basis:52px}}
-</style>
-</head>
-<body>
-<div class="app">
-<header class="header"><div class="header-inner"><a class="brand" href="index.html"><img src="logo.png" alt="Siddha Astro"><span class="brand-name" data-no-translate>Siddha Astro</span></article><div class="page-title"><strong>Muhurtham</strong><span>Choose an auspicious occasion</span></div></div></header>
-<div class="controls global-controls"><button class="lang-btn" type="button" data-control-lang>తెలుగు</button><button class="font-btn" type="button" data-font="down" aria-label="Decrease font size">A−</button><span class="font-size" data-font-size>100%</span><button class="font-btn" type="button" data-font="up" aria-label="Increase font size">A+</button><button class="icon-btn theme-toggle" type="button" data-theme-toggle>☾</button></div>
+.mh-intro{margin:8px 0 18px;color:var(--muted);line-height:1.6}
+.mh-types{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:0 0 18px}
+.mh-type{display:flex;align-items:center;gap:10px;padding:13px;border:1px solid var(--border);border-radius:15px;background:var(--surface);color:var(--text);font:inherit;font-weight:800;text-align:left;cursor:pointer}
+.mh-type[aria-pressed=true]{border:2px solid var(--accent);background:color-mix(in srgb,var(--accent) 8%,var(--surface))}
+.mh-type span:first-child{font-size:24px}
+.mh-panel{padding:18px;border:1px solid var(--border);border-radius:20px;background:var(--surface);box-shadow:0 6px 22px #20352a0b}
+.mh-panel h2{margin:0 0 14px;font-size:1.12rem}
+.mh-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+.mh-field{display:flex;flex-direction:column;gap:6px;min-width:0}
+.mh-field.full{grid-column:1/-1}
+.mh-field label{font-size:.86rem;font-weight:800;color:var(--text)}
+.mh-field input,.mh-field select,.mh-field textarea{width:100%;min-height:46px;padding:10px 12px;border:1px solid var(--border);border-radius:12px;background:var(--bg);color:var(--text);font:inherit}
+.mh-field textarea{min-height:90px;resize:vertical}
+.mh-time{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mh-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.mh-actions button{min-height:48px;padding:10px 18px;border:0;border-radius:13px;background:var(--accent);color:white;font:inherit;font-weight:850;cursor:pointer}
+.mh-actions .secondary{border:1px solid var(--border);background:var(--surface-2);color:var(--text)}
+.mh-preview{margin-top:20px}
+.mh-preview[hidden]{display:none}
+.mh-preview img{display:block;width:100%;max-width:620px;margin:0 auto;border:1px solid var(--border);border-radius:12px;background:#fff}
+.mh-hint{margin:10px 0 0;color:var(--muted);font-size:.83rem;line-height:1.5}
+@media(max-width:620px){.mh-types{grid-template-columns:1fr}.mh-form{grid-template-columns:1fr}.mh-field.full{grid-column:auto}.mh-panel{padding:14px}}
+</style></head>
+<body><div class="app">
+<header class="header"><div class="header-inner"><a class="brand" href="index.html"><img src="logo.png" alt="Siddha Astro"><span class="brand-name" data-no-translate>Siddha Astro</span></a><div class="page-title"><strong>Muhurtham</strong><span>Traditional Telugu Muhurtham creator</span></div></div></header>
+<div class="controls global-controls"><button class="lang-btn" type="button" data-control-lang>తెలుగు</button><button class="font-btn" type="button" data-font="down">A−</button><span class="font-size" data-font-size>100%</span><button class="font-btn" type="button" data-font="up">A+</button><button class="icon-btn theme-toggle" type="button" data-theme-toggle>☾</button></div>
 <main class="main">
-<p class="muhurtham-intro">Select the ceremony for which you want to explore an auspicious Muhurtham.</p>
-<section class="muhurtham-grid" aria-label="Muhurtham categories">
-<article class="muhurtham-card"><span class="muhurtham-icon" aria-hidden="true">🍚</span><span class="muhurtham-copy"><h2>Annaprasana Muhurtham</h2><p>First solid-food ceremony</p></span><span class="muhurtham-arrow" aria-hidden="true">›</span></article>
-<article class="muhurtham-card"><span class="muhurtham-icon" aria-hidden="true">📖</span><span class="muhurtham-copy"><h2>Aksharaabhyasam Muhurtham</h2><p>Beginning a child’s learning</p></span><span class="muhurtham-arrow" aria-hidden="true">›</span></article>
-<article class="muhurtham-card"><span class="muhurtham-icon" aria-hidden="true">🕉️</span><span class="muhurtham-copy"><h2>Upanayana Muhurtham</h2><p>Sacred thread ceremony</p></span><span class="muhurtham-arrow" aria-hidden="true">›</span></article>
-<article class="muhurtham-card"><span class="muhurtham-icon" aria-hidden="true">🏡</span><span class="muhurtham-copy"><h2>Gruhapravesham Muhurtham</h2><p>Entering a new home</p></span><span class="muhurtham-arrow" aria-hidden="true">›</span></article>
-<article class="muhurtham-card"><span class="muhurtham-icon" aria-hidden="true">💍</span><span class="muhurtham-copy"><h2>Vivaha Muhurtham</h2><p>Marriage ceremony</p></span><span class="muhurtham-arrow" aria-hidden="true">›</span></article>
+<p class="mh-intro">Select a Muhurtham category, enter the Panchangam details and names, then generate a shareable image copy.</p>
+<section class="mh-types" aria-label="Muhurtham categories">
+<button class="mh-type" type="button" data-type="aksharaabhyasam" aria-pressed="true"><span>📖</span> Aksharaabhyasam Muhurtham</button>
+<button class="mh-type" type="button" data-type="annaprasana" aria-pressed="false"><span>🍚</span> Annaprasana Muhurtham</button>
+<button class="mh-type" type="button" data-type="upanayana" aria-pressed="false"><span>🕉️</span> Upanayana Muhurtham</button>
+<button class="mh-type" type="button" data-type="gruhapravesham" aria-pressed="false"><span>🏡</span> Gruhapravesham Muhurtham</button>
+<button class="mh-type" type="button" data-type="vivaha" aria-pressed="false"><span>💍</span> Vivaha Muhurtham</button>
 </section>
-</main>
-</div>
+<section class="mh-panel">
+<h2 id="mh-heading">Aksharaabhyasam Muhurtham details</h2>
+<form id="mh-form" class="mh-form">
+<div class="mh-field"><label for="samvatsara">సంవత్సరం (Samvatsara)</label><select id="samvatsara" required></select></div>
+<div class="mh-field"><label for="masa">మాసం (Masa)</label><select id="masa" required></select></div>
+<div class="mh-field"><label for="paksha">పక్షం (Paksha)</label><select id="paksha" required></select></div>
+<div class="mh-field"><label for="tithi">తిథి (Tithi)</label><select id="tithi" required></select></div>
+<div class="mh-field"><label for="vara">వారం (Vara)</label><select id="vara" required></select></div>
+<div class="mh-field"><label for="date">తేదీ (Date)</label><input id="date" type="date" required></div>
+<div class="mh-field"><label for="daypart">సమయం (Morning / Afternoon / Night)</label><select id="daypart" required></select></div>
+<div class="mh-field"><label>ముహూర్త సమయం (Time)</label><div class="mh-time"><select id="hour" aria-label="Hour"></select><select id="minute" aria-label="Minute"></select></div></div>
+<div class="mh-field"><label for="nakshatra">నక్షత్రం (Nakshatra)</label><select id="nakshatra" required></select></div>
+<div class="mh-field"><label for="lagna">లగ్నం (Lagna / Rashi)</label><select id="lagna" required></select></div>
+<div class="mh-field full"><label for="names">పేర్లు / కుటుంబ వివరాలు (Names and family details)</label><textarea id="names" placeholder="Enter names, parents' names, family details, or any custom text…"></textarea></div>
+<div class="mh-field full"><label for="extra">అదనపు వివరాలు (Optional custom details)</label><textarea id="extra" placeholder="Any additional Telugu or English text to appear on the Muhurtham copy…"></textarea></div>
+</form>
+<div class="mh-actions"><button type="button" id="generate">Generate Muhurtham Image</button><button type="button" class="secondary" id="reset">Clear details</button></div>
+<p class="mh-hint">The generated image includes your Siddha Astro logo, selected ceremony artwork, entered details, disclaimer, Mr. Sastri, mobile 9704903377 and app.siddhaastro.in.</p>
+</section>
+<section class="mh-preview" id="preview" hidden><h2>Generated Muhurtham copy</h2><img id="poster" alt="Generated Muhurtham poster"><div class="mh-actions"><button id="share" type="button">Share Image</button><button id="download" type="button" class="secondary">Download Image</button></div><p class="mh-hint" id="share-hint" aria-live="polite"></p></section>
+</main></div>
 <script src="app.js?v=20261103-home-auth5"></script>
 <script type="module" src="site-auth.js?v=20261103-1"></script>
+<script>
+(()=>{
+const $=id=>document.getElementById(id);
+const lists={
+samvatsara:['ప్రభవ','విభవ','శుక్ల','ప్రమోదూత','ప్రజోత్పత్తి','ఆంగీరస','శ్రీముఖ','భావ','యువ','ధాత','ఈశ్వర','బహుధాన్య','ప్రమాథి','విక్రమ','వృష','చిత్రభాను','స్వభాను','తారణ','పార్థివ','వ్యయ','సర్వజిత్','సర్వధారి','విరోధి','వికృతి','ఖర','నందన','విజయ','జయ','మన్మథ','దుర్ముఖి','హేవిళంబి','విళంబి','వికారి','శార్వరి','ప్లవ','శుభకృత్','శోభకృత్','క్రోధి','విశ్వావసు','పరాభవ','ప్లవంగ','కీలక','సౌమ్య','సాధారణ','విరోధికృత్','పరిధావి','ప్రమాదీచ','ఆనంద','రాక్షస','నల','పింగళ','కాలయుక్తి','సిద్ధార్థి','రౌద్రి','దుర్మతి','దుందుభి','రుధిరోద్గారి','రక్తాక్షి','క్రోధన','అక్షయ'],
+masa:['చైత్రం','వైశాఖం','జ్యేష్ఠం','ఆషాఢం','శ్రావణం','భాద్రపదం','ఆశ్వయుజం','కార్తీకం','మార్గశిరం','పుష్యం','మాఘం','ఫాల్గుణం'],
+paksha:['శుక్ల పక్షం','కృష్ణ పక్షం'],
+tithi:['పాడ్యమి','విదియ','తదియ','చవితి','పంచమి','షష్ఠి','సప్తమి','అష్టమి','నవమి','దశమి','ఏకాదశి','ద్వాదశి','త్రయోదశి','చతుర్దశి','పౌర్ణమి / అమావాస్య'],
+vara:['ఆదివారము','సోమవారము','మంగళవారము','బుధవారము','గురువారము','శుక్రవారము','శనివారము'],
+daypart:['ఉదయం','మధ్యాహ్నం','రాత్రి'],
+nakshatra:['అశ్విని','భరణి','కృత్తిక','రోహిణి','మృగశిర','ఆరుద్ర','పునర్వసు','పుష్యమి','ఆశ్లేష','మఖ','పుబ్బ','ఉత్తర','హస్త','చిత్త','స్వాతి','విశాఖ','అనూరాధ','జ్యేష్ఠ','మూల','పూర్వాషాఢ','ఉత్తరాషాఢ','శ్రవణం','ధనిష్ఠ','శతభిషం','పూర్వాభాద్ర','ఉత్తరాభాద్ర','రేవతి'],
+lagna:['మేషం','వృషభం','మిథునం','కర్కాటకం','సింహం','కన్య','తుల','వృశ్చికం','ధనుస్సు','మకరం','కుంభం','మీనం']
+};
+function fill(id,arr,first='ఎంచుకోండి'){const el=$(id);el.innerHTML='<option value="">'+first+'</option>'+arr.map(v=>'<option>'+v+'</option>').join('')}
+Object.entries(lists).forEach(([k,v])=>fill(k,v));
+fill('hour',Array.from({length:24},(_,i)=>String(i).padStart(2,'0')),'గంట');
+fill('minute',Array.from({length:60},(_,i)=>String(i).padStart(2,'0')),'నిమిషం');
+const types={
+aksharaabhyasam:{title:'Aksharaabhyasam Muhurtham',telugu:'అక్షరాభ్యాస శుభ ముహూర్తము',symbol:'📖',sloka:'సరస్వతీ నమస్తుభ్యం వరదే కామరూపిణి । విద్యారంభం కరిష్యామి సిద్ధిర్భవతు మే సదా ॥',deity:'Saraswati Devi'},
+annaprasana:{title:'Annaprasana Muhurtham',telugu:'అన్నప్రాశన శుభ ముహూర్తము',symbol:'🍚',sloka:'అన్నపూర్ణే సదాపూర్ణే శంకరప్రాణవల్లభే । జ్ఞానవైరాగ్యసిద్ధ్యర్థం భిక్షాం దేహి చ పార్వతి ॥',deity:'Annapurna Devi'},
+upanayana:{title:'Upanayana Muhurtham',telugu:'ఉపనయన శుభ ముహూర్తము',symbol:'🕉️',sloka:'గాయత్రీ మంత్ర జపం మరియు వేదాధ్యయనారంభానికి శుభాశీస్సులు',deity:'Sri Gayatri'},
+gruhapravesham:{title:'Gruhapravesham Muhurtham',telugu:'గృహప్రవేశ శుభ ముహూర్తము',symbol:'🏡',sloka:'శుభం కరోతి కల్యాణం ఆరోగ్యం ధనసంపదః । శత్రుబుద్ధివినాశాయ దీపజ్యోతి నమోస్తుతే ॥',deity:'Sri Ganapati'},
+vivaha:{title:'Vivaha Muhurtham',telugu:'వివాహ శుభ ముహూర్తము',symbol:'💍',sloka:'గౌరీశంకరార్ధాంగి గౌరీ గణేశ్వరప్రియే । మంగళం భవతు నిత్యం దంపత్యోః సుఖసంపదాం ॥',deity:'Sri Lakshmi Narayana'}
+};
+let active='aksharaabhyasam',posterBlob=null;
+document.querySelectorAll('.mh-type').forEach(btn=>btn.addEventListener('click',()=>{active=btn.dataset.type;document.querySelectorAll('.mh-type').forEach(b=>b.setAttribute('aria-pressed',String(b===btn)));$('mh-heading').textContent=types[active].title+' details';$('preview').hidden=true;}));
+$('reset').addEventListener('click',()=>{$('mh-form').reset();$('preview').hidden=true;});
+function value(id){const el=$(id);return el.value||'—'}
+function dateText(){const v=$('date').value;if(!v)return '—';const [y,m,d]=v.split('-');return d+'/'+m+'/'+y}
+function drawPoster(){
+ const c=document.createElement('canvas');c.width=1240;c.height=1754;const x=c.getContext('2d');
+ x.fillStyle='#fffaf0';x.fillRect(0,0,c.width,c.height);
+ const g=x.createLinearGradient(0,0,1240,1754);g.addColorStop(0,'#fffdf6');g.addColorStop(1,'#f5e7cc');x.fillStyle=g;x.fillRect(0,0,1240,1754);
+ x.strokeStyle='#b7832c';x.lineWidth=12;x.strokeRect(22,22,1196,1710);x.strokeStyle='#e4bd68';x.lineWidth=3;x.strokeRect(42,42,1156,1670);
+ const center=(t,y,size=34,color='#234e7c',weight='bold')=>{x.textAlign='center';x.textBaseline='middle';x.fillStyle=color;x.font=weight+' '+size+'px "Noto Serif Telugu","Nirmala UI",serif';x.fillText(String(t),620,y,1100)};
+ const wrap=(txt,maxW,size)=>{x.font='bold '+size+'px "Noto Serif Telugu","Nirmala UI",serif';let lines=[],line='';String(txt||'').split(/\s+/).forEach(w=>{let test=line?line+' '+w:w;if(line&&x.measureText(test).width>maxW){lines.push(line);line=w}else line=test});if(line)lines.push(line);return lines};
+ // brand logo at top
+ const logo=new Image();logo.src='/logo.png';
+ const ready=logo.decode().catch(()=>Promise.reject());
+ return ready.then(()=>{
+  x.drawImage(logo,510,60,220,220);
+  center('SIDDHA ASTRO',310,42,'#8d5b16');
+  center('శ్రీ మాత్రే నమః                                      శ్రీ గురుభ్యో నమః',355,27);
+  x.strokeStyle='#c49a4d';x.lineWidth=3;x.beginPath();x.moveTo(100,395);x.lineTo(1140,395);x.stroke();
+  center(types[active].title,450,44,'#8c1428');
+  center(types[active].telugu,505,36,'#8c1428');
+  center(types[active].sloka,575,29,'#2c5379');
+  center(types[active].deity+'  '+types[active].symbol,640,31,'#7e5b27');
+  // ceremony-specific illustrative emblem, intentionally restrained and centered
+  x.strokeStyle='#c69a45';x.lineWidth=4;x.beginPath();x.arc(620,735,65,0,Math.PI*2);x.stroke();center(types[active].symbol,735,66,'#9a6b22');
+  const rows=[
+   ['సంవత్సరం',value('samvatsara'),'మాసం',value('masa')],
+   ['పక్షం',value('paksha'),'తిథి',value('tithi')],
+   ['వారం',value('vara'),'తేదీ',dateText()],
+   ['సమయం',value('daypart'), 'ముహూర్త సమయం',value('hour')+':'+value('minute')],
+   ['నక్షత్రం',value('nakshatra'),'లగ్నం',value('lagna')]
+  ];
+  let yy=870;
+  rows.forEach((r,i)=>{x.fillStyle=i%2?'#fffaf1':'#f8efdE';x.fillRect(95,yy-34,1050,76);x.strokeStyle='#d8bb80';x.lineWidth=1.5;x.strokeRect(95,yy-34,1050,76);x.textAlign='left';x.textBaseline='middle';x.fillStyle='#805016';x.font='bold 25px "Noto Serif Telugu","Nirmala UI",serif';x.fillText(r[0],120,yy);x.fillStyle='#3b2b20';x.font='bold 27px "Noto Serif Telugu","Nirmala UI",serif';x.fillText(r[1],330,yy,280);x.fillStyle='#805016';x.font='bold 25px "Noto Serif Telugu","Nirmala UI",serif';x.fillText(r[2],665,yy);x.fillStyle='#3b2b20';x.font='bold 27px "Noto Serif Telugu","Nirmala UI",serif';x.fillText(r[3],850,yy,270);yy+=83;});
+  let custom=$('names').value.trim();let extra=$('extra').value.trim();
+  let y=1325;
+  if(custom){center('పేర్లు / కుటుంబ వివరాలు',y,31,'#8c1428');y+=48;wrap(custom,1030,28).slice(0,3).forEach(line=>{center(line,y,28,'#2c5379');y+=40});}
+  if(extra){y+=10;wrap(extra,1030,26).slice(0,3).forEach(line=>{center(line,y,26,'#2c5379');y+=38});}
+  center('దైవజ్ఞులచే నిర్ణయింపబడిన శుభ ముహూర్తము',Math.max(y+35,1510),28,'#8c1428');
+  x.strokeStyle='#c49a4d';x.lineWidth=3;x.beginPath();x.moveTo(90,1585);x.lineTo(1150,1585);x.stroke();
+  center('Mr. Sastri  |  Mobile: 9704903377',1625,29,'#244d75');
+  center('app.siddhaastro.in',1665,29,'#244d75');
+  const disclaimer='Disclaimer: Muhurtham timings are provided for traditional and spiritual guidance. Please verify final timings with your family priest. Outcomes are not guaranteed.';
+  wrap(disclaimer,1060,20).forEach((line,i)=>center(line,1700+i*25,20,'#574a3a','normal'));
+  return c;
+ });
+}
+$('generate').addEventListener('click',async()=>{
+ if(!$('mh-form').reportValidity())return;
+ try{const c=await drawPoster();posterBlob=await new Promise(r=>c.toBlob(r,'image/png'));$('poster').src=URL.createObjectURL(posterBlob);$('preview').hidden=false;$('share-hint').textContent='Image is ready. You can share it or download it.';$('preview').scrollIntoView({behavior:'smooth',block:'start'});}catch(e){$('share-hint').textContent='Could not load the Siddha Astro logo. Please refresh and try again.';$('preview').hidden=false;}
+});
+$('download').addEventListener('click',()=>{if(!posterBlob)return;const a=document.createElement('a');a.href=URL.createObjectURL(posterBlob);a.download='Siddha-Astro-'+active+'-Muhurtham.png';a.click();});
+$('share').addEventListener('click',async()=>{if(!posterBlob)return;const file=new File([posterBlob],'Siddha-Astro-'+active+'-Muhurtham.png',{type:'image/png'});if(navigator.canShare&&navigator.canShare({files:[file]})){try{await navigator.share({files:[file],title:types[active].title,text:'Siddha Astro Muhurtham'});$('share-hint').textContent='Share sheet opened.'}catch(e){if(e.name!=='AbortError')$('share-hint').textContent='Sharing was not available. Use Download Image.'}}else{$('share-hint').textContent='Direct image sharing is not supported in this browser. Use Download Image, then share the saved image.';}});
+})();
+</script>
 </body></html>
