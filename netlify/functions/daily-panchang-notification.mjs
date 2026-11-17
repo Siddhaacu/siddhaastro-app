@@ -213,7 +213,9 @@ export default async ()=>{
         body,
         icon:"/logo.png",
         badge:"/logo.png",
-        url:"/panchangam.html"
+        url:"/whatsapp-status.html",
+        statusUrl:"/whatsapp-status.html",
+        panchangamUrl:"/panchangam.html"
       }));
       sent++;
     }catch(error){
