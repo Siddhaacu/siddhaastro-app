@@ -20,15 +20,19 @@ self.addEventListener("push",event=>{
     renotify:true,
     requireInteraction:true,
     vibrate:[200,100,200],
-    actions:[{action:"open-panchangam",title:"View Panchangam"}],
-    data:{url:data.url||"/panchangam.html"}
+    actions:[
+      {action:"create-status",title:"Create WhatsApp Status"},
+      {action:"open-panchangam",title:"View Panchangam"}
+    ],
+    data:{url:data.url||"/whatsapp-status.html",statusUrl:data.statusUrl||"/whatsapp-status.html",panchangamUrl:data.panchangamUrl||"/panchangam.html"}
   };
   event.waitUntil(self.registration.showNotification(title,options));
 });
 
 self.addEventListener("notificationclick",event=>{
   event.notification.close();
-  const target=event.notification.data?.url||"/panchangam.html";
+  const data=event.notification.data||{};
+  const target=event.action==="open-panchangam"?data.panchangamUrl:(data.statusUrl||data.url||"/whatsapp-status.html");
   event.waitUntil((async()=>{
     const list=await clients.matchAll({type:"window",includeUncontrolled:true});
     for(const client of list){
